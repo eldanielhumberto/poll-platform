@@ -1,9 +1,12 @@
 package com.poolplatform.features.user.adapters.db;
 
+import java.lang.classfile.ClassFile.Option;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.poolplatform.features.user.adapters.entities.UserEntity;
@@ -22,4 +25,12 @@ public interface JpaUserRepository extends JpaRepository<UserEntity, String>, Us
     default User save(User user) {
         return UserMapper.toUser(save(UserMapper.toUserEntity(user)));
     }
+
+    @Override
+    default Optional<User> getByEmail(String email) {
+        return getByEmailQuery(email).map(UserMapper::toUser);
+    }
+
+    @Query("SELECT u FROM users u WHERE u.email = ?1")
+    Optional<UserEntity> getByEmailQuery(String email);
 }
