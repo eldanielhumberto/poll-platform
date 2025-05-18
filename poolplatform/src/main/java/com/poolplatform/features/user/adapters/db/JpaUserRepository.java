@@ -17,4 +17,9 @@ public interface JpaUserRepository extends JpaRepository<UserEntity, String>, Us
     default List<User> getAll() {
         return findAll().stream().map(UserMapper::toUser).collect(Collectors.toList());
     }
+
+    @Override
+    default User save(User user) {
+        return UserMapper.toUser(save(UserMapper.toUserEntity(user)));
+    }
 }

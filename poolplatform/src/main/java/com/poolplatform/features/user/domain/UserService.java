@@ -6,4 +6,6 @@ import com.poolplatform.features.user.domain.models.User;
 
 public interface UserService {
     List<User> getAll();
+
+    User save(User user);
 }

@@ -18,4 +18,9 @@ public class UserApplication implements UserService {
     public List<User> getAll() {
         return userRepository.getAll();
     }
+
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
 }

@@ -13,4 +13,14 @@ public class UserMapper {
 
         return user;
     }
+
+    public static UserEntity toUserEntity(User user) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(user.getId());
+        userEntity.setUsername(user.getUsername());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setPassword(user.getPassword());
+
+        return userEntity;
+    }
 }
