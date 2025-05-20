@@ -20,6 +20,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class AuthApplication implements AuthService {
     private String secret_key = "12345678901234567890123456789012";
     private Key key = new SecretKeySpec(secret_key.getBytes(), SignatureAlgorithm.HS256.getJcaName());
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public String generateToken(String email) {
@@ -37,8 +38,12 @@ public class AuthApplication implements AuthService {
 
     @Override
     public String encoderPassword(String password) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode(password);
+    }
+
+    @Override
+    public boolean matchPassword(String password, String encodedPassword) {
+        return passwordEncoder.matches(password, encodedPassword);
     }
 
 }

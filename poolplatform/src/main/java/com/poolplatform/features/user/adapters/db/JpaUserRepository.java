@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +32,6 @@ public interface JpaUserRepository extends JpaRepository<UserEntity, String>, Us
         return getByEmailQuery(email).map(UserMapper::toUser);
     }
 
-    @Query("SELECT u FROM users u WHERE u.email = ?1")
+    @NativeQuery("SELECT * FROM users WHERE email = ?1")
     Optional<UserEntity> getByEmailQuery(String email);
 }

@@ -1,6 +1,7 @@
 package com.poolplatform.features.user.application;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,11 @@ public class UserApplication implements UserService {
     @Override
     public List<User> getAll() {
         return userRepository.getAll();
+    }
+
+    @Override
+    public Optional<User> getByEmail(String email) {
+        return userRepository.getByEmail(email);
     }
 
     @Override
