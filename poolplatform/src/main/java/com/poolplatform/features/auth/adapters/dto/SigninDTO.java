@@ -1,8 +1,16 @@
 package com.poolplatform.features.auth.adapters.dto;
 
-// TODO: add validator
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class SigninDTO {
+    @NotNull
+    @Email
     private String email;
+
+    @NotNull
+    @Size(min = 4, max = 8)
     private String password;
 
     public String getEmail() {

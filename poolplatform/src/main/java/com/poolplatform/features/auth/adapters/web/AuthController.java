@@ -16,6 +16,8 @@ import com.poolplatform.features.auth.domain.exceptions.AuthenticationException;
 import com.poolplatform.features.user.domain.UserService;
 import com.poolplatform.features.user.domain.models.User;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -29,7 +31,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupDTO signupDTO) {
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO signupDTO) {
         // Save user
         User newUser = new User();
         newUser.setUsername(signupDTO.getUsername());
@@ -50,7 +52,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody SigninDTO signinDTO) {
+    public ResponseEntity<?> login(@Valid @RequestBody SigninDTO signinDTO) {
         // Verify email
         Optional<User> userOptional = userService.getByEmail(signinDTO.getEmail());
         if (!userOptional.isPresent())
