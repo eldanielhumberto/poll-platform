@@ -1,10 +1,15 @@
 package com.poolplatform.features.survey.domain.models;
 
+import java.time.Instant;
+
+import com.poolplatform.features.user.domain.models.User;
+
 public class Survey {
     private String id;
     private String title;
     private String description;
-    private String userId;
+    private User author;
+    private Instant createdAt;
 
     public String getId() {
         return id;
@@ -30,11 +35,20 @@ public class Survey {
         this.description = description;
     }
 
-    public String getUserId() {
-        return userId;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setAuthor(User author) {
+        this.author = author;
     }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
 }
