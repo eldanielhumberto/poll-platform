@@ -6,6 +6,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.poolplatform.features.auth.application.AuthApplication;
+import com.poolplatform.filters.JwtAuthorizationFilter;
 
 @EnableWebSecurity
 @Configuration
@@ -15,7 +19,10 @@ public class WebSecurity {
         httpSecurity.csrf(csrf -> csrf.disable())
                 .sessionManagement(
                         sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(http -> http.anyRequest().permitAll()); // This is bad
+                .authorizeHttpRequests(http -> http.requestMatchers("/api/auth/signup", "/api/auth/login").permitAll()
+                        .anyRequest().authenticated()) // This is bad
+                .addFilterAfter(new JwtAuthorizationFilter(new AuthApplication()),
+                        UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 }
