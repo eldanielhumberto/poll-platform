@@ -1,6 +1,5 @@
 package com.poolplatform.features.survey.adapters.entities;
 
-import java.sql.Date;
 import java.time.Instant;
 
 import org.springframework.data.annotation.CreatedDate;
