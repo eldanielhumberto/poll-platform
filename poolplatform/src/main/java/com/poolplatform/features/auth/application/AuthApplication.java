@@ -26,13 +26,13 @@ public class AuthApplication implements AuthService {
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public String generateToken(String email) {
+    public String generateToken(String userId) {
         Instant now = Instant.now();
         Instant expires = now.plus(2, ChronoUnit.HOURS);
 
         return Jwts
                 .builder()
-                .setSubject(email)
+                .setSubject(userId)
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(expires))
                 .signWith(key, SignatureAlgorithm.HS256)

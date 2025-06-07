@@ -44,7 +44,7 @@ public class AuthController {
         User user = userService.save(newUser);
 
         // Get token
-        String token = authService.generateToken(user.getEmail());
+        String token = authService.generateToken(user.getId());
 
         // Set response
         Map<String, Object> response = new HashMap<>();
@@ -68,7 +68,7 @@ public class AuthController {
 
         // Set data
         User user = userOptional.get();
-        String token = authService.generateToken(user.getEmail());
+        String token = authService.generateToken(user.getId());
 
         // Set response
         Map<String, Object> response = new HashMap<>();
