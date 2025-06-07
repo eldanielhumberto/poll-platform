@@ -21,6 +21,11 @@ public class UserApplication implements UserService {
     }
 
     @Override
+    public Optional<User> getById(String id) {
+        return userRepository.getWithId(id);
+    }
+
+    @Override
     public Optional<User> getByEmail(String email) {
         return userRepository.getByEmail(email);
     }

@@ -26,6 +26,11 @@ public interface JpaUserRepository extends JpaRepository<UserEntity, String>, Us
     }
 
     @Override
+    default Optional<User> getWithId(String id) {
+        return findById(id).map(UserMapper::toUser);
+    }
+
+    @Override
     default Optional<User> getByEmail(String email) {
         return getByEmailQuery(email).map(UserMapper::toUser);
     }

@@ -1,6 +1,7 @@
 package com.poolplatform.filters;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -8,6 +9,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.poolplatform.features.auth.domain.AuthService;
+import com.poolplatform.features.user.domain.UserService;
+import com.poolplatform.features.user.domain.models.User;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -17,13 +20,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private AuthService authService;
+    private UserService userService;
 
-    public JwtAuthorizationFilter(AuthService authService) {
+    public JwtAuthorizationFilter(AuthService authService, UserService userService) {
         this.authService = authService;
+        this.userService = userService;
     }
-
-    // TODO: After implementing this, on login when the credentials are invalid, we
-    // get 403
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -33,9 +35,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             if (token != null && authService.validateToken(token)) {
                 Claims credentials = authService.getClaims(token);
 
-                // TODO: Get user from database and validate it
+                Optional<User> user = userService.getById(credentials.getSubject());
+                if (!user.isPresent())
+                    throw new Error("User is not present");
+
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        credentials.getSubject(), null, null); // TODO: study this
+                        credentials.getSubject(), user, null);
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);

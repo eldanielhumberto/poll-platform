@@ -80,7 +80,7 @@ public class AuthController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> profile(Authentication authentication) {
-        return ResponseEntity.ok(authentication.getPrincipal());
+        return ResponseEntity.ok(authentication.getCredentials());
     }
 
 }

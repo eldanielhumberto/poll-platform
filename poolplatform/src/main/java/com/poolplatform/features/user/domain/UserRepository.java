@@ -8,6 +8,8 @@ import com.poolplatform.features.user.domain.models.User;
 public interface UserRepository {
     List<User> getAll();
 
+    Optional<User> getWithId(String id);
+
     Optional<User> getByEmail(String email);
 
     User save(User user);
