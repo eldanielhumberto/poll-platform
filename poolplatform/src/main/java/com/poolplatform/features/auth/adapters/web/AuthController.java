@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import com.poolplatform.features.auth.adapters.dto.SigninDTO;
 import com.poolplatform.features.auth.adapters.dto.SignupDTO;
 import com.poolplatform.features.auth.domain.AuthService;
 import com.poolplatform.features.auth.domain.exceptions.AuthenticationException;
+import com.poolplatform.features.auth.domain.exceptions.UserExistingException;
 import com.poolplatform.features.user.domain.UserService;
 import com.poolplatform.features.user.domain.models.User;
 
@@ -34,6 +37,11 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO signupDTO) {
+        // Find user for verify if exists
+        Optional<User> userOptional = userService.getByEmail(signupDTO.getEmail());
+        if (userOptional.isPresent())
+            throw new UserExistingException();
+
         // Save user
         User newUser = new User();
         newUser.setUsername(signupDTO.getUsername());
