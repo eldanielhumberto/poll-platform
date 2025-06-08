@@ -32,6 +32,12 @@ public class SurveyController {
     private SurveyService surveyService;
 
     @GetMapping()
+    public ResponseEntity<?> getUserSurveys(Authentication authentication) {
+        List<Survey> surveys = surveyService.get((User) authentication.getCredentials());
+        return ResponseEntity.ok(Map.of("surveys", surveys));
+    }
+
+    @GetMapping("/get-all")
     public ResponseEntity<?> getSurveys() {
         List<Survey> surveys = surveyService.get();
         return ResponseEntity.ok(Map.of("surveys", surveys));

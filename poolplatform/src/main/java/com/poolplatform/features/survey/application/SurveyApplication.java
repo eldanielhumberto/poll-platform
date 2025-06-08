@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.poolplatform.features.survey.domain.SurveyRepository;
 import com.poolplatform.features.survey.domain.SurveyService;
 import com.poolplatform.features.survey.domain.models.Survey;
+import com.poolplatform.features.user.domain.models.User;
 
 @Service
 public class SurveyApplication implements SurveyService {
@@ -18,6 +19,11 @@ public class SurveyApplication implements SurveyService {
     @Override
     public List<Survey> get() {
         return surveyRepository.get();
+    }
+
+    @Override
+    public List<Survey> get(User user) {
+        return surveyRepository.get(user);
     }
 
     @Override
