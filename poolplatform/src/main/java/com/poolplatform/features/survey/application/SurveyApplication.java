@@ -1,6 +1,7 @@
 package com.poolplatform.features.survey.application;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,5 +18,20 @@ public class SurveyApplication implements SurveyService {
     @Override
     public List<Survey> get() {
         return surveyRepository.get();
+    }
+
+    @Override
+    public Optional<Survey> get(String id) {
+        return surveyRepository.get(id);
+    }
+
+    @Override
+    public Survey save(Survey survey) {
+        return surveyRepository.save(survey);
+    }
+
+    @Override
+    public void delete(Survey survey) {
+        surveyRepository.delete(survey);
     }
 }

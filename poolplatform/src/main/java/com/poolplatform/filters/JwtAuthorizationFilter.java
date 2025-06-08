@@ -42,7 +42,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     throw new Error("User is not present");
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        credentials.getSubject(), user, null);
+                        credentials.getSubject(), user.get(), null);
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);

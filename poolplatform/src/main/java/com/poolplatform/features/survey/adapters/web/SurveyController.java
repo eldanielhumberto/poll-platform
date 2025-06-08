@@ -3,15 +3,27 @@ package com.poolplatform.features.survey.adapters.web;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.poolplatform.exceptions.RequestException;
+import com.poolplatform.features.survey.adapters.dto.SurveyRequestDTO;
 import com.poolplatform.features.survey.domain.SurveyService;
 import com.poolplatform.features.survey.domain.models.Survey;
+import com.poolplatform.features.user.domain.models.User;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping(path = "/api/surveys")
@@ -23,6 +35,43 @@ public class SurveyController {
     public ResponseEntity<?> getSurveys() {
         List<Survey> surveys = surveyService.get();
         return ResponseEntity.ok(Map.of("surveys", surveys));
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> saveSurvey(@RequestBody SurveyRequestDTO rSurveyRequestDTO,
+            Authentication authentication) {
+        Survey newSurvey = new Survey();
+        newSurvey.setTitle(rSurveyRequestDTO.getTitle());
+        newSurvey.setDescription(rSurveyRequestDTO.getDescription());
+        newSurvey.setAuthor((User) authentication.getCredentials());
+        newSurvey.setCreatedAt(Instant.now());
+
+        Survey surveySaved = surveyService.save(newSurvey);
+        return ResponseEntity.ok(surveySaved);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateSurvey(@PathVariable String id, @RequestBody SurveyRequestDTO rSurveyRequestDTO) {
+        Optional<Survey> survey = surveyService.get(id);
+        if (!survey.isPresent())
+            throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
+
+        Survey oldSurvey = survey.get();
+        oldSurvey.setTitle(rSurveyRequestDTO.getTitle());
+        oldSurvey.setDescription(rSurveyRequestDTO.getDescription());
+
+        Survey surveySaved = surveyService.save(oldSurvey);
+        return ResponseEntity.ok(Map.of("Previous survey", oldSurvey, "Current survey", surveySaved));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteSurvey(@PathVariable String id) {
+        Optional<Survey> survey = surveyService.get(id);
+        if (!survey.isPresent())
+            throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
+
+        surveyService.delete(survey.get());
+        return ResponseEntity.ok(Map.of("message", "Deleted " + id));
     }
 
 }

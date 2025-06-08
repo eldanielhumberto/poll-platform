@@ -15,4 +15,15 @@ public class SurveyMapper {
 
         return survey;
     }
+
+    public static SurveyEntity toSurveyEntity(Survey survey) {
+        SurveyEntity surveyEntity = new SurveyEntity();
+        surveyEntity.setId(survey.getId());
+        surveyEntity.setTitle(survey.getTitle());
+        surveyEntity.setDescription(survey.getDescription());
+        surveyEntity.setAuthor(UserMapper.toUserEntity(survey.getAuthor()));
+        surveyEntity.setCreatedAt(survey.getCreatedAt());
+
+        return surveyEntity;
+    }
 }
