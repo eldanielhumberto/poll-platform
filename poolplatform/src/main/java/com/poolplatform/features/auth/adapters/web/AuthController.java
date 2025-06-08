@@ -6,17 +6,15 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.poolplatform.exceptions.RequestException;
 import com.poolplatform.features.auth.adapters.dto.SigninDTO;
 import com.poolplatform.features.auth.adapters.dto.SignupDTO;
 import com.poolplatform.features.auth.domain.AuthService;
-import com.poolplatform.features.auth.domain.exceptions.AuthenticationException;
-import com.poolplatform.features.auth.domain.exceptions.UserExistingException;
 import com.poolplatform.features.user.domain.UserService;
 import com.poolplatform.features.user.domain.models.User;
 
@@ -40,7 +38,7 @@ public class AuthController {
         // Find user for verify if exists
         Optional<User> userOptional = userService.getByEmail(signupDTO.getEmail());
         if (userOptional.isPresent())
-            throw new UserExistingException();
+            throw new RequestException("The account already exists", HttpStatus.BAD_REQUEST);
 
         // Save user
         User newUser = new User();
@@ -66,12 +64,12 @@ public class AuthController {
         // Verify email
         Optional<User> userOptional = userService.getByEmail(signinDTO.getEmail());
         if (!userOptional.isPresent())
-            throw new AuthenticationException();
+            throw new RequestException("Incorrect credentials", HttpStatus.BAD_REQUEST);
 
         // Verify password
         String encodedPassword = userOptional.get().getPassword();
         if (!authService.matchPassword(signinDTO.getPassword(), encodedPassword))
-            throw new AuthenticationException();
+            throw new RequestException("Incorrect credentials", HttpStatus.BAD_REQUEST);
 
         // Set data
         User user = userOptional.get();
