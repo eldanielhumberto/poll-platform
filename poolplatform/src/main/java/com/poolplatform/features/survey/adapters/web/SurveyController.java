@@ -57,26 +57,36 @@ public class SurveyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateSurvey(@PathVariable String id, @RequestBody SurveyRequestDTO rSurveyRequestDTO) {
-        Optional<Survey> survey = surveyService.get(id);
-        if (!survey.isPresent())
+    public ResponseEntity<?> updateSurvey(@PathVariable String id, @RequestBody SurveyRequestDTO rSurveyRequestDTO,
+            Authentication authentication) {
+        Optional<Survey> surveyOptional = surveyService.get(id);
+        if (!surveyOptional.isPresent())
             throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
 
-        Survey oldSurvey = survey.get();
-        oldSurvey.setTitle(rSurveyRequestDTO.getTitle());
-        oldSurvey.setDescription(rSurveyRequestDTO.getDescription());
+        Survey survey = surveyOptional.get();
+        String authorId = survey.getAuthor().getId();
+        if (!authorId.equals(authentication.getPrincipal().toString()))
+            throw new RequestException("No friend", HttpStatus.UNAUTHORIZED);
 
-        Survey surveySaved = surveyService.save(oldSurvey);
-        return ResponseEntity.ok(Map.of("Previous survey", oldSurvey, "Current survey", surveySaved));
+        survey.setTitle(rSurveyRequestDTO.getTitle());
+        survey.setDescription(rSurveyRequestDTO.getDescription());
+
+        Survey surveySaved = surveyService.save(survey);
+        return ResponseEntity.ok(Map.of("Previous survey", survey, "Current survey", surveySaved));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSurvey(@PathVariable String id) {
-        Optional<Survey> survey = surveyService.get(id);
-        if (!survey.isPresent())
+    public ResponseEntity<?> deleteSurvey(@PathVariable String id, Authentication authentication) {
+        Optional<Survey> surveyOptional = surveyService.get(id);
+        if (!surveyOptional.isPresent())
             throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
 
-        surveyService.delete(survey.get());
+        Survey survey = surveyOptional.get();
+        String authorId = survey.getAuthor().getId();
+        if (!authorId.equals(authentication.getPrincipal().toString()))
+            throw new RequestException("No friend", HttpStatus.UNAUTHORIZED);
+
+        surveyService.delete(survey);
         return ResponseEntity.ok(Map.of("message", "Deleted " + id));
     }
 
