@@ -37,7 +37,7 @@ public class SurveyApplication implements SurveyService {
     }
 
     @Override
-    public void delete(Survey survey) {
-        surveyRepository.delete(survey);
+    public void remove(Survey survey) {
+        surveyRepository.remove(survey);
     }
 }

@@ -86,7 +86,7 @@ public class SurveyController {
         if (!authorId.equals(authentication.getPrincipal().toString()))
             throw new RequestException("No friend", HttpStatus.UNAUTHORIZED);
 
-        surveyService.delete(survey);
+        surveyService.remove(survey);
         return ResponseEntity.ok(Map.of("message", "Deleted " + id));
     }
 

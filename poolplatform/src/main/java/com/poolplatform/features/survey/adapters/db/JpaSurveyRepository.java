@@ -37,7 +37,7 @@ public interface JpaSurveyRepository extends JpaRepository<SurveyEntity, String>
     }
 
     @Override
-    default void delete(Survey survey) {
+    default void remove(Survey survey) {
         delete(SurveyMapper.toSurveyEntity(survey));
     }
 
