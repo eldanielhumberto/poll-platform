@@ -1,4 +1,4 @@
-package com.poolplatform.config;
+package com.poolplatform.adapters.handlers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,10 +9,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.poolplatform.exceptions.RequestException;
+import com.poolplatform.domain.exceptions.RequestException;
 
 @ControllerAdvice
-public class GlobalControllerExceptionHandler {
+public class GlobalExceptionHandler {
     @ExceptionHandler(value = RequestException.class)
     public ResponseEntity<?> userExitingException(RequestException ex) {
         Map<String, Object> response = new HashMap<>();

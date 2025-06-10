@@ -3,7 +3,7 @@ package com.poolplatform.features.survey.adapters.web;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.poolplatform.exceptions.RequestException;
+import com.poolplatform.domain.exceptions.RequestException;
 import com.poolplatform.features.survey.adapters.dto.SurveyRequestDTO;
 import com.poolplatform.features.survey.domain.SurveyService;
 import com.poolplatform.features.survey.domain.models.Survey;

@@ -1,4 +1,4 @@
-package com.poolplatform.filters;
+package com.poolplatform.adapters.filters;
 
 import java.io.IOException;
 import java.util.Optional;

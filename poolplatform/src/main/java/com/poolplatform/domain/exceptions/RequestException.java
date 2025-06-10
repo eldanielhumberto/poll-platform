@@ -1,4 +1,4 @@
-package com.poolplatform.exceptions;
+package com.poolplatform.domain.exceptions;
 
 import org.springframework.http.HttpStatus;
 

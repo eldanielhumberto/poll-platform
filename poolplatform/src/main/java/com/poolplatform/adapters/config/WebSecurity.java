@@ -1,4 +1,4 @@
-package com.poolplatform.config;
+package com.poolplatform.adapters.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,9 +9,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.poolplatform.adapters.filters.JwtAuthorizationFilter;
 import com.poolplatform.features.auth.domain.AuthService;
 import com.poolplatform.features.user.domain.UserService;
-import com.poolplatform.filters.JwtAuthorizationFilter;
 
 @EnableWebSecurity
 @Configuration

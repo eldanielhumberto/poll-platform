@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.poolplatform.exceptions.RequestException;
+import com.poolplatform.domain.exceptions.RequestException;
 import com.poolplatform.features.auth.adapters.dto.SigninDTO;
 import com.poolplatform.features.auth.adapters.dto.SignupDTO;
 import com.poolplatform.features.auth.domain.AuthService;

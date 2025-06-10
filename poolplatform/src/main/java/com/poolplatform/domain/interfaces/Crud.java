@@ -1,4 +1,4 @@
-package com.poolplatform.interfaces;
+package com.poolplatform.domain.interfaces;
 
 import java.util.List;
 import java.util.Optional;
