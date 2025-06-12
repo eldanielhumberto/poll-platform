@@ -10,7 +10,6 @@ import com.poolplatform.features.question.domain.QuestionRepository;
 import com.poolplatform.features.question.domain.QuestionService;
 import com.poolplatform.features.question.domain.models.Question;
 import com.poolplatform.features.survey.domain.models.Survey;
-import com.poolplatform.features.user.domain.models.User;
 
 @Service
 public class QuestionApplication implements QuestionService {
@@ -20,11 +19,6 @@ public class QuestionApplication implements QuestionService {
     @Override
     public List<Question> get() {
         return questionRepository.get();
-    }
-
-    @Override
-    public List<Question> get(User user) {
-        return questionRepository.get(user);
     }
 
     @Override
