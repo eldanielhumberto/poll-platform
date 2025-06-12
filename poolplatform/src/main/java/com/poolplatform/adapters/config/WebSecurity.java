@@ -32,8 +32,8 @@ public class WebSecurity {
 						.requestMatchers(
 								"/api/auth/signup",
 								"/api/auth/login",
-								"/api/surveys/get-all",
-								"/api/questions/get-all")
+								"/api/surveys/get",
+								"/api/questions/get")
 						.permitAll()
 						.anyRequest().authenticated())
 				.addFilterAfter(new JwtAuthorizationFilter(authService,

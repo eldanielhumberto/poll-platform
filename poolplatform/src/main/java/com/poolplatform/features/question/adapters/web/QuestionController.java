@@ -36,8 +36,8 @@ public class QuestionController {
     @Autowired
     private SurveyService surveyService;
 
-    @GetMapping("/get-all")
-    public ResponseEntity<List<Question>> getAll() {
+    @GetMapping("/get")
+    public ResponseEntity<List<Question>> getQuestions() {
         List<Question> questions = questionService.get();
         return ResponseEntity.ok(questions);
     }

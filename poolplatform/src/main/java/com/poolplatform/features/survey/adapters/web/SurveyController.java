@@ -37,7 +37,7 @@ public class SurveyController {
         return ResponseEntity.ok(Map.of("surveys", surveys));
     }
 
-    @GetMapping("/get-all")
+    @GetMapping("/get")
     public ResponseEntity<?> getSurveys() {
         List<Survey> surveys = surveyService.get();
         return ResponseEntity.ok(Map.of("surveys", surveys));
