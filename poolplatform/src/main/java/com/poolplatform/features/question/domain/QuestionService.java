@@ -6,6 +6,6 @@ import com.poolplatform.domain.interfaces.Crud;
 import com.poolplatform.features.question.domain.models.Question;
 import com.poolplatform.features.survey.domain.models.Survey;
 
-public interface QuestionRepository extends Crud<Question> {
+public interface QuestionService extends Crud<Question> {
     List<Question> get(Survey survey);
 }

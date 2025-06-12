@@ -52,7 +52,7 @@ public class SurveyController {
         newSurvey.setAuthor((User) authentication.getCredentials());
         newSurvey.setCreatedAt(Instant.now());
 
-        Survey surveySaved = surveyService.save(newSurvey);
+        Survey surveySaved = surveyService.upsert(newSurvey);
         return ResponseEntity.ok(surveySaved);
     }
 
@@ -71,7 +71,7 @@ public class SurveyController {
         survey.setTitle(rSurveyRequestDTO.getTitle());
         survey.setDescription(rSurveyRequestDTO.getDescription());
 
-        Survey surveySaved = surveyService.save(survey);
+        Survey surveySaved = surveyService.upsert(survey);
         return ResponseEntity.ok(Map.of("Previous survey", survey, "Current survey", surveySaved));
     }
 

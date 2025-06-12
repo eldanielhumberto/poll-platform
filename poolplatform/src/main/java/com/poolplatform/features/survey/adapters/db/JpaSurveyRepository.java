@@ -32,7 +32,7 @@ public interface JpaSurveyRepository extends JpaRepository<SurveyEntity, String>
     }
 
     @Override
-    default Survey save(Survey survey) {
+    default Survey upsert(Survey survey) {
         return SurveyMapper.toSurvey(save(SurveyMapper.toSurveyEntity(survey)));
     }
 

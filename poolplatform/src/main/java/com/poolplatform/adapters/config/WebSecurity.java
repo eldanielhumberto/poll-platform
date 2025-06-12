@@ -29,7 +29,12 @@ public class WebSecurity {
 						sessionManagement -> sessionManagement
 								.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(http -> http
-						.requestMatchers("/api/auth/signup", "/api/auth/login", "/api/surveys/get-all").permitAll()
+						.requestMatchers(
+								"/api/auth/signup",
+								"/api/auth/login",
+								"/api/surveys/get-all",
+								"/api/questions/get-all")
+						.permitAll()
 						.anyRequest().authenticated())
 				.addFilterAfter(new JwtAuthorizationFilter(authService,
 						userService),

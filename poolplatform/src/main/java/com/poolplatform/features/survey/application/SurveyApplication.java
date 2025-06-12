@@ -32,8 +32,8 @@ public class SurveyApplication implements SurveyService {
     }
 
     @Override
-    public Survey save(Survey survey) {
-        return surveyRepository.save(survey);
+    public Survey upsert(Survey survey) {
+        return surveyRepository.upsert(survey);
     }
 
     @Override
