@@ -1,6 +1,7 @@
 package com.poolplatform.features.survey.adapters.web;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.poolplatform.domain.exceptions.RequestException;
@@ -32,7 +33,15 @@ public class SurveyController {
     private SurveyService surveyService;
 
     @GetMapping("/get")
-    public ResponseEntity<?> getSurveys() {
+    public ResponseEntity<?> getSurveys(@RequestParam(required = false) String id) {
+        if (id != null) {
+            Optional<Survey> surveyOptional = surveyService.get(id);
+            if (!surveyOptional.isPresent())
+                throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
+
+            return ResponseEntity.ok(Map.of("survey", surveyOptional.get()));
+        }
+
         List<Survey> surveys = surveyService.get();
         return ResponseEntity.ok(Map.of("surveys", surveys));
     }

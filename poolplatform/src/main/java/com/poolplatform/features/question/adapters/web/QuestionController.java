@@ -1,6 +1,7 @@
 package com.poolplatform.features.question.adapters.web;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.poolplatform.domain.exceptions.RequestException;
@@ -37,7 +38,26 @@ public class QuestionController {
     private SurveyService surveyService;
 
     @GetMapping("/get")
-    public ResponseEntity<List<Question>> getQuestions() {
+    public ResponseEntity<?> getQuestions(@RequestParam(required = false) String id,
+            @RequestParam(required = false) String surveyId) {
+
+        if (id != null) {
+            Optional<Question> questionOptional = questionService.get(id);
+            if (!questionOptional.isPresent())
+                throw new RequestException("The question does not exist", HttpStatus.NOT_FOUND);
+
+            return ResponseEntity.ok(questionOptional.get());
+        }
+
+        if (surveyId != null) {
+            Optional<Survey> survey = surveyService.get(surveyId);
+            if (!survey.isPresent())
+                throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
+
+            List<Question> questions = questionService.get(survey.get());
+            return ResponseEntity.ok(questions);
+        }
+
         List<Question> questions = questionService.get();
         return ResponseEntity.ok(questions);
     }
