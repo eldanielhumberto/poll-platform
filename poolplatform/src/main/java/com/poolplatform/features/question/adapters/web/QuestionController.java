@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.poolplatform.adapters.dto.ResponseDTO;
 import com.poolplatform.domain.exceptions.RequestException;
 import com.poolplatform.features.question.adapters.dto.QuestionCreateDTO;
 import com.poolplatform.features.question.adapters.dto.QuestionUpdateDTO;
@@ -40,13 +41,16 @@ public class QuestionController {
     @GetMapping("/get")
     public ResponseEntity<?> getQuestions(@RequestParam(required = false) String id,
             @RequestParam(required = false) String surveyId) {
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
         if (id != null) {
             Optional<Question> questionOptional = questionService.get(id);
             if (!questionOptional.isPresent())
                 throw new RequestException("The question does not exist", HttpStatus.NOT_FOUND);
 
-            return ResponseEntity.ok(questionOptional.get());
+            responseDTO.setMessage("Get a question");
+            responseDTO.setData(questionOptional.get());
+            return ResponseEntity.ok(responseDTO);
         }
 
         if (surveyId != null) {
@@ -55,15 +59,21 @@ public class QuestionController {
                 throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
 
             List<Question> questions = questionService.get(survey.get());
-            return ResponseEntity.ok(questions);
+
+            responseDTO.setMessage("Get questions by survey");
+            responseDTO.setData(questions);
+            return ResponseEntity.ok(responseDTO);
         }
 
         List<Question> questions = questionService.get();
-        return ResponseEntity.ok(questions);
+
+        responseDTO.setMessage("Get all questions");
+        responseDTO.setData(questions);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PostMapping()
-    public ResponseEntity<Question> save(@RequestBody QuestionCreateDTO requestDTO, Authentication authentication) {
+    public ResponseEntity<?> save(@RequestBody QuestionCreateDTO requestDTO, Authentication authentication) {
         Optional<Survey> survey = surveyService.get(requestDTO.getSurveyId());
         if (!survey.isPresent())
             throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
@@ -72,22 +82,28 @@ public class QuestionController {
         newQuestion.setQuestionText(requestDTO.getQuestionText());
         newQuestion.setSurvey(survey.get());
         newQuestion.setAuthor((User) authentication.getCredentials());
+        questionService.upsert(newQuestion);
 
-        Question questionSaved = questionService.upsert(newQuestion);
-        return ResponseEntity.ok(questionSaved);
+        ResponseDTO<Question> responseDTO = new ResponseDTO<>();
+        responseDTO.setMessage("Question saved");
+
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Question> update(@PathVariable String id, @RequestBody QuestionUpdateDTO requesDto) {
+    public ResponseEntity<?> update(@PathVariable String id, @RequestBody QuestionUpdateDTO requesDto) {
         Optional<Question> questionOptional = questionService.get(id);
         if (!questionOptional.isPresent())
             throw new RequestException("The question does not exist", HttpStatus.NOT_FOUND);
 
         Question question = questionOptional.get();
         question.setQuestionText(requesDto.getQuestionText());
+        questionService.upsert(question);
 
-        Question questionSaved = questionService.upsert(question);
-        return ResponseEntity.ok(questionSaved);
+        ResponseDTO<?> responseDTO = new ResponseDTO<>();
+        responseDTO.setMessage("Survey saved");
+
+        return ResponseEntity.ok(responseDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -97,6 +113,10 @@ public class QuestionController {
             throw new RequestException("The question does not exist", HttpStatus.NOT_FOUND);
 
         questionService.remove(questionOptional.get());
+
+        ResponseDTO<?> responseDTO = new ResponseDTO<>();
+        responseDTO.setMessage("Survey deleted");
+
         return ResponseEntity.ok(Map.of("message", "Question deleted"));
     }
 

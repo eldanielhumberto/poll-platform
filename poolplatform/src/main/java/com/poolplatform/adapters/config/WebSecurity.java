@@ -32,6 +32,7 @@ public class WebSecurity {
 						.requestMatchers(
 								"/api/auth/signup",
 								"/api/auth/login",
+								"/api/users/get",
 								"/api/surveys/get",
 								"/api/questions/get")
 						.permitAll()

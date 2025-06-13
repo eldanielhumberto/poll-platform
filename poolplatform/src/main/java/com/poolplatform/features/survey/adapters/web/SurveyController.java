@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.poolplatform.adapters.dto.ResponseDTO;
 import com.poolplatform.domain.exceptions.RequestException;
 import com.poolplatform.features.survey.adapters.dto.SurveyRequestDTO;
 import com.poolplatform.features.survey.domain.SurveyService;
@@ -12,7 +13,6 @@ import com.poolplatform.features.user.domain.models.User;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,22 +34,37 @@ public class SurveyController {
 
     @GetMapping("/get")
     public ResponseEntity<?> getSurveys(@RequestParam(required = false) String id) {
+
         if (id != null) {
             Optional<Survey> surveyOptional = surveyService.get(id);
             if (!surveyOptional.isPresent())
                 throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
 
-            return ResponseEntity.ok(Map.of("survey", surveyOptional.get()));
+            ResponseDTO<Survey> responseDTO = new ResponseDTO<>();
+            responseDTO.setMessage("Get a survey");
+            responseDTO.setData(surveyOptional.get());
+
+            return ResponseEntity.ok(responseDTO);
         }
 
         List<Survey> surveys = surveyService.get();
-        return ResponseEntity.ok(Map.of("surveys", surveys));
+
+        ResponseDTO<List<Survey>> responseDTO = new ResponseDTO<>();
+        responseDTO.setMessage("Get all surveys");
+        responseDTO.setData(surveys);
+
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping("/get/me")
     public ResponseEntity<?> getUserSurveys(Authentication authentication) {
         List<Survey> surveys = surveyService.get((User) authentication.getCredentials());
-        return ResponseEntity.ok(Map.of("surveys", surveys));
+
+        ResponseDTO<List<Survey>> responseDTO = new ResponseDTO<>();
+        responseDTO.setMessage("Your surveys");
+        responseDTO.setData(surveys);
+
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PostMapping()
@@ -60,9 +75,12 @@ public class SurveyController {
         newSurvey.setDescription(rSurveyRequestDTO.getDescription());
         newSurvey.setAuthor((User) authentication.getCredentials());
         newSurvey.setCreatedAt(Instant.now());
+        surveyService.upsert(newSurvey);
 
-        Survey surveySaved = surveyService.upsert(newSurvey);
-        return ResponseEntity.ok(surveySaved);
+        ResponseDTO<?> responseDTO = new ResponseDTO<>();
+        responseDTO.setMessage("Survey saved");
+
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PutMapping("/{id}")
@@ -81,7 +99,12 @@ public class SurveyController {
         survey.setDescription(rSurveyRequestDTO.getDescription());
 
         Survey surveySaved = surveyService.upsert(survey);
-        return ResponseEntity.ok(Map.of("Previous survey", survey, "Current survey", surveySaved));
+
+        ResponseDTO<Survey> responseDTO = new ResponseDTO<>();
+        responseDTO.setMessage("Survey saved");
+        responseDTO.setData(surveySaved);
+
+        return ResponseEntity.ok(responseDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -96,7 +119,11 @@ public class SurveyController {
             throw new RequestException("No friend", HttpStatus.UNAUTHORIZED);
 
         surveyService.remove(survey);
-        return ResponseEntity.ok(Map.of("message", "Deleted " + id));
+
+        ResponseDTO<?> responseDTO = new ResponseDTO<>();
+        responseDTO.setMessage("Survey deleted");
+
+        return ResponseEntity.ok(responseDTO);
     }
 
 }
