@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poolplatform.adapters.dto.ResponseDTO;
 import com.poolplatform.features.user.domain.UserService;
 import com.poolplatform.features.user.domain.models.User;
+import com.poolplatform.features.user.domain.models.UserSummary;
 
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class UserController {
     public ResponseEntity<?> getAll() {
         List<User> users = userService.getAll();
 
-        ResponseDTO<List<User>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<UserSummary>> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("All users list");
-        responseDTO.setData(users);
+        responseDTO.setData(users.stream().map(UserSummary::new).toList());
 
         return ResponseEntity.ok(responseDTO);
     }

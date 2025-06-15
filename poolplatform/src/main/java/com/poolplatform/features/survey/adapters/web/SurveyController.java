@@ -9,6 +9,7 @@ import com.poolplatform.domain.exceptions.RequestException;
 import com.poolplatform.features.survey.adapters.dto.SurveyRequestDTO;
 import com.poolplatform.features.survey.domain.SurveyService;
 import com.poolplatform.features.survey.domain.models.Survey;
+import com.poolplatform.features.survey.domain.models.SurveySummary;
 import com.poolplatform.features.user.domain.models.User;
 
 import java.time.Instant;
@@ -34,24 +35,23 @@ public class SurveyController {
 
     @GetMapping("/get")
     public ResponseEntity<?> getSurveys(@RequestParam(required = false) String id) {
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
         if (id != null) {
             Optional<Survey> surveyOptional = surveyService.get(id);
             if (!surveyOptional.isPresent())
                 throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
 
-            ResponseDTO<Survey> responseDTO = new ResponseDTO<>();
             responseDTO.setMessage("Get a survey");
-            responseDTO.setData(surveyOptional.get());
+            responseDTO.setData(new SurveySummary(surveyOptional.get()));
 
             return ResponseEntity.ok(responseDTO);
         }
 
         List<Survey> surveys = surveyService.get();
 
-        ResponseDTO<List<Survey>> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("Get all surveys");
-        responseDTO.setData(surveys);
+        responseDTO.setData(surveys.stream().map(SurveySummary::new).toList());
 
         return ResponseEntity.ok(responseDTO);
     }
@@ -60,9 +60,9 @@ public class SurveyController {
     public ResponseEntity<?> getUserSurveys(Authentication authentication) {
         List<Survey> surveys = surveyService.get((User) authentication.getCredentials());
 
-        ResponseDTO<List<Survey>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<SurveySummary>> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("Your surveys");
-        responseDTO.setData(surveys);
+        responseDTO.setData(surveys.stream().map(SurveySummary::new).toList());
 
         return ResponseEntity.ok(responseDTO);
     }

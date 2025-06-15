@@ -17,6 +17,7 @@ import com.poolplatform.features.auth.adapters.dto.SignupDTO;
 import com.poolplatform.features.auth.domain.AuthService;
 import com.poolplatform.features.user.domain.UserService;
 import com.poolplatform.features.user.domain.models.User;
+import com.poolplatform.features.user.domain.models.UserSummary;
 
 import jakarta.validation.Valid;
 
@@ -54,7 +55,7 @@ public class AuthController {
         // Set response
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
-        response.put("user", user);
+        response.put("user", new UserSummary(user));
 
         return ResponseEntity.ok(response);
     }
@@ -78,7 +79,7 @@ public class AuthController {
         // Set response
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
-        response.put("user", user);
+        response.put("user", new UserSummary(user));
 
         return ResponseEntity.ok(response);
     }
