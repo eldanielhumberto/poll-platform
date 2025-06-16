@@ -1,9 +1,11 @@
 package com.poolplatform.features.survey.adapters.entities;
 
 import java.time.Instant;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.poolplatform.features.question.adapters.entities.QuestionEntity;
 import com.poolplatform.features.user.adapters.entities.UserEntity;
 
 import jakarta.persistence.Column;
@@ -13,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,8 +35,24 @@ public class SurveyEntity {
     @JoinColumn(name = "user_id")
     private UserEntity author;
 
+    @OneToMany(mappedBy = "survey")
+    private List<QuestionEntity> questions;
+
     @CreatedDate
     private Instant createdAt;
+
+    public SurveyEntity() {
+    }
+
+    public SurveyEntity(String id, String title, String description, UserEntity author, List<QuestionEntity> questions,
+            Instant createdAt) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.author = author;
+        this.questions = questions;
+        this.createdAt = createdAt;
+    }
 
     public String getId() {
         return id;
@@ -69,6 +88,14 @@ public class SurveyEntity {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public List<QuestionEntity> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<QuestionEntity> questions) {
+        this.questions = questions;
     }
 
     public void setCreatedAt(Instant createdAt) {

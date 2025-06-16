@@ -1,7 +1,9 @@
 package com.poolplatform.features.survey.domain.models;
 
 import java.time.Instant;
+import java.util.List;
 
+import com.poolplatform.features.question.domain.models.Question;
 import com.poolplatform.features.user.domain.models.User;
 
 public class Survey {
@@ -9,6 +11,7 @@ public class Survey {
     private String title;
     private String description;
     private User author;
+    private List<Question> questions;
     private Instant createdAt;
 
     public String getId() {
@@ -41,6 +44,14 @@ public class Survey {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 
     public Instant getCreatedAt() {

@@ -19,7 +19,7 @@ public class QuestionEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "question_text", columnDefinition = "TEXT", nullable = false, unique = true)
+    @Column(name = "question_text", columnDefinition = "TEXT", nullable = false)
     private String questionText;
 
     @ManyToOne()
@@ -29,6 +29,16 @@ public class QuestionEntity {
     @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity author;
+
+    public QuestionEntity() {
+    }
+
+    public QuestionEntity(String id, String questionText, SurveyEntity survey, UserEntity author) {
+        this.id = id;
+        this.questionText = questionText;
+        this.survey = survey;
+        this.author = author;
+    }
 
     public String getId() {
         return id;

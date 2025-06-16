@@ -23,6 +23,16 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+    public UserEntity() {
+    }
+
+    public UserEntity(String id, String username, String email, String password) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
     public String getId() {
         return id;
     }

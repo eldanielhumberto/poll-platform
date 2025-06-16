@@ -1,7 +1,9 @@
 package com.poolplatform.features.survey.domain.models;
 
 import java.time.Instant;
+import java.util.List;
 
+import com.poolplatform.features.question.domain.models.QuestionSummary;
 import com.poolplatform.features.user.domain.models.UserSummary;
 
 public class SurveySummary {
@@ -9,6 +11,7 @@ public class SurveySummary {
     private String title;
     private String description;
     private UserSummary author;
+    private List<QuestionSummary> questions;
     private Instant createdAt;
 
     public SurveySummary(Survey survey) {
@@ -17,6 +20,9 @@ public class SurveySummary {
         this.description = survey.getDescription();
         this.author = new UserSummary(survey.getAuthor());
         this.createdAt = survey.getCreatedAt();
+
+        if (survey.getQuestions() != null)
+            this.questions = survey.getQuestions().stream().map(QuestionSummary::new).toList();
     }
 
     public String getId() {
@@ -53,6 +59,14 @@ public class SurveySummary {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public List<QuestionSummary> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<QuestionSummary> questions) {
+        this.questions = questions;
     }
 
     public void setCreatedAt(Instant createdAt) {
