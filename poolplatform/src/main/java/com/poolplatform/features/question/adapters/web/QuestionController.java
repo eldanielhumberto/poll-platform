@@ -79,6 +79,10 @@ public class QuestionController {
         if (!survey.isPresent())
             throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
 
+        Optional<Question> question = questionService.getByText(requestDTO.getQuestionText(), requestDTO.getSurveyId());
+        if (question.isPresent())
+            throw new RequestException("The question already exists", HttpStatus.BAD_REQUEST);
+
         Question newQuestion = new Question();
         newQuestion.setQuestionText(requestDTO.getQuestionText());
         newQuestion.setSurvey(survey.get());

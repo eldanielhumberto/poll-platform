@@ -32,6 +32,11 @@ public class QuestionApplication implements QuestionService {
     }
 
     @Override
+    public Optional<Question> getByText(String questionText, String surveyId) {
+        return questionRepository.getByText(questionText, surveyId);
+    }
+
+    @Override
     public void remove(Question t) {
         questionRepository.remove(t);
     }

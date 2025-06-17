@@ -32,6 +32,11 @@ public interface JpaQuestionRepository extends JpaRepository<QuestionEntity, Str
     }
 
     @Override
+    default Optional<Question> getByText(String questionText, String surveyId) {
+        return findByQuestionTextAndSurveyId(questionText, surveyId).map(QuestionMapper::toQuestion);
+    }
+
+    @Override
     default Question upsert(Question t) {
         return QuestionMapper.toQuestion(save(QuestionMapper.toQuestionEntity(t)));
     }
@@ -43,5 +48,8 @@ public interface JpaQuestionRepository extends JpaRepository<QuestionEntity, Str
 
     @NativeQuery(value = "SELECT * FROM questions WHERE survey_id = ?1")
     List<QuestionEntity> getBySurvey(String surveyId);
+
+    @NativeQuery(value = "SELECT * FROM questions WHERE question_text = ?1 AND survey_id = ?2")
+    Optional<QuestionEntity> findByQuestionTextAndSurveyId(String questionText, String surveyId);
 
 }
