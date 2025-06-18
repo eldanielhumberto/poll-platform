@@ -1,5 +1,19 @@
 package com.poolplatform.features.question.adapters.web;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,21 +28,6 @@ import com.poolplatform.features.question.domain.models.QuestionSummary;
 import com.poolplatform.features.survey.domain.SurveyService;
 import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.user.domain.models.User;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping(path = "/api/questions")
@@ -79,6 +78,9 @@ public class QuestionController {
         if (!survey.isPresent())
             throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
 
+        if (!survey.get().getAuthor().getId().equals(authentication.getPrincipal()))
+            throw new RequestException("Unauthorized", HttpStatus.UNAUTHORIZED);
+
         Optional<Question> question = questionService.getByText(requestDTO.getQuestionText(), requestDTO.getSurveyId());
         if (question.isPresent())
             throw new RequestException("The question already exists", HttpStatus.BAD_REQUEST);
@@ -96,12 +98,17 @@ public class QuestionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable String id, @RequestBody QuestionUpdateDTO requesDto) {
+    public ResponseEntity<?> update(@PathVariable String id, @RequestBody QuestionUpdateDTO requesDto,
+            Authentication authentication) {
         Optional<Question> questionOptional = questionService.get(id);
         if (!questionOptional.isPresent())
             throw new RequestException("The question does not exist", HttpStatus.NOT_FOUND);
 
         Question question = questionOptional.get();
+
+        if (!question.getAuthor().getId().equals(authentication.getPrincipal()))
+            throw new RequestException("Unauthorized", HttpStatus.UNAUTHORIZED);
+
         question.setQuestionText(requesDto.getQuestionText());
         questionService.upsert(question);
 
@@ -112,10 +119,13 @@ public class QuestionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
+    public ResponseEntity<?> delete(@PathVariable String id, Authentication authentication) {
         Optional<Question> questionOptional = questionService.get(id);
         if (!questionOptional.isPresent())
             throw new RequestException("The question does not exist", HttpStatus.NOT_FOUND);
+
+        if (!questionOptional.get().getAuthor().getId().equals(authentication.getPrincipal()))
+            throw new RequestException("Unauthorized", HttpStatus.UNAUTHORIZED);
 
         questionService.remove(questionOptional.get());
 
