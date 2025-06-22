@@ -38,7 +38,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 Claims credentials = authService.getClaims(token);
 
                 Optional<User> user = userService.getById(credentials.getSubject());
-                if (!user.isPresent())
+                if (user.isEmpty())
                     throw new Error("User is not present");
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

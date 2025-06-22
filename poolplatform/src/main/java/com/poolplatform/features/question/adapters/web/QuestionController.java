@@ -47,7 +47,7 @@ public class QuestionController {
 
         if (id != null) {
             Optional<Question> questionOptional = questionService.get(id);
-            if (!questionOptional.isPresent())
+            if (questionOptional.isEmpty())
                 throw new RequestException("The question does not exist", HttpStatus.NOT_FOUND);
 
             responseDTO.setMessage("Get a question");
@@ -57,7 +57,7 @@ public class QuestionController {
 
         if (surveyId != null) {
             Optional<Survey> survey = surveyService.get(surveyId);
-            if (!survey.isPresent())
+            if (survey.isEmpty())
                 throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
 
             List<Question> questions = questionService.get(survey.get());
@@ -77,7 +77,7 @@ public class QuestionController {
     @PostMapping()
     public ResponseEntity<?> save(@Valid @RequestBody QuestionCreateDTO requestDTO, Authentication authentication) {
         Optional<Survey> survey = surveyService.get(requestDTO.getSurveyId());
-        if (!survey.isPresent())
+        if (survey.isEmpty())
             throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
 
         if (!survey.get().getAuthor().getId().equals(authentication.getPrincipal()))
@@ -103,7 +103,7 @@ public class QuestionController {
     public ResponseEntity<?> update(@PathVariable String id, @Valid @RequestBody QuestionUpdateDTO requesDto,
             Authentication authentication) {
         Optional<Question> questionOptional = questionService.get(id);
-        if (!questionOptional.isPresent())
+        if (questionOptional.isEmpty())
             throw new RequestException("The question does not exist", HttpStatus.NOT_FOUND);
 
         Question question = questionOptional.get();
@@ -123,7 +123,7 @@ public class QuestionController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id, Authentication authentication) {
         Optional<Question> questionOptional = questionService.get(id);
-        if (!questionOptional.isPresent())
+        if (questionOptional.isEmpty())
             throw new RequestException("The question does not exist", HttpStatus.NOT_FOUND);
 
         if (!questionOptional.get().getAuthor().getId().equals(authentication.getPrincipal()))

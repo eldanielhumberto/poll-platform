@@ -23,7 +23,7 @@ public class WebSecurity {
 	private AuthService authService;
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf(csrf -> csrf.disable())
 				.sessionManagement(
 						sessionManagement -> sessionManagement

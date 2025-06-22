@@ -42,7 +42,7 @@ public class SurveyController {
 
         if (id != null) {
             Optional<Survey> surveyOptional = surveyService.get(id);
-            if (!surveyOptional.isPresent())
+            if (surveyOptional.isEmpty())
                 throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
 
             responseDTO.setMessage("Get a survey");
@@ -92,7 +92,7 @@ public class SurveyController {
             @Valid @RequestBody SurveyRequestDTO rSurveyRequestDTO,
             Authentication authentication) {
         Optional<Survey> surveyOptional = surveyService.get(id);
-        if (!surveyOptional.isPresent())
+        if (surveyOptional.isEmpty())
             throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
 
         Survey survey = surveyOptional.get();
@@ -115,7 +115,7 @@ public class SurveyController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSurvey(@PathVariable String id, Authentication authentication) {
         Optional<Survey> surveyOptional = surveyService.get(id);
-        if (!surveyOptional.isPresent())
+        if (surveyOptional.isEmpty())
             throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
 
         Survey survey = surveyOptional.get();

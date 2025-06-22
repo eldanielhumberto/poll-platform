@@ -64,7 +64,7 @@ public class AuthController {
     public ResponseEntity<?> login(@Valid @RequestBody SigninDTO signinDTO) {
         // Verify email
         Optional<User> userOptional = userService.getByEmail(signinDTO.getEmail());
-        if (!userOptional.isPresent())
+        if (userOptional.isEmpty())
             throw new RequestException("Incorrect credentials", HttpStatus.BAD_REQUEST);
 
         // Verify password
