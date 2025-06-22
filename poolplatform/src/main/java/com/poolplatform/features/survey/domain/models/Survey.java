@@ -14,6 +14,19 @@ public class Survey {
     private List<Question> questions;
     private Instant createdAt;
 
+    public Survey() {
+    }
+
+    public Survey(String id, String title, String description, User author, List<Question> questions,
+            Instant createdAt) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.author = author;
+        this.questions = questions;
+        this.createdAt = createdAt;
+    }
+
     public String getId() {
         return id;
     }

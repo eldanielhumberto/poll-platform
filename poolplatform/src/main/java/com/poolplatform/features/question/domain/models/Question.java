@@ -9,6 +9,16 @@ public class Question {
     private Survey survey;
     private User author;
 
+    public Question() {
+    }
+
+    public Question(String id, String questionText, Survey survey, User author) {
+        this.id = id;
+        this.questionText = questionText;
+        this.survey = survey;
+        this.author = author;
+    }
+
     public String getId() {
         return id;
     }
