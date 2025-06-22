@@ -1,5 +1,8 @@
 package com.poolplatform.features.question.adapters.entities;
 
+import java.util.List;
+
+import com.poolplatform.features.option.adapters.entities.OptionEntity;
 import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
 import com.poolplatform.features.user.adapters.entities.UserEntity;
 
@@ -10,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,14 +34,19 @@ public class QuestionEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity author;
 
+    @OneToMany(mappedBy = "question")
+    private List<OptionEntity> options;
+
     public QuestionEntity() {
     }
 
-    public QuestionEntity(String id, String questionText, SurveyEntity survey, UserEntity author) {
+    public QuestionEntity(String id, String questionText, SurveyEntity survey, UserEntity author,
+            List<OptionEntity> options) {
         this.id = id;
         this.questionText = questionText;
         this.survey = survey;
         this.author = author;
+        this.options = options;
     }
 
     public String getId() {
@@ -72,4 +81,11 @@ public class QuestionEntity {
         this.author = author;
     }
 
+    public List<OptionEntity> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<OptionEntity> options) {
+        this.options = options;
+    }
 }
