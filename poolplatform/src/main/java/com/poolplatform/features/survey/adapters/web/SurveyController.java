@@ -15,6 +15,7 @@ import com.poolplatform.features.user.domain.models.User;
 import jakarta.validation.Valid;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,6 +77,7 @@ public class SurveyController {
         newSurvey.setTitle(rSurveyRequestDTO.getTitle());
         newSurvey.setDescription(rSurveyRequestDTO.getDescription());
         newSurvey.setAuthor((User) authentication.getCredentials());
+        newSurvey.setQuestions(new ArrayList<>());
         newSurvey.setCreatedAt(Instant.now());
         surveyService.upsert(newSurvey);
 
