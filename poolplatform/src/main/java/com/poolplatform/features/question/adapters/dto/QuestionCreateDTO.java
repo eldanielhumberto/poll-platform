@@ -1,7 +1,15 @@
 package com.poolplatform.features.question.adapters.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class QuestionCreateDTO {
+    @NotNull
+    @NotBlank
     private String questionText;
+
+    @NotNull
+    @NotBlank
     private String surveyId;
 
     public String getQuestionText() {

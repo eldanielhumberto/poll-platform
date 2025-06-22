@@ -29,6 +29,8 @@ import com.poolplatform.features.survey.domain.SurveyService;
 import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.user.domain.models.User;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(path = "/api/questions")
 public class QuestionController {
@@ -73,7 +75,7 @@ public class QuestionController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> save(@RequestBody QuestionCreateDTO requestDTO, Authentication authentication) {
+    public ResponseEntity<?> save(@Valid @RequestBody QuestionCreateDTO requestDTO, Authentication authentication) {
         Optional<Survey> survey = surveyService.get(requestDTO.getSurveyId());
         if (!survey.isPresent())
             throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
@@ -98,7 +100,7 @@ public class QuestionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable String id, @RequestBody QuestionUpdateDTO requesDto,
+    public ResponseEntity<?> update(@PathVariable String id, @Valid @RequestBody QuestionUpdateDTO requesDto,
             Authentication authentication) {
         Optional<Question> questionOptional = questionService.get(id);
         if (!questionOptional.isPresent())
