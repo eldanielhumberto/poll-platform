@@ -12,6 +12,8 @@ import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.survey.domain.models.SurveySummary;
 import com.poolplatform.features.user.domain.models.User;
 
+import jakarta.validation.Valid;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +70,7 @@ public class SurveyController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> saveSurvey(@RequestBody SurveyRequestDTO rSurveyRequestDTO,
+    public ResponseEntity<?> saveSurvey(@Valid @RequestBody SurveyRequestDTO rSurveyRequestDTO,
             Authentication authentication) {
         Survey newSurvey = new Survey();
         newSurvey.setTitle(rSurveyRequestDTO.getTitle());
@@ -84,7 +86,8 @@ public class SurveyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateSurvey(@PathVariable String id, @RequestBody SurveyRequestDTO rSurveyRequestDTO,
+    public ResponseEntity<?> updateSurvey(@PathVariable String id,
+            @Valid @RequestBody SurveyRequestDTO rSurveyRequestDTO,
             Authentication authentication) {
         Optional<Survey> surveyOptional = surveyService.get(id);
         if (!surveyOptional.isPresent())
