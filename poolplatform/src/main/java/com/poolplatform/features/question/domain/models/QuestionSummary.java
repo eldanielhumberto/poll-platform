@@ -1,9 +1,16 @@
 package com.poolplatform.features.question.domain.models;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class QuestionSummary {
     private String id;
     private String questionText;
     private SimpleSurvey survey;
+    private List<SimpleOption> options;
+
+    public QuestionSummary() {
+    }
 
     public QuestionSummary(Question question) {
         this.id = question.getId();
@@ -14,6 +21,9 @@ public class QuestionSummary {
         survey.setTitle(question.getSurvey().getTitle());
 
         this.survey = survey;
+
+        this.options = question.getOptions().stream().map(o -> new SimpleOption(o.getId(), o.getOptionText()))
+                .collect(Collectors.toList());
     }
 
     public String getId() {
@@ -39,4 +49,13 @@ public class QuestionSummary {
     public void setSurvey(SimpleSurvey survey) {
         this.survey = survey;
     }
+
+    public List<SimpleOption> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<SimpleOption> options) {
+        this.options = options;
+    }
+
 }

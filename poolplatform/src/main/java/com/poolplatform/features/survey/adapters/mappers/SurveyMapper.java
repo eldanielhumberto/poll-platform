@@ -13,14 +13,17 @@ public class SurveyMapper {
         survey.setTitle(surveyEntity.getTitle());
         survey.setDescription(surveyEntity.getDescription());
         survey.setAuthor(UserMapper.toUser(surveyEntity.getAuthor()));
-        survey.setQuestions(surveyEntity.getQuestions().stream().map(q -> {
-            Question question = new Question();
-            question.setId(q.getId());
-            question.setQuestionText(q.getQuestionText());
-
-            return question;
-        }).toList());
         survey.setCreatedAt(surveyEntity.getCreatedAt());
+
+        if (surveyEntity.getQuestions() != null) {
+            survey.setQuestions(surveyEntity.getQuestions().stream().map(q -> {
+                Question question = new Question();
+                question.setId(q.getId());
+                question.setQuestionText(q.getQuestionText());
+
+                return question;
+            }).toList());
+        }
 
         return survey;
     }
@@ -31,15 +34,17 @@ public class SurveyMapper {
         surveyEntity.setTitle(survey.getTitle());
         surveyEntity.setDescription(survey.getDescription());
         surveyEntity.setAuthor(UserMapper.toUserEntity(survey.getAuthor()));
-        surveyEntity.setQuestions(survey.getQuestions().stream().map(q -> {
-            QuestionEntity question = new QuestionEntity();
-            question.setId(q.getId());
-            question.setQuestionText(q.getQuestionText());
-
-            return question;
-        }).toList());
-
         surveyEntity.setCreatedAt(survey.getCreatedAt());
+
+        if (survey.getQuestions() != null) {
+            surveyEntity.setQuestions(survey.getQuestions().stream().map(q -> {
+                QuestionEntity question = new QuestionEntity();
+                question.setId(q.getId());
+                question.setQuestionText(q.getQuestionText());
+
+                return question;
+            }).toList());
+        }
 
         return surveyEntity;
     }
