@@ -9,6 +9,9 @@ public class QuestionSummary {
     private SimpleSurvey survey;
     private List<SimpleOption> options;
 
+    public QuestionSummary() {
+    }
+
     public QuestionSummary(Question question) {
         this.id = question.getId();
         this.questionText = question.getQuestionText();
