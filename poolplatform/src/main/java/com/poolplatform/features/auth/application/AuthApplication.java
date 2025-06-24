@@ -28,7 +28,7 @@ public class AuthApplication implements AuthService {
     @Override
     public String generateToken(String userId) {
         Instant now = Instant.now();
-        Instant expires = now.plus(2, ChronoUnit.HOURS);
+        Instant expires = now.plus(2, ChronoUnit.DAYS);
 
         return Jwts
                 .builder()
