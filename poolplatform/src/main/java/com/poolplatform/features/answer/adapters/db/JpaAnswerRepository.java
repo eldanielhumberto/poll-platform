@@ -1,6 +1,7 @@
 package com.poolplatform.features.answer.adapters.db;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,8 +23,8 @@ public interface JpaAnswerRepository extends JpaRepository<AnswerEntity, String>
     }
 
     @Override
-    default Answer get(String id) {
-        return findById(id).map(AnswerMapper::toAnswer).get();
+    default Optional<Answer> get(String id) {
+        return findById(id).map(AnswerMapper::toAnswer);
     }
 
     @Override

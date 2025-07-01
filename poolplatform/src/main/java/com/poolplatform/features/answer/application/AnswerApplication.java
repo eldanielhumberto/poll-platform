@@ -1,6 +1,7 @@
 package com.poolplatform.features.answer.application;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class AnswerApplication implements AnswerService {
     }
 
     @Override
-    public Answer get(String id) {
+    public Optional<Answer> get(String id) {
         return answerRepository.get(id);
     }
 
