@@ -77,11 +77,7 @@ public class AnswerController {
         answer.setQuestion(question.get());
         answer.setOption(option.get());
         answer.setSurvey(survey.get());
-
-        if (authentication != null) {
-            User user = (User) authentication.getCredentials();
-            answer.setUser(user);
-        }
+        answer.setUser((User) authentication.getCredentials());
 
         Answer answerSaved = answerService.upsert(answer);
 
