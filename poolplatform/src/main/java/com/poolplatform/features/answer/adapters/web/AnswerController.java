@@ -10,9 +10,6 @@ import com.poolplatform.features.answer.adapters.mappers.AnswerMapper;
 import com.poolplatform.features.answer.domain.AnswerService;
 import com.poolplatform.features.answer.domain.models.Answer;
 import com.poolplatform.features.answer.domain.models.SimpleAnswer;
-import com.poolplatform.features.answer.domain.models.SimpleOption;
-import com.poolplatform.features.answer.domain.models.SimpleQuestion;
-import com.poolplatform.features.answer.domain.models.SimpleSurvey;
 import com.poolplatform.features.option.domain.OptionService;
 import com.poolplatform.features.option.domain.models.Option;
 import com.poolplatform.features.question.domain.QuestionService;
@@ -80,7 +77,8 @@ public class AnswerController {
         answer.setSurvey(survey.get());
 
         if (authentication != null) {
-            answer.setUser((User) authentication.getCredentials());
+            User user = (User) authentication.getCredentials();
+            answer.setUser(user);
         }
 
         Answer answerSaved = answerService.upsert(answer);
