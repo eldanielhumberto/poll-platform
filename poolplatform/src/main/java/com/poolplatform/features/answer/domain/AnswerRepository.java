@@ -16,4 +16,6 @@ public interface AnswerRepository {
     List<Answer> get(Question question);
 
     Answer upsert(Answer answer);
+
+    void remove(Answer answer);
 }

@@ -23,8 +23,7 @@ public interface JpaAnswerRepository extends JpaRepository<AnswerEntity, String>
 
     @Override
     default Answer get(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
+        return findById(id).map(AnswerMapper::toAnswer).get();
     }
 
     @Override
@@ -41,8 +40,12 @@ public interface JpaAnswerRepository extends JpaRepository<AnswerEntity, String>
 
     @Override
     default Answer upsert(Answer answer) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'upsert'");
+        return AnswerMapper.toAnswer(save(AnswerMapper.toAnswerEntity(answer)));
+    }
+
+    @Override
+    default void remove(Answer answer) {
+        delete(AnswerMapper.toAnswerEntity(answer));
     }
 
 }

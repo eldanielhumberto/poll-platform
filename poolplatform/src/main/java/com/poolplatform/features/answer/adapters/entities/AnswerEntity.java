@@ -25,15 +25,15 @@ public class AnswerEntity {
     private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "survey_id")
+    @JoinColumn(name = "survey_id", nullable = false)
     private SurveyEntity survey;
 
     @ManyToOne
-    @JoinColumn(name = "question_id")
+    @JoinColumn(name = "question_id", nullable = false)
     private QuestionEntity question;
 
     @ManyToOne
-    @JoinColumn(name = "option_id")
+    @JoinColumn(name = "option_id", nullable = false)
     private OptionEntity option;
 
     public AnswerEntity() {

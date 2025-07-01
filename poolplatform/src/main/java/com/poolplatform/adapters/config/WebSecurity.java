@@ -35,6 +35,7 @@ public class WebSecurity {
 								"/api/users/get",
 								"/api/surveys/get",
 								"/api/questions/get",
+								"/api/answers",
 								"/api/answers/get")
 						.permitAll()
 						.anyRequest().authenticated())
