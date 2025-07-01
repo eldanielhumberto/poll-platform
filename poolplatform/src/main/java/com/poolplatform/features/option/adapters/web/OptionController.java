@@ -12,6 +12,8 @@ import com.poolplatform.features.option.domain.models.Option;
 import com.poolplatform.features.question.domain.QuestionService;
 import com.poolplatform.features.question.domain.models.Question;
 
+import jakarta.validation.Valid;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,7 @@ public class OptionController {
     private OptionService optionService;
 
     @PostMapping()
-    public ResponseEntity<ResponseDTO<?>> create(@RequestBody CreateOptionDto optionDto,
+    public ResponseEntity<ResponseDTO<?>> create(@Valid @RequestBody CreateOptionDto optionDto,
             Authentication authentication) {
         Optional<Question> questionOptional = questionService.get(optionDto.getQuestionId());
         if (questionOptional.isEmpty())
@@ -56,7 +58,7 @@ public class OptionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDTO<?>> update(@PathVariable String id, @RequestBody UpdateOptionDto optionDto,
+    public ResponseEntity<ResponseDTO<?>> update(@PathVariable String id, @Valid @RequestBody UpdateOptionDto optionDto,
             Authentication authentication) {
 
         Optional<Option> optionOptional = optionService.get(id);

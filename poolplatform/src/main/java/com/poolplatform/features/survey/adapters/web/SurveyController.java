@@ -138,7 +138,7 @@ public class SurveyController {
     }
 
     @PostMapping("/reset")
-    public ResponseEntity<?> reset(@RequestBody ResetSurveyDto resetSurveyDto, Authentication authentication) {
+    public ResponseEntity<?> reset(@Valid @RequestBody ResetSurveyDto resetSurveyDto, Authentication authentication) {
         Optional<Survey> survey = surveyService.get(resetSurveyDto.getSurveyId());
         if (survey.isEmpty())
             throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);

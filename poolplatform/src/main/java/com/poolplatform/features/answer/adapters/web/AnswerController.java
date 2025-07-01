@@ -18,6 +18,8 @@ import com.poolplatform.features.survey.domain.SurveyService;
 import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.user.domain.models.User;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,7 +62,8 @@ public class AnswerController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody CreateAnswerDto createAnswerDto, Authentication authentication) {
+    public ResponseEntity<?> create(@Valid @RequestBody CreateAnswerDto createAnswerDto,
+            Authentication authentication) {
         Optional<Option> option = optionService.get(createAnswerDto.getOptionId());
         if (option.isEmpty())
             throw new RequestException("The option does not exist", HttpStatus.BAD_REQUEST);
