@@ -11,6 +11,7 @@ import com.poolplatform.features.answer.domain.AnswerService;
 import com.poolplatform.features.answer.domain.models.Answer;
 import com.poolplatform.features.question.domain.models.Question;
 import com.poolplatform.features.survey.domain.models.Survey;
+import com.poolplatform.features.user.domain.models.User;
 
 @Service
 public class AnswerApplication implements AnswerService {
@@ -28,8 +29,8 @@ public class AnswerApplication implements AnswerService {
     }
 
     @Override
-    public List<Answer> get(Survey survey) {
-        return answerRepository.get(survey);
+    public List<Answer> get(Survey survey, User user) {
+        return answerRepository.get(survey, user);
     }
 
     @Override

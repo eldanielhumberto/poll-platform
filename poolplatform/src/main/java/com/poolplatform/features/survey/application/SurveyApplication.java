@@ -40,4 +40,9 @@ public class SurveyApplication implements SurveyService {
     public void remove(Survey survey) {
         surveyRepository.remove(survey);
     }
+
+    @Override
+    public void reset(Survey survey, User user) {
+        surveyRepository.reset(survey, user);
+    }
 }
