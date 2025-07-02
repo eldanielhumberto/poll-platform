@@ -1,0 +1,107 @@
+'use client';
+
+import { BarChart3, Eye, EyeOff } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import Link from 'next/link';
+
+import Button from '@/app/components/ui/Button';
+import Input from '@/app/components/ui/Input';
+import Label from '@/app/components/ui/Label';
+
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/app/components/ui/Card';
+
+export default function LoginPage() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Aquí iría la lógica de autenticación
+    router.push('/dashboard');
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-flex items-center space-x-2">
+            <BarChart3 className="h-8 w-8 text-blue-600" />
+            <span className="text-2xl font-bold text-gray-900">
+              Pool Platform
+            </span>
+          </Link>
+        </div>
+
+        <Card className="border-0 shadow-xl p-8">
+          <CardHeader className="flex flex-col items-center text-center mb-3">
+            <CardTitle className="text-2xl">Iniciar Sesión</CardTitle>
+            <CardDescription>
+              Ingresa a tu cuenta para continuar
+            </CardDescription>
+          </CardHeader>
+          <div className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6 flex flex-col ">
+              <div className="space-y-2 flex flex-col">
+                <Label htmlFor="email">Correo electrónico</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="tu@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2 flex flex-col">
+                <Label htmlFor="password">Contraseña</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Tu contraseña"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <Button
+                    variant="ghost"
+                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4 text-gray-400" />
+                    ) : (
+                      <Eye className="h-4 w-4 text-gray-400" />
+                    )}
+                  </Button>
+                </div>
+              </div>
+
+              <Button className="text-center">Iniciar Sesión</Button>
+            </form>
+
+            <div className="text-center text-sm">
+              <span className="text-gray-500">¿No tienes una cuenta? </span>
+              <Link
+                href="/auth/register"
+                className="text-blue-600 hover:underline"
+              >
+                Regístrate
+              </Link>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}
