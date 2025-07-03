@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Link from 'next/link';
 
+import { register } from '@/app/actions/auth';
+import ErrorCard from '@/app/components/ui/Error';
 import Button from '@/app/components/ui/Button';
 import Input from '@/app/components/ui/Input';
 import Label from '@/app/components/ui/Label';
@@ -17,6 +19,7 @@ import {
 } from '@/app/components/ui/Card';
 
 export default function RegisterPage() {
+  const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -26,12 +29,22 @@ export default function RegisterPage() {
   });
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí iría la lógica de registro
-    router.push('/dashboard');
-  };
 
+    try {
+      await register(formData.name, formData.email, formData.password);
+      router.push('/dashboard');
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(
+          error.message.charAt(0).toUpperCase() + error.message.slice(1)
+        );
+      } else {
+        setError('Ocurrió un error al registrarse. Inténtalo de nuevo.');
+      }
+    }
+  };
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -49,6 +62,10 @@ export default function RegisterPage() {
           </Link>
         </div>
 
+        {/* Error Message */}
+        {error && <ErrorCard error={error} />}
+
+        {/* Registration Form */}
         <Card className="border-0 shadow-xl p-8">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Crear Cuenta</CardTitle>

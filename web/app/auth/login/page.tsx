@@ -15,17 +15,31 @@ import {
   CardHeader,
   CardTitle,
 } from '@/app/components/ui/Card';
+import { loginUser } from '@/app/actions/auth';
+import ErrorCard from '@/app/components/ui/Error';
 
 export default function LoginPage() {
+  const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí iría la lógica de autenticación
-    router.push('/dashboard');
+
+    try {
+      await loginUser(email, password);
+      router.push('/dashboard');
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(
+          error.message.charAt(0).toUpperCase() + error.message.slice(1)
+        );
+      } else {
+        setError('Ocurrió un error al iniciar sesión. Inténtalo de nuevo.');
+      }
+    }
   };
 
   return (
@@ -41,6 +55,10 @@ export default function LoginPage() {
           </Link>
         </div>
 
+        {/* Error Message */}
+        {error && <ErrorCard error={error} />}
+
+        {/* Login Form */}
         <Card className="border-0 shadow-xl p-8">
           <CardHeader className="flex flex-col items-center text-center mb-3">
             <CardTitle className="text-2xl">Iniciar Sesión</CardTitle>
@@ -58,7 +76,6 @@ export default function LoginPage() {
                   placeholder="tu@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
               </div>
 
@@ -71,7 +88,6 @@ export default function LoginPage() {
                     placeholder="Tu contraseña"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
                   />
                   <Button
                     variant="ghost"
