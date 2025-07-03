@@ -5,19 +5,19 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Link from 'next/link';
 
-import { loginUser } from '@/app/actions/auth';
+import { loginUser } from '@/actions/auth';
 
-import ErrorCard from '@/app/components/Error';
-import { Label } from '@/app/components/ui/label';
-import { Input } from '@/app/components/ui/input';
-import { Button } from '@/app/components/ui/button';
+import ErrorCard from '@/components/Error';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/app/components/ui/card';
+} from '@/components/ui/card';
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
