@@ -1,11 +1,5 @@
 import Link from 'next/link';
-import Button from './components/ui/Button';
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from './components/ui/Card';
+import { Button } from './components/ui/button';
 import {
   ArrowRight,
   BarChart3,
@@ -15,6 +9,12 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from './components/ui/card';
 
 export default function Home() {
   return (
@@ -68,10 +68,7 @@ export default function Home() {
           </p>
           <div className="flex items-center flex-col sm:flex-row gap-4 justify-center">
             <Link href="/auth/register">
-              <Button
-                size="lg"
-                className="text-lg px-8 py-3 flex items-center gap-2"
-              >
+              <Button size="lg" className="text-lg px-8 py-3">
                 Comenzar Gratis
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -103,7 +100,7 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card>
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardHeader>
                 <Zap className="h-12 w-12 text-blue-600 mb-4" />
                 <CardTitle>Creación Rápida</CardTitle>
@@ -113,7 +110,8 @@ export default function Home() {
                 </CardDescription>
               </CardHeader>
             </Card>
-            <Card>
+
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardHeader>
                 <BarChart3 className="h-12 w-12 text-green-600 mb-4" />
                 <CardTitle>Análisis en Tiempo Real</CardTitle>
@@ -124,7 +122,7 @@ export default function Home() {
               </CardHeader>
             </Card>
 
-            <Card>
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardHeader>
                 <Users className="h-12 w-12 text-purple-600 mb-4" />
                 <CardTitle>Comunidad Activa</CardTitle>
@@ -135,7 +133,7 @@ export default function Home() {
               </CardHeader>
             </Card>
 
-            <Card>
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardHeader>
                 <Shield className="h-12 w-12 text-red-600 mb-4" />
                 <CardTitle>Seguro y Privado</CardTitle>
@@ -146,7 +144,7 @@ export default function Home() {
               </CardHeader>
             </Card>
 
-            <Card>
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardHeader>
                 <Globe className="h-12 w-12 text-indigo-600 mb-4" />
                 <CardTitle>Acceso Global</CardTitle>
@@ -157,7 +155,7 @@ export default function Home() {
               </CardHeader>
             </Card>
 
-            <Card>
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardHeader>
                 <TrendingUp className="h-12 w-12 text-orange-600 mb-4" />
                 <CardTitle>Insights Avanzados</CardTitle>
@@ -230,11 +228,7 @@ export default function Home() {
             Únete a miles de usuarios que ya están creando encuestas increíbles
           </p>
           <Link href="/auth/register">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="flex items-center gap-2"
-            >
+            <Button size="lg" variant="secondary" className="text-lg px-8 py-3">
               Crear Cuenta Gratis
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>

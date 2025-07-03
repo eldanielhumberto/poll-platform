@@ -1,6 +1,7 @@
 import { Plus } from 'lucide-react';
+
+import { Button } from '../components/ui/button';
 import Navbar from '../components/Navbar';
-import Button from '../components/ui/Button';
 
 export default function DashboardPage() {
   return (
@@ -15,7 +16,7 @@ export default function DashboardPage() {
               Gestiona tus encuestas y analiza los resultados
             </p>
           </div>
-          <Button className="mt-4 sm:mt-0 flex items-center">
+          <Button className="mt-4 sm:mt-0">
             <Plus className="h-4 w-4 mr-2" />
             Nueva Encuesta
           </Button>

@@ -1,9 +1,19 @@
 'use client';
 
-import { BarChart3, Plus } from 'lucide-react';
-import Link from 'next/link';
+import { BarChart3, LogOut, Plus, Search, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import Button from './ui/Button';
+import Link from 'next/link';
+
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Button } from './ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -11,7 +21,7 @@ export default function Navbar() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <header className="border-b border-b-amber-50 bg-white/80 shadow-md sticky top-0 z-50">
+    <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center space-x-8">
           <Link href="/dashboard" className="flex items-center space-x-2">
@@ -43,17 +53,53 @@ export default function Navbar() {
 
         <div className="flex items-center space-x-4">
           <Link href="/create">
-            <Button size="md" className="hidden sm:flex items-center">
+            <Button size="sm" className="hidden sm:flex">
               <Plus className="h-4 w-4 mr-2" />
               Nueva Encuesta
             </Button>
           </Link>
 
-          <Link href="/create">
-            <Button variant="ghost" size="md">
-              Profile
-            </Button>
-          </Link>
+          <Button variant="ghost" size="sm" className="hidden sm:flex">
+            <Search className="h-4 w-4" />
+          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage
+                    src="/placeholder.svg?height=32&width=32"
+                    alt="Usuario"
+                  />
+                  <AvatarFallback>JD</AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>
+                <div className="flex items-center justify-start gap-2 p-2">
+                  <div className="flex flex-col space-y-1 leading-none">
+                    <p className="font-medium">Juan Pérez</p>
+                    <p className="w-[200px] truncate text-sm text-muted-foreground">
+                      juan@ejemplo.com
+                    </p>
+                  </div>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <Link href="/profile">
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Perfil</span>
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Cerrar sesión</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>

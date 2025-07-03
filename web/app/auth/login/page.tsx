@@ -5,18 +5,19 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Link from 'next/link';
 
-import Button from '@/app/components/ui/Button';
-import Input from '@/app/components/ui/Input';
-import Label from '@/app/components/ui/Label';
+import { loginUser } from '@/app/actions/auth';
 
+import ErrorCard from '@/app/components/Error';
+import { Label } from '@/app/components/ui/label';
+import { Input } from '@/app/components/ui/input';
+import { Button } from '@/app/components/ui/button';
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/app/components/ui/Card';
-import { loginUser } from '@/app/actions/auth';
-import ErrorCard from '@/app/components/ui/Error';
+} from '@/app/components/ui/card';
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
@@ -66,7 +67,7 @@ export default function LoginPage() {
               Ingresa a tu cuenta para continuar
             </CardDescription>
           </CardHeader>
-          <div className="space-y-6">
+          <CardContent className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-6 flex flex-col ">
               <div className="space-y-2 flex flex-col">
                 <Label htmlFor="email">Correo electrónico</Label>
@@ -115,7 +116,7 @@ export default function LoginPage() {
                 Regístrate
               </Link>
             </div>
-          </div>
+          </CardContent>
         </Card>
       </div>
     </div>

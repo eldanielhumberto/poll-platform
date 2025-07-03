@@ -3,7 +3,7 @@ import { getSession } from './app/lib/session';
 
 // Specify public and protected routes
 const protectedRoutes = ['/dashboard'];
-const publicRoutes = ['/auth/login', '/auth/register', '/'];
+const publicRoutes = ['/auth/login', '/auth/register'];
 
 export default async function middleware(request: NextRequest) {
   // Check if the request is for a protected or public route

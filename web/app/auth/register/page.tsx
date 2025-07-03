@@ -6,17 +6,17 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 import { register } from '@/app/actions/auth';
-import ErrorCard from '@/app/components/ui/Error';
-import Button from '@/app/components/ui/Button';
-import Input from '@/app/components/ui/Input';
-import Label from '@/app/components/ui/Label';
-
+import ErrorCard from '@/app/components/Error';
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/app/components/ui/Card';
+} from '@/app/components/ui/card';
+import { Label } from '@/app/components/ui/label';
+import { Input } from '@/app/components/ui/input';
+import { Button } from '@/app/components/ui/button';
 
 export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
@@ -53,7 +53,7 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="text-center">
+        <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center space-x-2">
             <BarChart3 className="h-8 w-8 text-blue-600" />
             <span className="text-2xl font-bold text-gray-900">
@@ -73,7 +73,7 @@ export default function RegisterPage() {
               Únete a Pool Platform y comienza a crear encuestas increíbles
             </CardDescription>
           </CardHeader>
-          <div className="space-y-6 flex flex-col">
+          <CardContent className="space-y-6 flex flex-col">
             <form onSubmit={handleSubmit} className="space-y-4 flex flex-col">
               <div className="space-y-2 flex flex-col">
                 <Label htmlFor="name">Nombre completo</Label>
@@ -171,7 +171,7 @@ export default function RegisterPage() {
                 Inicia sesión
               </Link>
             </div>
-          </div>
+          </CardContent>
         </Card>
       </div>
     </div>
