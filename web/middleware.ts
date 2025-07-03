@@ -24,7 +24,6 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  // Allow access to public routes
   return NextResponse.next();
 }
 
