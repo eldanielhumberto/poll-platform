@@ -10,3 +10,9 @@ export async function createSession(token: string) {
     path: '/',
   });
 }
+
+export async function getSession() {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get('session');
+  return sessionCookie ? sessionCookie.value : null;
+}
