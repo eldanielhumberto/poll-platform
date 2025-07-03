@@ -4,7 +4,7 @@ import { BarChart3, LogOut, Plus, Search, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -67,10 +67,6 @@ export default function Navbar() {
             <DropdownMenuTrigger>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage
-                    src="/placeholder.svg?height=32&width=32"
-                    alt="Usuario"
-                  />
                   <AvatarFallback>JD</AvatarFallback>
                 </Avatar>
               </Button>
