@@ -4,6 +4,7 @@ import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
 import com.poolplatform.features.user.adapters.mappers.UserMapper;
 import com.poolplatform.features.visit.adapters.entities.VisitEntity;
 import com.poolplatform.features.visit.domain.models.SimpleSurvey;
+import com.poolplatform.features.visit.domain.models.SimpleUser;
 import com.poolplatform.features.visit.domain.models.SimpleVisit;
 import com.poolplatform.features.visit.domain.models.Visit;
 
@@ -38,11 +39,11 @@ public class VisitMapper {
     public static SimpleVisit toSimpleVisit(Visit visit) {
         SimpleVisit simpleVisit = new SimpleVisit();
         simpleVisit.setSurvey(new SimpleSurvey(visit.getSurvey()));
-        simpleVisit.setVisited(visit.getVisited());
+        simpleVisit.setVisited(new SimpleUser(visit.getVisited()));
         simpleVisit.setVisitedAt(visit.getVisitedAt());
 
         if (visit.getVisitor() != null) {
-            simpleVisit.setVisitor(visit.getVisitor());
+            simpleVisit.setVisitor(new SimpleUser(visit.getVisitor()));
         }
 
         return simpleVisit;

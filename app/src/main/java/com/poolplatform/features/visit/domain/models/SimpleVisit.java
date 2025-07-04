@@ -2,27 +2,25 @@ package com.poolplatform.features.visit.domain.models;
 
 import java.time.Instant;
 
-import com.poolplatform.features.user.domain.models.User;
-
 public class SimpleVisit {
-    private User visitor;
-    private User visited;
+    private SimpleUser visitor;
+    private SimpleUser visited;
     private SimpleSurvey survey;
     private Instant visitedAt;
 
-    public User getVisitor() {
+    public SimpleUser getVisitor() {
         return visitor;
     }
 
-    public void setVisitor(User visitor) {
+    public void setVisitor(SimpleUser visitor) {
         this.visitor = visitor;
     }
 
-    public User getVisited() {
+    public SimpleUser getVisited() {
         return visited;
     }
 
-    public void setVisited(User visited) {
+    public void setVisited(SimpleUser visited) {
         this.visited = visited;
     }
 
