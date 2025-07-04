@@ -36,7 +36,9 @@ public class WebSecurity {
 								"/api/surveys/get",
 								"/api/questions/get",
 								"/api/answers/get",
-								"/api/visits")
+								"/api/visits",
+								"/swagger-ui/**",
+								"/api-docs/**")
 						.permitAll()
 						.anyRequest().authenticated())
 				.addFilterAfter(new JwtAuthorizationFilter(authService,
