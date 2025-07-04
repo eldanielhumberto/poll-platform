@@ -65,11 +65,9 @@ export default function Navbar() {
 
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback>JD</AvatarFallback>
-                </Avatar>
-              </Button>
+              <Avatar className="h-8 w-8">
+                <AvatarFallback>JD</AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>
