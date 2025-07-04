@@ -9,15 +9,8 @@ public class SurveySummary {
     private String title;
     private String description;
     private UserSummary author;
+    private int visits;
     private Instant createdAt;
-
-    public SurveySummary(Survey survey) {
-        this.id = survey.getId();
-        this.title = survey.getTitle();
-        this.description = survey.getDescription();
-        this.author = new UserSummary(survey.getAuthor());
-        this.createdAt = survey.getCreatedAt();
-    }
 
     public String getId() {
         return id;
@@ -49,6 +42,14 @@ public class SurveySummary {
 
     public void setAuthor(UserSummary author) {
         this.author = author;
+    }
+
+    public int getVisits() {
+        return visits;
+    }
+
+    public void setVisits(int visits) {
+        this.visits = visits;
     }
 
     public Instant getCreatedAt() {

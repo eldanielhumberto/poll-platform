@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PoolplatformApplication<poolplatform>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.poolplatform.PoolplatformApplication",
+            "projectName": "poolplatform",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

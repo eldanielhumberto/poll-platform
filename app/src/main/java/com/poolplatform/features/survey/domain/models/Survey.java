@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.poolplatform.features.question.domain.models.Question;
 import com.poolplatform.features.user.domain.models.User;
+import com.poolplatform.features.visit.domain.models.Visit;
 
 public class Survey {
     private String id;
@@ -12,18 +13,21 @@ public class Survey {
     private String description;
     private User author;
     private List<Question> questions;
+    private List<Visit> visits;
     private Instant createdAt;
 
     public Survey() {
     }
 
     public Survey(String id, String title, String description, User author, List<Question> questions,
+            List<Visit> visits,
             Instant createdAt) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.author = author;
         this.questions = questions;
+        this.visits = visits;
         this.createdAt = createdAt;
     }
 
@@ -65,6 +69,14 @@ public class Survey {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public List<Visit> getVisits() {
+        return visits;
+    }
+
+    public void setVisits(List<Visit> visits) {
+        this.visits = visits;
     }
 
     public Instant getCreatedAt() {

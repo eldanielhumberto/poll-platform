@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import com.poolplatform.features.question.adapters.entities.QuestionEntity;
 import com.poolplatform.features.user.adapters.entities.UserEntity;
+import com.poolplatform.features.visit.adapters.entities.VisitEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +39,9 @@ public class SurveyEntity {
     @OneToMany(mappedBy = "survey")
     private List<QuestionEntity> questions;
 
+    @OneToMany(mappedBy = "survey")
+    private List<VisitEntity> visits;
+
     @CreatedDate
     private Instant createdAt;
 
@@ -45,12 +49,14 @@ public class SurveyEntity {
     }
 
     public SurveyEntity(String id, String title, String description, UserEntity author, List<QuestionEntity> questions,
+            List<VisitEntity> visits,
             Instant createdAt) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.author = author;
         this.questions = questions;
+        this.visits = visits;
         this.createdAt = createdAt;
     }
 
@@ -92,6 +98,14 @@ public class SurveyEntity {
 
     public List<QuestionEntity> getQuestions() {
         return questions;
+    }
+
+    public List<VisitEntity> getVisits() {
+        return visits;
+    }
+
+    public void setVisits(List<VisitEntity> visits) {
+        this.visits = visits;
     }
 
     public void setQuestions(List<QuestionEntity> questions) {

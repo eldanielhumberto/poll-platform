@@ -10,6 +10,7 @@ import com.poolplatform.features.answer.domain.AnswerService;
 import com.poolplatform.features.answer.domain.models.Answer;
 import com.poolplatform.features.survey.adapters.dto.ResetSurveyDto;
 import com.poolplatform.features.survey.adapters.dto.SurveyRequestDTO;
+import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
 import com.poolplatform.features.survey.domain.SurveyService;
 import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.survey.domain.models.SurveySummary;
@@ -51,8 +52,9 @@ public class SurveyController {
             if (surveyOptional.isEmpty())
                 throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
 
+            Survey survey = surveyOptional.get();
             responseDTO.setMessage("Get a survey");
-            responseDTO.setData(new SurveySummary(surveyOptional.get()));
+            responseDTO.setData(SurveyMapper.toSurveySummary(survey));
 
             return ResponseEntity.ok(responseDTO);
         }
@@ -60,7 +62,7 @@ public class SurveyController {
         List<Survey> surveys = surveyService.get();
 
         responseDTO.setMessage("Get all surveys");
-        responseDTO.setData(surveys.stream().map(SurveySummary::new).toList());
+        responseDTO.setData(surveys.stream().map(SurveyMapper::toSurveySummary).toList());
 
         return ResponseEntity.ok(responseDTO);
     }
@@ -71,7 +73,7 @@ public class SurveyController {
 
         ResponseDTO<List<SurveySummary>> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("Your surveys");
-        responseDTO.setData(surveys.stream().map(SurveySummary::new).toList());
+        responseDTO.setData(surveys.stream().map(SurveyMapper::toSurveySummary).toList());
 
         return ResponseEntity.ok(responseDTO);
     }

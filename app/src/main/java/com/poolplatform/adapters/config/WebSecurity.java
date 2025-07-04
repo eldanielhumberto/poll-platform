@@ -35,7 +35,8 @@ public class WebSecurity {
 								"/api/users/get",
 								"/api/surveys/get",
 								"/api/questions/get",
-								"/api/answers/get")
+								"/api/answers/get",
+								"/api/visits")
 						.permitAll()
 						.anyRequest().authenticated())
 				.addFilterAfter(new JwtAuthorizationFilter(authService,
