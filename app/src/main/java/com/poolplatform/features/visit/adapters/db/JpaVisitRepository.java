@@ -24,8 +24,7 @@ public interface JpaVisitRepository extends JpaRepository<VisitEntity, String>, 
 
     @Override
     default Visit createVisit(Visit visit) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createVisit'");
+        return VisitMapper.toVisit(save(VisitMapper.toVisitEntity(visit)));
     }
 
     List<VisitEntity> findBySurvey(SurveyEntity survey);

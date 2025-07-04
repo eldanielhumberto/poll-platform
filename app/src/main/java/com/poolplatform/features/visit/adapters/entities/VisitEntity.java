@@ -27,7 +27,7 @@ public class VisitEntity {
     private SurveyEntity survey;
 
     @ManyToOne
-    @JoinColumn(name = "visitor_id")
+    @JoinColumn(name = "visitor_id", nullable = true)
     private UserEntity visitor;
 
     @ManyToOne
