@@ -4,6 +4,8 @@ import { BarChart3, LogOut, Plus, Search, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
+import { useAuth } from '@/hooks/useAuth';
+
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 import {
@@ -14,9 +16,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { logout } from '@/actions/auth';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { user } = useAuth();
 
   const isActive = (path: string) => pathname === path;
 
@@ -64,18 +68,18 @@ export default function Navbar() {
           </Button>
 
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="hover:cursor-pointer outline-none">
               <Avatar className="h-8 w-8">
-                <AvatarFallback>JD</AvatarFallback>
+                <AvatarFallback>{user?.username.at(0)}</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>
                 <div className="flex items-center justify-start gap-2 p-2">
                   <div className="flex flex-col space-y-1 leading-none">
-                    <p className="font-medium">Juan Pérez</p>
+                    <p className="font-medium">{user?.username}</p>
                     <p className="w-[200px] truncate text-sm text-muted-foreground">
-                      juan@ejemplo.com
+                      {user?.email}
                     </p>
                   </div>
                 </div>
@@ -88,7 +92,7 @@ export default function Navbar() {
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Cerrar sesión</span>
               </DropdownMenuItem>

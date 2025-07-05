@@ -1,6 +1,7 @@
 'use server';
 
-import { createSession } from '../lib/session';
+import { redirect } from 'next/navigation';
+import { createSession, deleteSession } from '../lib/session';
 
 export async function loginUser(email: string, password: string) {
   const response = await fetch('http://localhost:8080/api/auth/login', {
@@ -48,4 +49,9 @@ export async function register(
   }
 
   await createSession(data.token);
+}
+
+export async function logout() {
+  await deleteSession();
+  return redirect('/');
 }

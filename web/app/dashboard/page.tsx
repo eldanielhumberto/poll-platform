@@ -2,6 +2,7 @@ import { BarChart3, Calendar, Eye, MoreHorizontal, Plus } from 'lucide-react';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 
+import { getUserSurveys } from '@/lib/api/surveys';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import {
@@ -17,7 +18,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { getUserSurveys } from '@/lib/api/surveys';
 
 export default async function DashboardPage() {
   const surveys = await getUserSurveys();
