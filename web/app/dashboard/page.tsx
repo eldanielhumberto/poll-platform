@@ -1,12 +1,6 @@
+import { BarChart3, Calendar, Eye, MoreHorizontal, Plus } from 'lucide-react';
+import dayjs from 'dayjs';
 import Link from 'next/link';
-import {
-  BarChart3,
-  Calendar,
-  Eye,
-  MoreHorizontal,
-  Plus,
-  Users,
-} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
@@ -23,47 +17,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { getUserSurveys } from '@/lib/api/surveys';
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const surveys = await getUserSurveys();
+
   const stats = [
     {
       title: 'Total de Encuestas',
-      value: '12',
+      value: surveys.length,
       icon: BarChart3,
       color: 'text-blue-600',
     },
     {
       title: 'Vistas Totales',
-      value: '5,678',
+      value: surveys.reduce((acc, survey) => acc + survey.visits, 0),
       icon: Eye,
       color: 'text-purple-600',
-    },
-  ];
-
-  const surveys = [
-    {
-      id: 1,
-      title: 'Satisfacción del Cliente 2024',
-      description: 'Encuesta para medir la satisfacción de nuestros clientes',
-      responses: 156,
-      createdAt: '2024-01-15',
-      views: 324,
-    },
-    {
-      id: 2,
-      title: 'Feedback del Producto',
-      description: 'Recopilación de opiniones sobre nuestro nuevo producto',
-      responses: 89,
-      createdAt: '2024-01-10',
-      views: 198,
-    },
-    {
-      id: 3,
-      title: 'Encuesta de Empleados',
-      description: 'Evaluación del clima laboral interno',
-      responses: 45,
-      createdAt: '2024-01-08',
-      views: 67,
     },
   ];
 
@@ -135,18 +105,14 @@ export default function DashboardPage() {
                     </p>
                     <div className="flex items-center space-x-6 text-sm text-gray-500">
                       <div className="flex items-center space-x-1">
-                        <Users className="h-4 w-4" />
-                        <span>{survey.responses} respuestas</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
                         <Eye className="h-4 w-4" />
-                        <span>{survey.views} vistas</span>
+                        <span>{survey.visits} vistas</span>
                       </div>
                       <div className="flex items-center space-x-1">
                         <Calendar className="h-4 w-4" />
                         <span>
                           Creada el{' '}
-                          {new Date(survey.createdAt).toLocaleDateString()}
+                          {dayjs(survey.createdAt).format('DD MMMM YYYY')}
                         </span>
                       </div>
                     </div>
