@@ -2,6 +2,8 @@
 
 import { redirect } from 'next/navigation';
 import { createSession, deleteSession } from '../lib/session';
+import { signin, signup } from '@/lib/api/auth';
+import { ERROR_MESSAGES } from '@/constants/messages';
 
 export async function loginUser(
   _prevState: unknown,
@@ -12,28 +14,18 @@ export async function loginUser(
   const email = formData.get('email')?.toString();
   const password = formData.get('password')?.toString();
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-    {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  if (!email || !password) return { error: ERROR_MESSAGES.REQUIRED_FIELDS };
 
-  const data = await response.json();
+  try {
+    const { data, error } = await signin(email, password);
+    if (error) return { error };
 
-  if (!response.ok) {
-    return {
-      error: Array.isArray(data.error)
-        ? `The ${data.error[0].field} ${data.error[0].defaultMessage}`
-        : data.error || 'Error desconocido al iniciar sesión.',
-    };
+    await createSession(data);
+  } catch (error) {
+    console.log(error);
+    return { error: ERROR_MESSAGES.GENERIC };
   }
 
-  await createSession(data.token);
   redirect('/dashboard');
 }
 
@@ -45,25 +37,19 @@ export async function register(
   const email = formData.get('email')?.toString();
   const password = formData.get('password')?.toString();
 
-  const response = await fetch('http://localhost:8080/api/auth/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ username, email, password }),
-  });
+  if (!username || !email || !password)
+    return { error: ERROR_MESSAGES.REQUIRED_FIELDS };
 
-  const data = await response.json();
+  try {
+    const { data, error } = await signup(username, email, password);
+    if (error) return { error };
 
-  if (!response.ok) {
-    return {
-      error: Array.isArray(data.error)
-        ? `The ${data.error[0].field} ${data.error[0].defaultMessage}`
-        : data.error || 'Error desconocido al registrarse.',
-    };
+    await createSession(data);
+  } catch (error) {
+    console.log(error);
+    return { error: ERROR_MESSAGES.GENERIC };
   }
 
-  await createSession(data.token);
   redirect('/dashboard');
 }
 

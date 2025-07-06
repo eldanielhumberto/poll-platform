@@ -15,11 +15,11 @@ import {
 } from '@/components/ui/card';
 
 export default async function DashboardPage() {
-  const surveys = await getUserSurveys();
+  const { data } = await getUserSurveys();
 
   // Calculate total visits and count
-  const surveysVisits = surveys.reduce((acc, survey) => acc + survey.visits, 0);
-  const surveysCount = surveys.length;
+  const surveysVisits = data.reduce((acc, survey) => acc + survey.visits, 0);
+  const surveysCount = data.length;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -56,7 +56,7 @@ export default async function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <SurveysList surveys={surveys} />
+            <SurveysList surveys={data} />
           </CardContent>
         </Card>
       </main>

@@ -1,7 +1,8 @@
 import { Survey } from '@/interfaces/Survey';
 import { getSession } from '../session';
+import { ServerResponse } from '@/interfaces/ServerResponse';
 
-export async function getUserSurveys(): Promise<Survey[]> {
+export async function getUserSurveys(): Promise<ServerResponse<Survey[]>> {
   const session = await getSession();
   if (!session) throw new Error('No session found');
 
@@ -14,9 +15,16 @@ export async function getUserSurveys(): Promise<Survey[]> {
     }
   );
 
-  // TODO: Manejar mejor los errores, puedo retornar un objeto con error como { error: '...' }
-  if (!response.ok) throw new Error('Failed to fetch surveys');
-
   const data = await response.json();
-  return data.data;
+
+  if (!response.ok) {
+    console.log(data);
+    return {
+      message: 'Get surveys',
+      error: 'Failed to fetch surveys',
+      data: [],
+    };
+  }
+
+  return { message: data.message, data: data.data, error: data.error };
 }

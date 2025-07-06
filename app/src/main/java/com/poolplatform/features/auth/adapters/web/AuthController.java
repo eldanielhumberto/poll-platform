@@ -1,7 +1,5 @@
 package com.poolplatform.features.auth.adapters.web;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.poolplatform.adapters.dto.ResponseDTO;
 import com.poolplatform.domain.exceptions.RequestException;
 import com.poolplatform.features.auth.adapters.dto.SigninDTO;
 import com.poolplatform.features.auth.adapters.dto.SignupDTO;
@@ -53,9 +52,9 @@ public class AuthController {
         String token = authService.generateToken(user.getId());
 
         // Set response
-        Map<String, Object> response = new HashMap<>();
-        response.put("token", token);
-        response.put("user", new UserSummary(user));
+        ResponseDTO<String> response = new ResponseDTO<>();
+        response.setMessage("Sign up");
+        response.setData(token);
 
         return ResponseEntity.ok(response);
     }
@@ -77,9 +76,9 @@ public class AuthController {
         String token = authService.generateToken(user.getId());
 
         // Set response
-        Map<String, Object> response = new HashMap<>();
-        response.put("token", token);
-        response.put("user", new UserSummary(user));
+        ResponseDTO<String> response = new ResponseDTO<>();
+        response.setMessage("Sign in");
+        response.setData(token);
 
         return ResponseEntity.ok(response);
     }
