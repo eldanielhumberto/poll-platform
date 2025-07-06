@@ -3,34 +3,48 @@
 import { redirect } from 'next/navigation';
 import { createSession, deleteSession } from '../lib/session';
 
-export async function loginUser(email: string, password: string) {
-  const response = await fetch('http://localhost:8080/api/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }),
-  });
+export async function loginUser(
+  _prevState: unknown,
+  formData: FormData
+): Promise<{
+  error?: string;
+}> {
+  const email = formData.get('email')?.toString();
+  const password = formData.get('password')?.toString();
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
 
   const data = await response.json();
 
-  // TODO: Manejar mejor los errores, puedo retornar un objeto con error como { error: '...' }
   if (!response.ok) {
-    throw new Error(
-      Array.isArray(data.error)
+    return {
+      error: Array.isArray(data.error)
         ? `The ${data.error[0].field} ${data.error[0].defaultMessage}`
-        : data.error || 'Error desconocido al iniciar sesión.'
-    );
+        : data.error || 'Error desconocido al iniciar sesión.',
+    };
   }
 
   await createSession(data.token);
+  redirect('/dashboard');
 }
 
 export async function register(
-  username: string,
-  email: string,
-  password: string
-) {
+  _prevState: unknown,
+  formData: FormData
+): Promise<{ error?: string }> {
+  const username = formData.get('username')?.toString();
+  const email = formData.get('email')?.toString();
+  const password = formData.get('password')?.toString();
+
   const response = await fetch('http://localhost:8080/api/auth/signup', {
     method: 'POST',
     headers: {
@@ -41,16 +55,16 @@ export async function register(
 
   const data = await response.json();
 
-  // TODO: Manejar mejor los errores, puedo retornar un objeto con error como { error: '...' }
   if (!response.ok) {
-    throw new Error(
-      Array.isArray(data.error)
+    return {
+      error: Array.isArray(data.error)
         ? `The ${data.error[0].field} ${data.error[0].defaultMessage}`
-        : data.error || 'Error desconocido al registrarse.'
-    );
+        : data.error || 'Error desconocido al registrarse.',
+    };
   }
 
   await createSession(data.token);
+  redirect('/dashboard');
 }
 
 export async function logout() {

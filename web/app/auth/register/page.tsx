@@ -1,8 +1,7 @@
 'use client';
 
 import { Eye, EyeOff, BarChart3 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useActionState, useState } from 'react';
 import Link from 'next/link';
 
 import { register } from '@/actions/auth';
@@ -19,7 +18,8 @@ import {
 } from '@/components/ui/card';
 
 export default function RegisterPage() {
-  const [error, setError] = useState<string | null>(null);
+  const [state, formAction, pending] = useActionState(register, { error: '' });
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -27,24 +27,7 @@ export default function RegisterPage() {
     password: '',
     confirmPassword: '',
   });
-  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      await register(formData.name, formData.email, formData.password);
-      router.push('/dashboard');
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(
-          error.message.charAt(0).toUpperCase() + error.message.slice(1)
-        );
-      } else {
-        setError('Ocurrió un error al registrarse. Inténtalo de nuevo.');
-      }
-    }
-  };
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -63,7 +46,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Error Message */}
-        {error && <ErrorCard error={error} />}
+        {state.error && <ErrorCard error={state.error} />}
 
         {/* Registration Form */}
         <Card className="border-0 shadow-xl p-8">
@@ -74,11 +57,12 @@ export default function RegisterPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6 flex flex-col">
-            <form onSubmit={handleSubmit} className="space-y-4 flex flex-col">
+            <form action={formAction} className="space-y-4 flex flex-col">
               <div className="space-y-2 flex flex-col">
                 <Label htmlFor="name">Nombre completo</Label>
                 <Input
                   id="name"
+                  name="username"
                   type="text"
                   placeholder="Tu nombre completo"
                   value={formData.name}
@@ -92,6 +76,7 @@ export default function RegisterPage() {
                 <Input
                   id="email"
                   type="email"
+                  name="email"
                   placeholder="tu@email.com"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
@@ -104,6 +89,7 @@ export default function RegisterPage() {
                 <div className="relative">
                   <Input
                     id="password"
+                    name="password"
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Mínimo 8 caracteres"
                     value={formData.password}
@@ -157,7 +143,7 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full">
+              <Button type="submit" disabled={pending} className="w-full">
                 Crear Cuenta
               </Button>
             </form>
