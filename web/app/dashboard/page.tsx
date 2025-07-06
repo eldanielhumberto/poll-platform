@@ -1,6 +1,7 @@
-import { BarChart3, Calendar, Eye, MoreHorizontal, Plus } from 'lucide-react';
-import dayjs from 'dayjs';
-import Link from 'next/link';
+import { Plus } from 'lucide-react';
+
+import SurveysList from './_components/surveys/SurveysList';
+import StatsList from './_components/stats/StatsList';
 
 import { getUserSurveys } from '@/lib/api/surveys';
 import { Button } from '@/components/ui/button';
@@ -12,30 +13,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
 export default async function DashboardPage() {
   const surveys = await getUserSurveys();
 
-  const stats = [
-    {
-      title: 'Total de Encuestas',
-      value: surveys.length,
-      icon: BarChart3,
-      color: 'text-blue-600',
-    },
-    {
-      title: 'Vistas Totales',
-      value: surveys.reduce((acc, survey) => acc + survey.visits, 0),
-      icon: Eye,
-      color: 'text-purple-600',
-    },
-  ];
+  // Calculate total visits and count
+  const surveysVisits = surveys.reduce((acc, survey) => acc + survey.visits, 0);
+  const surveysCount = surveys.length;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -57,23 +41,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <Card key={index} className="border-0 shadow-sm">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600">
-                  {stat.title}
-                </CardTitle>
-                <stat.icon className={`h-4 w-4 ${stat.color}`} />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-gray-900">
-                  {stat.value}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <StatsList surveysCount={surveysCount} surveysVisits={surveysVisits} />
 
         {/* Surveys Section */}
         <Card className="border-0 shadow-sm">
@@ -88,62 +56,7 @@ export default async function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {surveys.map((survey) => (
-                <div
-                  key={survey.id}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="font-semibold text-gray-900">
-                        {survey.title}
-                      </h3>
-                    </div>
-                    <p className="text-gray-600 text-sm mb-3">
-                      {survey.description}
-                    </p>
-                    <div className="flex items-center space-x-6 text-sm text-gray-500">
-                      <div className="flex items-center space-x-1">
-                        <Eye className="h-4 w-4" />
-                        <span>{survey.visits} vistas</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>
-                          Creada el{' '}
-                          {dayjs(survey.createdAt).format('DD MMMM YYYY')}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Link href={`/my-survey/${survey.id}`}>
-                      <Button variant="outline" size="sm">
-                        Ver Resultados
-                      </Button>
-                    </Link>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <Link href={`/edit-survey/${survey.id}`}>
-                          <DropdownMenuItem>Editar</DropdownMenuItem>
-                        </Link>
-                        <DropdownMenuItem>Duplicar</DropdownMenuItem>
-                        <DropdownMenuItem>Compartir</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          Eliminar
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <SurveysList surveys={surveys} />
           </CardContent>
         </Card>
       </main>

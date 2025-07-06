@@ -14,6 +14,7 @@ export async function getUserSurveys(): Promise<Survey[]> {
     }
   );
 
+  // TODO: Manejar mejor los errores, puedo retornar un objeto con error como { error: '...' }
   if (!response.ok) throw new Error('Failed to fetch surveys');
 
   const data = await response.json();

@@ -14,6 +14,7 @@ export async function loginUser(email: string, password: string) {
 
   const data = await response.json();
 
+  // TODO: Manejar mejor los errores, puedo retornar un objeto con error como { error: '...' }
   if (!response.ok) {
     throw new Error(
       Array.isArray(data.error)
@@ -40,6 +41,7 @@ export async function register(
 
   const data = await response.json();
 
+  // TODO: Manejar mejor los errores, puedo retornar un objeto con error como { error: '...' }
   if (!response.ok) {
     throw new Error(
       Array.isArray(data.error)

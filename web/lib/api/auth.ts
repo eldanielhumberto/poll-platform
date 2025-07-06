@@ -14,6 +14,7 @@ export async function getUser(): Promise<User | null> {
     }
   );
 
+  // TODO: Manejar mejor los errores, puedo retornar un objeto con error como { error: '...' }
   if (!response.ok) throw new Error('Failed to fetch user profile');
 
   const data = await response.json();
