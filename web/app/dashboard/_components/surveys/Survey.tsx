@@ -2,8 +2,9 @@ import { Calendar, Eye, MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 
-import { Button } from '@/components/ui/button';
 import { Survey as ISurvey } from '@/interfaces/Survey';
+
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,7 +53,6 @@ export default function Survey({
             <Link href={`/edit-survey/${id}`}>
               <DropdownMenuItem>Editar</DropdownMenuItem>
             </Link>
-            <DropdownMenuItem>Duplicar</DropdownMenuItem>
             <DropdownMenuItem>Compartir</DropdownMenuItem>
             <DropdownMenuItem className="text-red-600">
               Eliminar
