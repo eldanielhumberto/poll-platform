@@ -1,11 +1,15 @@
 import { Plus } from 'lucide-react';
+import { Suspense } from 'react';
+
+import { getUserSurveys } from '@/lib/api/surveys';
 
 import SurveysList from './_components/surveys/SurveysList';
 import StatsList from './_components/stats/StatsList';
 
-import { getUserSurveys } from '@/lib/api/surveys';
-import { Button } from '@/components/ui/button';
+import StatsLoading from './_components/stats/StatsLoading';
 import Navbar from '@/components/Navbar';
+
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -14,12 +18,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-export default async function DashboardPage() {
-  const { data } = await getUserSurveys();
-
-  // Calculate total visits and count
-  const surveysVisits = data.reduce((acc, survey) => acc + survey.visits, 0);
-  const surveysCount = data.length;
+export default function DashboardPage() {
+  const surveysData = getUserSurveys();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -41,7 +41,9 @@ export default async function DashboardPage() {
         </div>
 
         {/* Stats Cards */}
-        <StatsList surveysCount={surveysCount} surveysVisits={surveysVisits} />
+        <Suspense fallback={<StatsLoading />}>
+          <StatsList surveysData={surveysData} />
+        </Suspense>
 
         {/* Surveys Section */}
         <Card className="border-0 shadow-sm">
@@ -56,7 +58,9 @@ export default async function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <SurveysList surveys={data} />
+            <Suspense fallback={<h1>Loading...</h1>}>
+              <SurveysList surveysData={surveysData} />
+            </Suspense>
           </CardContent>
         </Card>
       </main>

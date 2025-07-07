@@ -1,11 +1,18 @@
+'use client';
+
+import { ServerResponse } from '@/interfaces/ServerResponse';
 import { Survey as ISurvey } from '@/interfaces/Survey';
+import { use } from 'react';
+
 import Survey from './Survey';
 
 interface Props {
-  surveys: ISurvey[];
+  surveysData: Promise<ServerResponse<ISurvey[]>>;
 }
 
-export default function SurveysList({ surveys }: Props) {
+export default function SurveysList({ surveysData }: Props) {
+  const { data: surveys } = use(surveysData);
+
   return (
     <div className="space-y-4">
       {surveys.map((survey) => (

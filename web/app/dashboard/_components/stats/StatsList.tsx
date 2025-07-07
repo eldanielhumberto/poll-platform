@@ -1,12 +1,21 @@
+'use client';
+
 import { BarChart3, Eye } from 'lucide-react';
+import { ServerResponse } from '@/interfaces/ServerResponse';
+import { Survey } from '@/interfaces/Survey';
+import { use } from 'react';
 import Stat from './Stat';
 
 interface Props {
-  surveysCount: number;
-  surveysVisits: number;
+  surveysData: Promise<ServerResponse<Survey[]>>;
 }
 
-export default function StatsList({ surveysCount, surveysVisits }: Props) {
+export default function StatsList({ surveysData }: Props) {
+  const { data } = use(surveysData);
+
+  const surveysVisits = data.reduce((acc, survey) => acc + survey.visits, 0);
+  const surveysCount = data.length;
+
   const stats = [
     {
       title: 'Total de Encuestas',
