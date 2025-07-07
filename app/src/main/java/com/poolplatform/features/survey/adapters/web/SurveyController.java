@@ -15,6 +15,8 @@ import com.poolplatform.features.survey.domain.SurveyService;
 import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.survey.domain.models.SurveySummary;
 import com.poolplatform.features.user.domain.models.User;
+import com.poolplatform.features.visit.domain.VisitService;
+import com.poolplatform.features.visit.domain.models.Visit;
 
 import jakarta.validation.Valid;
 
@@ -43,16 +45,35 @@ public class SurveyController {
     @Autowired
     private AnswerService answerService;
 
+    @Autowired
+    private VisitService visitService;
+
     @GetMapping("/get")
-    public ResponseEntity<?> getSurveys(@RequestParam(required = false) String id) {
+    public ResponseEntity<?> getSurveys(@RequestParam(required = false) String id, Authentication authentication) {
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
+        // Search survey with "id"
         if (id != null) {
             Optional<Survey> surveyOptional = surveyService.get(id);
             if (surveyOptional.isEmpty())
                 throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
 
             Survey survey = surveyOptional.get();
+
+            // Create a visit
+            if (authentication != null && !authentication.getPrincipal().equals(survey.getAuthor().getId())) {
+                User user = (User) authentication.getCredentials();
+
+                Visit visit = new Visit();
+                visit.setSurvey(survey);
+                visit.setVisited(survey.getAuthor());
+                visit.setVisitor(user);
+                visit.setVisitedAt(Instant.now());
+
+                visitService.createVisit(visit);
+                System.out.println(authentication.getCredentials());
+            }
+
             responseDTO.setMessage("Get a survey");
             responseDTO.setData(SurveyMapper.toSurveySummary(survey));
 
