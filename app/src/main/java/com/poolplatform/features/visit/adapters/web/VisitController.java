@@ -7,6 +7,7 @@ import com.poolplatform.adapters.dto.ResponseDTO;
 import com.poolplatform.domain.exceptions.RequestException;
 import com.poolplatform.features.survey.domain.SurveyService;
 import com.poolplatform.features.survey.domain.models.Survey;
+import com.poolplatform.features.user.domain.UserService;
 import com.poolplatform.features.user.domain.models.User;
 import com.poolplatform.features.visit.adapters.dto.CreateVisitDto;
 import com.poolplatform.features.visit.adapters.mappers.VisitMapper;
@@ -37,12 +38,31 @@ public class VisitController {
     @Autowired
     private SurveyService surveyService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping()
-    public ResponseEntity<?> getVisits(@RequestParam String surveyId) {
+    public ResponseEntity<?> getVisits(@RequestParam String surveyId, @RequestParam(required = false) String userId) {
+
         Optional<Survey> surveyOptional = surveyService.get(surveyId);
         if (surveyOptional.isEmpty())
             throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
 
+        // Get visits if user is present in the params
+        if (userId != null) {
+            Optional<User> userOptional = userService.getById(userId);
+            if (userOptional.isPresent()) {
+                List<Visit> visits = visitService.get(userOptional.get(), surveyOptional.get());
+
+                ResponseDTO<List<SimpleVisit>> responseDTO = new ResponseDTO<>();
+                responseDTO.setMessage("Get survey visits");
+                responseDTO.setData(visits.stream().map(VisitMapper::toSimpleVisit).collect(Collectors.toList()));
+
+                return ResponseEntity.ok(responseDTO);
+            }
+        }
+
+        // Get visits for surveys
         Survey survey = surveyOptional.get();
         List<Visit> visits = visitService.getSurveyVisits(survey);
 

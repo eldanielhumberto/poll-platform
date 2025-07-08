@@ -16,7 +16,6 @@ import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.survey.domain.models.SurveySummary;
 import com.poolplatform.features.user.domain.models.User;
 import com.poolplatform.features.visit.domain.VisitService;
-import com.poolplatform.features.visit.domain.models.Visit;
 
 import jakarta.validation.Valid;
 
@@ -61,18 +60,7 @@ public class SurveyController {
             Survey survey = surveyOptional.get();
 
             // Create a visit
-            if (authentication != null && !authentication.getPrincipal().equals(survey.getAuthor().getId())) {
-                User user = (User) authentication.getCredentials();
-
-                Visit visit = new Visit();
-                visit.setSurvey(survey);
-                visit.setVisited(survey.getAuthor());
-                visit.setVisitor(user);
-                visit.setVisitedAt(Instant.now());
-
-                visitService.createVisit(visit);
-                System.out.println(authentication.getCredentials());
-            }
+            visitService.registerVisitIfAllowed(authentication, survey);
 
             responseDTO.setMessage("Get a survey");
             responseDTO.setData(SurveyMapper.toSurveySummary(survey));
@@ -80,6 +68,7 @@ public class SurveyController {
             return ResponseEntity.ok(responseDTO);
         }
 
+        // Get all surveys
         List<Survey> surveys = surveyService.get();
 
         responseDTO.setMessage("Get all surveys");
