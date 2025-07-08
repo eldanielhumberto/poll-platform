@@ -5,6 +5,7 @@ export interface Survey {
   title: string;
   description: string;
   visits: number;
+  answers: number;
   author: User;
   createdAt: string;
 }

@@ -23,6 +23,7 @@ export default function SurveysList({ surveysData }: Props) {
           visits={survey.visits}
           createdAt={survey.createdAt}
           author={survey.author}
+          answers={survey.answers}
           id={survey.id}
         />
       ))}

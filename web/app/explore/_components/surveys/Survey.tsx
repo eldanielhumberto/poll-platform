@@ -1,4 +1,4 @@
-import { Clock } from 'lucide-react';
+import { Clock, Users } from 'lucide-react';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 
@@ -21,6 +21,7 @@ export default function Survey({
   description,
   author,
   createdAt,
+  answers,
 }: ISurvey) {
   return (
     <Card className="border-0 shadow-sm hover:shadow-md transition-shadow">
@@ -56,10 +57,10 @@ export default function Survey({
           </div>
         </div>
         <div className="flex items-center justify-between">
-          {/* <div className="flex items-center text-sm text-gray-600">
-            <Eye className="h-4 w-4 mr-1" />
-            {visits}
-          </div> */}
+          <div className="flex items-center text-sm text-gray-600">
+            <Users className="h-4 w-4 mr-1" />
+            {answers.toLocaleString()}
+          </div>
           <Link href={`/survey/${id}`}>
             <Button size="sm" variant="outline">
               Ver Encuesta

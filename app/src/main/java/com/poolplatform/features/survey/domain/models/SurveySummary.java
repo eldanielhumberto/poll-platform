@@ -10,6 +10,7 @@ public class SurveySummary {
     private String description;
     private UserSummary author;
     private int visits;
+    private int answers;
     private Instant createdAt;
 
     public String getId() {
@@ -50,6 +51,14 @@ public class SurveySummary {
 
     public void setVisits(int visits) {
         this.visits = visits;
+    }
+
+    public int getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(int answers) {
+        this.answers = answers;
     }
 
     public Instant getCreatedAt() {

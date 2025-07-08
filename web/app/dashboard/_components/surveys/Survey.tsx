@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Eye, MoreHorizontal } from 'lucide-react';
+import { Calendar, Eye, MoreHorizontal, Users } from 'lucide-react';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 
@@ -21,6 +21,7 @@ export default function Survey({
   description,
   visits,
   createdAt,
+  answers,
   id,
 }: ISurvey) {
   return (
@@ -31,6 +32,10 @@ export default function Survey({
         </div>
         <p className="text-gray-600 text-sm mb-3">{description}</p>
         <div className="flex items-center space-x-6 text-sm text-gray-500">
+          <div className="flex items-center space-x-1">
+            <Users className="h-4 w-4" />
+            <span>{answers} respuestas</span>
+          </div>
           <div className="flex items-center space-x-1">
             <Eye className="h-4 w-4" />
             <span>{visits} vistas</span>

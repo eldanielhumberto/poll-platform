@@ -114,6 +114,7 @@ public class SurveyMapper {
         surveySummary.setDescription(survey.getDescription());
         surveySummary.setAuthor(new UserSummary(survey.getAuthor()));
         surveySummary.setVisits(survey.getVisits().size());
+        surveySummary.setAnswers(survey.getAnswers().size());
         surveySummary.setCreatedAt(survey.getCreatedAt());
 
         return surveySummary;
