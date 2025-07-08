@@ -4,6 +4,9 @@ import './globals.css';
 import AuthProvider from '@/context/AuthContext';
 import { getUser } from '@/lib/api/auth';
 
+import relativeTime from 'dayjs/plugin/relativeTime';
+import dayjs from 'dayjs';
+
 const inter = Inter({
   subsets: ['latin'],
 });
@@ -13,6 +16,8 @@ export const metadata: Metadata = {
   description:
     'Diseña, comparte y analiza encuestas de manera fácil y rápida. Obtén insights valiosos de tu audiencia con gráficos en tiempo real.',
 };
+
+dayjs.extend(relativeTime);
 
 export default async function RootLayout({
   children,
