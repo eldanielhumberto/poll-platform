@@ -8,6 +8,4 @@ import com.poolplatform.features.user.domain.models.User;
 
 public interface SurveyService extends Crud<Survey> {
     List<Survey> get(User user);
-
-    void reset(Survey survey, User user);
 }

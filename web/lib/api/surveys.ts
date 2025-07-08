@@ -47,3 +47,33 @@ export async function getSurveys(): Promise<ServerResponse<Survey[]>> {
 
   return { message: data.message, data: data.data, error: data.error };
 }
+
+export async function deleteSurvey(
+  surveyId: string
+): Promise<ServerResponse<null>> {
+  const session = await getSession();
+  if (!session) throw new Error('No session found');
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/surveys/${surveyId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: session,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    console.log(data);
+    return {
+      message: 'Delete survey',
+      error: 'Failed to delete survey',
+      data: null,
+    };
+  }
+
+  return { message: data.message, data: data.data, error: data.error };
+}

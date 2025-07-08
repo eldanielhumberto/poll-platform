@@ -2,6 +2,10 @@ package com.poolplatform.features.survey.adapters.mappers;
 
 import java.util.stream.Collectors;
 
+import com.poolplatform.features.answer.adapters.entities.AnswerEntity;
+import com.poolplatform.features.answer.domain.models.Answer;
+import com.poolplatform.features.option.adapters.entities.OptionEntity;
+import com.poolplatform.features.option.domain.models.Option;
 import com.poolplatform.features.question.adapters.entities.QuestionEntity;
 import com.poolplatform.features.question.domain.models.Question;
 import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
@@ -39,6 +43,22 @@ public class SurveyMapper {
             }).collect(Collectors.toList()));
         }
 
+        if (surveyEntity.getOptions() != null) {
+            survey.setOptions(surveyEntity.getOptions().stream().map(o -> {
+                Option option = new Option();
+                option.setId(o.getId());
+                return option;
+            }).collect(Collectors.toList()));
+        }
+
+        if (surveyEntity.getAnswers() != null) {
+            survey.setAnswers(surveyEntity.getAnswers().stream().map(a -> {
+                Answer answer = new Answer();
+                answer.setId(a.getId());
+                return answer;
+            }).collect(Collectors.toList()));
+        }
+
         return survey;
     }
 
@@ -65,6 +85,22 @@ public class SurveyMapper {
                 VisitEntity visit = new VisitEntity();
                 visit.setId(v.getId());
                 return visit;
+            }).collect(Collectors.toList()));
+        }
+
+        if (survey.getOptions() != null) {
+            surveyEntity.setOptions(survey.getOptions().stream().map(o -> {
+                OptionEntity optionEntity = new OptionEntity();
+                optionEntity.setId(o.getId());
+                return optionEntity;
+            }).collect(Collectors.toList()));
+        }
+
+        if (survey.getAnswers() != null) {
+            surveyEntity.setAnswers(survey.getAnswers().stream().map(a -> {
+                AnswerEntity answer = new AnswerEntity();
+                answer.setId(a.getId());
+                return answer;
             }).collect(Collectors.toList()));
         }
 

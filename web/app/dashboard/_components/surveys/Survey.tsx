@@ -1,6 +1,10 @@
+'use client';
+
 import { Calendar, Eye, MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import dayjs from 'dayjs';
+
+import removeSurvey from '@/actions/surveys/removeSurvey';
 
 import { Survey as ISurvey } from '@/interfaces/Survey';
 
@@ -54,7 +58,10 @@ export default function Survey({
               <DropdownMenuItem>Editar</DropdownMenuItem>
             </Link>
             <DropdownMenuItem>Compartir</DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600">
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={() => removeSurvey(id)}
+            >
               Eliminar
             </DropdownMenuItem>
           </DropdownMenuContent>

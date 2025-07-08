@@ -19,7 +19,7 @@ public class QuestionMapper {
 
         if (questionEntity.getOptions() != null) {
             question.setOptions(questionEntity.getOptions().stream().map(o -> {
-                return new Option(o.getId(), o.getOptionText(), null);
+                return new Option(o.getId(), o.getOptionText(), null, null);
             }).collect(Collectors.toList()));
         }
 
@@ -35,7 +35,7 @@ public class QuestionMapper {
 
         if (question.getOptions() != null) {
             questionEntity.setOptions(question.getOptions().stream().map(o -> {
-                return new OptionEntity(o.getId(), o.getOptionText(), null);
+                return new OptionEntity(o.getId(), o.getOptionText(), null, null);
             }).collect(Collectors.toList()));
 
         }

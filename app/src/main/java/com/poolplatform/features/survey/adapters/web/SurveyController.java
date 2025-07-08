@@ -6,9 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.poolplatform.adapters.dto.ResponseDTO;
 import com.poolplatform.domain.exceptions.RequestException;
-import com.poolplatform.features.answer.domain.AnswerService;
-import com.poolplatform.features.answer.domain.models.Answer;
-import com.poolplatform.features.survey.adapters.dto.ResetSurveyDto;
 import com.poolplatform.features.survey.adapters.dto.SurveyRequestDTO;
 import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
 import com.poolplatform.features.survey.domain.SurveyService;
@@ -40,9 +37,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class SurveyController {
     @Autowired
     private SurveyService surveyService;
-
-    @Autowired
-    private AnswerService answerService;
 
     @Autowired
     private VisitService visitService;
@@ -148,22 +142,4 @@ public class SurveyController {
 
         return ResponseEntity.ok(responseDTO);
     }
-
-    @PostMapping("/reset")
-    public ResponseEntity<?> reset(@Valid @RequestBody ResetSurveyDto resetSurveyDto, Authentication authentication) {
-        Optional<Survey> survey = surveyService.get(resetSurveyDto.getSurveyId());
-        if (survey.isEmpty())
-            throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
-
-        List<Answer> answers = answerService.get(survey.get(), (User) authentication.getCredentials());
-        if (answers.size() > 0) {
-            surveyService.reset(survey.get(), (User) authentication.getCredentials());
-        }
-
-        ResponseDTO<?> responseDTO = new ResponseDTO<>();
-        responseDTO.setMessage("Survey restarted");
-
-        return ResponseEntity.ok(responseDTO);
-    }
-
 }

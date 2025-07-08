@@ -1,6 +1,7 @@
 package com.poolplatform.features.option.adapters.entities;
 
 import com.poolplatform.features.question.adapters.entities.QuestionEntity;
+import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,13 +26,18 @@ public class OptionEntity {
     @JoinColumn(name = "question_id", nullable = false)
     private QuestionEntity question;
 
+    @ManyToOne()
+    @JoinColumn(name = "survey_id", nullable = false)
+    private SurveyEntity survey;
+
     public OptionEntity() {
     }
 
-    public OptionEntity(String id, String optionText, QuestionEntity question) {
+    public OptionEntity(String id, String optionText, QuestionEntity question, SurveyEntity survey) {
         this.id = id;
         this.optionText = optionText;
         this.question = question;
+        this.survey = survey;
     }
 
     public String getId() {
@@ -58,4 +64,11 @@ public class OptionEntity {
         this.question = question;
     }
 
+    public SurveyEntity getSurvey() {
+        return survey;
+    }
+
+    public void setSurvey(SurveyEntity survey) {
+        this.survey = survey;
+    }
 }

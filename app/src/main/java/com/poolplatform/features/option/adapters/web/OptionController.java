@@ -45,9 +45,12 @@ public class OptionController {
         if (!questionOptional.get().getAuthor().getId().equals((authentication.getPrincipal())))
             throw new RequestException("No friend", HttpStatus.UNAUTHORIZED);
 
+        Question question = questionOptional.get();
+
         Option option = new Option();
         option.setOptionText(optionDto.getOptionText());
-        option.setQuestion(questionOptional.get());
+        option.setSurvey(question.getSurvey());
+        option.setQuestion(question);
 
         optionService.upsert(option);
 

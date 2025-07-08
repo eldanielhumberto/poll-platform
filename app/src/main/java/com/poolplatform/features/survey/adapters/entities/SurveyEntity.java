@@ -5,10 +5,13 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.poolplatform.features.answer.adapters.entities.AnswerEntity;
+import com.poolplatform.features.option.adapters.entities.OptionEntity;
 import com.poolplatform.features.question.adapters.entities.QuestionEntity;
 import com.poolplatform.features.user.adapters.entities.UserEntity;
 import com.poolplatform.features.visit.adapters.entities.VisitEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,11 +39,17 @@ public class SurveyEntity {
     @JoinColumn(name = "user_id")
     private UserEntity author;
 
-    @OneToMany(mappedBy = "survey")
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionEntity> questions;
 
-    @OneToMany(mappedBy = "survey")
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VisitEntity> visits;
+
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OptionEntity> options;
+
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AnswerEntity> answers;
 
     @CreatedDate
     private Instant createdAt;
@@ -50,13 +59,15 @@ public class SurveyEntity {
 
     public SurveyEntity(String id, String title, String description, UserEntity author, List<QuestionEntity> questions,
             List<VisitEntity> visits,
-            Instant createdAt) {
+            Instant createdAt, List<OptionEntity> options, List<AnswerEntity> answers) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.author = author;
         this.questions = questions;
         this.visits = visits;
+        this.options = options;
+        this.answers = answers;
         this.createdAt = createdAt;
     }
 
@@ -108,12 +119,28 @@ public class SurveyEntity {
         this.visits = visits;
     }
 
+    public List<OptionEntity> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<OptionEntity> options) {
+        this.options = options;
+    }
+
     public void setQuestions(List<QuestionEntity> questions) {
         this.questions = questions;
     }
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<AnswerEntity> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<AnswerEntity> answers) {
+        this.answers = answers;
     }
 
 }
