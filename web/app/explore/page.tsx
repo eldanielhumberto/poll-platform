@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 
 import SurveysList from './_components/surveys/SurveysList';
 import Navbar from '@/components/Navbar';
+import FeaturedSurveys from './_components/FeaturedSurveys';
 
 export default function ExplorePage() {
   const surveys = getSurveys();
@@ -25,6 +26,11 @@ export default function ExplorePage() {
             Descubre y participa en encuestas de la comunidad
           </p>
         </div>
+
+        {/* Featured surveys */}
+        <Suspense fallback={<h1>Loading featured surveys...</h1>}>
+          <FeaturedSurveys surveys={surveys} />
+        </Suspense>
 
         {/* Search and Filters */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6">

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.stereotype.Repository;
@@ -18,7 +19,8 @@ import com.poolplatform.features.user.domain.models.User;
 public interface JpaSurveyRepository extends JpaRepository<SurveyEntity, String>, SurveyRepository {
     @Override
     default List<Survey> get() {
-        return findAll().stream().map(SurveyMapper::toSurvey).collect(Collectors.toList());
+        return findAll(Sort.by("answers").ascending()).stream().map(SurveyMapper::toSurvey)
+                .collect(Collectors.toList());
     }
 
     @Override
