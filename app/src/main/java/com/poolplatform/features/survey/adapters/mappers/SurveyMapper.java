@@ -12,7 +12,6 @@ import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
 import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.survey.domain.models.SurveySummary;
 import com.poolplatform.features.user.adapters.mappers.UserMapper;
-import com.poolplatform.features.user.domain.models.UserSummary;
 import com.poolplatform.features.visit.adapters.entities.VisitEntity;
 import com.poolplatform.features.visit.domain.models.Visit;
 
@@ -112,7 +111,7 @@ public class SurveyMapper {
         surveySummary.setId(survey.getId());
         surveySummary.setTitle(survey.getTitle());
         surveySummary.setDescription(survey.getDescription());
-        surveySummary.setAuthor(new UserSummary(survey.getAuthor()));
+        surveySummary.setAuthor(UserMapper.toUserSummary(survey.getAuthor()));
         surveySummary.setVisits(survey.getVisits().size());
         surveySummary.setAnswers(survey.getAnswers().size());
         surveySummary.setCreatedAt(survey.getCreatedAt());

@@ -10,7 +10,6 @@ import com.poolplatform.features.option.adapters.mappers.OptionMapper;
 import com.poolplatform.features.question.adapters.mappers.QuestionMapper;
 import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
 import com.poolplatform.features.user.adapters.mappers.UserMapper;
-import com.poolplatform.features.user.domain.models.UserSummary;
 
 public class AnswerMapper {
     public static Answer toAnswer(AnswerEntity answerEntity) {
@@ -61,8 +60,7 @@ public class AnswerMapper {
         simpleAnswer.setSurvey(simpleSurvey);
 
         if (answer.getUser() != null) {
-            UserSummary userSummary = new UserSummary(answer.getUser());
-            simpleAnswer.setUser(userSummary);
+            simpleAnswer.setUser(UserMapper.toUserSummary(answer.getUser()));
         }
 
         return simpleAnswer;

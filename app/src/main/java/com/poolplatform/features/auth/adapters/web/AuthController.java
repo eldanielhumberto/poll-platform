@@ -14,9 +14,9 @@ import com.poolplatform.domain.exceptions.RequestException;
 import com.poolplatform.features.auth.adapters.dto.SigninDTO;
 import com.poolplatform.features.auth.adapters.dto.SignupDTO;
 import com.poolplatform.features.auth.domain.AuthService;
+import com.poolplatform.features.user.adapters.mappers.UserMapper;
 import com.poolplatform.features.user.domain.UserService;
 import com.poolplatform.features.user.domain.models.User;
-import com.poolplatform.features.user.domain.models.UserSummary;
 
 import jakarta.validation.Valid;
 
@@ -85,7 +85,7 @@ public class AuthController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> profile(Authentication authentication) {
-        return ResponseEntity.ok(new UserSummary((User) authentication.getCredentials()));
+        return ResponseEntity.ok(UserMapper.toUserSummary((User) authentication.getCredentials()));
     }
 
 }

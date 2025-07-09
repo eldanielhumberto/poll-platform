@@ -3,8 +3,11 @@ package com.poolplatform.features.user.adapters.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.poolplatform.features.answer.adapters.entities.AnswerEntity;
+import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
 import com.poolplatform.features.visit.adapters.entities.VisitEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,18 +33,27 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "visited", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "visited", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<VisitEntity> visits = new ArrayList<VisitEntity>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<AnswerEntity> answers;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<SurveyEntity> surveys;
 
     public UserEntity() {
     }
 
-    public UserEntity(String id, String username, String email, String password, List<VisitEntity> visits) {
+    public UserEntity(String id, String username, String email, String password, List<VisitEntity> visits,
+            List<AnswerEntity> answers, List<SurveyEntity> surveys) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.visits = visits;
+        this.answers = answers;
+        this.surveys = surveys;
     }
 
     public String getId() {
@@ -82,6 +94,22 @@ public class UserEntity {
 
     public void setVisits(List<VisitEntity> visits) {
         this.visits = visits;
+    }
+
+    public List<AnswerEntity> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<AnswerEntity> answers) {
+        this.answers = answers;
+    }
+
+    public List<SurveyEntity> getSurveys() {
+        return surveys;
+    }
+
+    public void setSurveys(List<SurveyEntity> surveys) {
+        this.surveys = surveys;
     }
 
 }

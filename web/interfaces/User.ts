@@ -3,4 +3,6 @@ export interface User {
   username: string;
   email: string;
   visits: number;
+  answers: number;
+  surveys: number;
 }

@@ -5,15 +5,19 @@ public class UserSummary {
     private String username;
     private String email;
     private int visits;
+    private int answers;
+    private int surveys;
 
-    public UserSummary(User user) {
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.email = user.getEmail();
+    public UserSummary() {
+    }
 
-        if (user.getVisits() != null) {
-            this.visits = user.getVisits().size();
-        }
+    public UserSummary(String id, String username, String email, int visits, int answers, int surveys) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.visits = visits;
+        this.answers = answers;
+        this.surveys = surveys;
     }
 
     public String getId() {
@@ -46,6 +50,22 @@ public class UserSummary {
 
     public void setVisits(int visits) {
         this.visits = visits;
+    }
+
+    public int getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(int answers) {
+        this.answers = answers;
+    }
+
+    public int getSurveys() {
+        return surveys;
+    }
+
+    public void setSurveys(int surveys) {
+        this.surveys = surveys;
     }
 
 }

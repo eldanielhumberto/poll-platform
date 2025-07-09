@@ -4,9 +4,7 @@ import { Suspense } from 'react';
 import { getUserSurveys } from '@/lib/api/surveys';
 
 import SurveysList from './_components/surveys/SurveysList';
-import StatsList from './_components/stats/StatsList';
 
-import StatsLoading from './_components/stats/StatsLoading';
 import Navbar from '@/components/Navbar';
 
 import { Button } from '@/components/ui/button';
@@ -17,6 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import StatsList from '@/components/stats/StatsList';
 
 export default function DashboardPage() {
   const surveysData = getUserSurveys();
@@ -41,9 +40,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Stats Cards */}
-        <Suspense fallback={<StatsLoading />}>
-          <StatsList surveysData={surveysData} />
-        </Suspense>
+        <StatsList />
 
         {/* Surveys Section */}
         <Card className="border-0 shadow-sm">
