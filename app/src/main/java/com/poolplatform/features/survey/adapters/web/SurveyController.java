@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.poolplatform.adapters.dto.ResponseDTO;
 import com.poolplatform.domain.exceptions.RequestException;
+import com.poolplatform.features.question.domain.QuestionService;
 import com.poolplatform.features.survey.adapters.dto.SurveyRequestDTO;
 import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
 import com.poolplatform.features.survey.domain.SurveyService;
@@ -37,6 +38,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class SurveyController {
     @Autowired
     private SurveyService surveyService;
+
+    @Autowired
+    private QuestionService questionService;
 
     @Autowired
     private VisitService visitService;
@@ -91,7 +95,11 @@ public class SurveyController {
         newSurvey.setAuthor((User) authentication.getCredentials());
         newSurvey.setQuestions(new ArrayList<>());
         newSurvey.setCreatedAt(Instant.now());
-        surveyService.upsert(newSurvey);
+
+        Survey surveySaved = surveyService.upsert(newSurvey);
+
+        // Save questions
+        questionService.saveAll(rSurveyRequestDTO.getQuestions(), surveySaved);
 
         ResponseDTO<?> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("Survey saved");
@@ -115,11 +123,27 @@ public class SurveyController {
         survey.setTitle(rSurveyRequestDTO.getTitle());
         survey.setDescription(rSurveyRequestDTO.getDescription());
 
-        Survey surveySaved = surveyService.upsert(survey);
+        // // Set questions
+        // List<Question> newQuestions = new ArrayList<>();
+        // for (QuestionForSaveAllDTO questionDTO : rSurveyRequestDTO.getQuestions()) {
+        // Optional<Question> existingQuestion = survey.getQuestions().stream()
+        // .filter(q ->
+        // q.getQuestionText().equals(questionDTO.getQuestionText())).findFirst();
 
-        ResponseDTO<Survey> responseDTO = new ResponseDTO<>();
+        // if (existingQuestion.isPresent()) {
+        // Question question = existingQuestion.get();
+        // question.setQuestionText(questionDTO.getQuestionText());
+
+        // newQuestions.add(question);
+        // }
+        // }
+
+        // survey.setQuestions(newQuestions);
+
+        surveyService.upsert(survey);
+
+        ResponseDTO<?> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("Survey saved");
-        responseDTO.setData(surveySaved);
 
         return ResponseEntity.ok(responseDTO);
     }

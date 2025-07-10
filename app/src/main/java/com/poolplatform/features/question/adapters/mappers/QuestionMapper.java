@@ -84,7 +84,7 @@ public class QuestionMapper {
                 OptionEntity optionEntity = new OptionEntity();
                 optionEntity.setOptionText(option.getOptionText());
                 optionEntity.setSurvey(SurveyMapper.toSurveyEntity(option.getSurvey()));
-                optionEntity.setQuestion(questionEntity); // ¡Esto es clave!
+                optionEntity.setQuestion(questionEntity);
                 optionEntities.add(optionEntity);
             }
             questionEntity.setOptions(optionEntities);

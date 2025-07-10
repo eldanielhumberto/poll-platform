@@ -1,6 +1,5 @@
 package com.poolplatform.features.question.adapters.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.poolplatform.adapters.dto.ResponseDTO;
 import com.poolplatform.domain.exceptions.RequestException;
-import com.poolplatform.features.option.domain.models.Option;
 import com.poolplatform.features.question.adapters.dto.QuestionCreateDTO;
-import com.poolplatform.features.question.adapters.dto.QuestionForSaveAllDTO;
 import com.poolplatform.features.question.adapters.dto.QuestionUpdateDTO;
 import com.poolplatform.features.question.adapters.dto.SaveAllQuestionsDTO;
 import com.poolplatform.features.question.domain.QuestionService;
@@ -115,34 +112,7 @@ public class QuestionController {
             throw new RequestException("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        // Set questions and options
-        List<Question> questions = new ArrayList<>();
-        for (QuestionForSaveAllDTO questionForSave : saveAllQuestionsDTO.getQuestions()) {
-            Optional<Question> question = questionService.getByText(questionForSave.getQuestionText(),
-                    saveAllQuestionsDTO.getSurveyId());
-
-            if (question.isPresent())
-                continue; // Skip if the question already exists
-
-            Question newQuestion = new Question();
-            newQuestion.setQuestionText(questionForSave.getQuestionText());
-            newQuestion.setAuthor(survey.get().getAuthor());
-            newQuestion.setSurvey(survey.get());
-
-            List<Option> options = new ArrayList<>();
-            for (String optionText : questionForSave.getOptions()) {
-                Option newOption = new Option();
-                newOption.setOptionText(optionText);
-                newOption.setQuestion(newQuestion);
-                newOption.setSurvey(survey.get());
-                options.add(newOption);
-            }
-
-            newQuestion.setOptions(options);
-            questions.add(newQuestion);
-        }
-
-        questionService.saveAll(questions);
+        questionService.saveAll(saveAllQuestionsDTO.getQuestions(), survey.get());
 
         ResponseDTO<?> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("Questions saved");
