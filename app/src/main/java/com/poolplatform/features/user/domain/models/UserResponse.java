@@ -1,6 +1,6 @@
 package com.poolplatform.features.user.domain.models;
 
-public class UserSummary {
+public class UserResponse {
     private String id;
     private String username;
     private String email;
@@ -8,10 +8,10 @@ public class UserSummary {
     private int answers;
     private int surveys;
 
-    public UserSummary() {
+    public UserResponse() {
     }
 
-    public UserSummary(String id, String username, String email, int visits, int answers, int surveys) {
+    public UserResponse(String id, String username, String email, int visits, int answers, int surveys) {
         this.id = id;
         this.username = username;
         this.email = email;

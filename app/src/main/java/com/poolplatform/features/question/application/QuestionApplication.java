@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.poolplatform.features.option.domain.OptionRepository;
 import com.poolplatform.features.option.domain.models.Option;
 import com.poolplatform.features.question.adapters.dto.QuestionForSaveAllDTO;
 import com.poolplatform.features.question.domain.QuestionRepository;
@@ -19,9 +18,6 @@ import com.poolplatform.features.survey.domain.models.Survey;
 public class QuestionApplication implements QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
-
-    @Autowired
-    private OptionRepository optionRepository;
 
     @Override
     public List<Question> get() {

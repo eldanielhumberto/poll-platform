@@ -2,16 +2,20 @@ package com.poolplatform.features.question.adapters.mappers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.poolplatform.features.option.adapters.entities.OptionEntity;
+import com.poolplatform.features.option.adapters.mappers.OptionMapper;
 import com.poolplatform.features.option.domain.models.Option;
 import com.poolplatform.features.question.adapters.entities.QuestionEntity;
 import com.poolplatform.features.question.domain.models.Question;
 import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
 import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
 import com.poolplatform.features.survey.domain.models.Survey;
+import com.poolplatform.features.user.adapters.entities.UserEntity;
 import com.poolplatform.features.user.adapters.mappers.UserMapper;
+import com.poolplatform.features.user.domain.models.User;
 
 public class QuestionMapper {
     public static Question toQuestion(QuestionEntity questionEntity) {
@@ -92,5 +96,60 @@ public class QuestionMapper {
         }
 
         return questionEntities;
+    }
+
+    public static Question mapQuestionsFromEntity(QuestionEntity q, Map<String, Option> optionEntityMap) {
+        User author = UserMapper.toUser(q.getAuthor());
+
+        Survey surveyForQuestion = new Survey();
+        surveyForQuestion.setId(q.getSurvey().getId());
+
+        Question question = new Question();
+        question.setId(q.getId());
+        question.setQuestionText(q.getQuestionText());
+        question.setAuthor(author);
+        question.setSurvey(surveyForQuestion);
+
+        // For avoid duplicates in options
+        question.setOptions(q.getOptions().stream().map(o -> {
+            Option option;
+            if (optionEntityMap.containsKey(o.getId())) {
+                option = optionEntityMap.get(o.getId());
+            } else {
+                option = OptionMapper.toSimpleOption(o);
+                optionEntityMap.put(o.getId(), option);
+            }
+
+            return option;
+        }).toList());
+
+        return question;
+    }
+
+    public static QuestionEntity mapQuestion(Question q, Map<String, OptionEntity> optionEntityMap) {
+        UserEntity author = UserMapper.toUserEntity(q.getAuthor());
+
+        SurveyEntity surveyForQuestion = new SurveyEntity();
+        surveyForQuestion.setId(q.getSurvey().getId());
+
+        QuestionEntity question = new QuestionEntity();
+        question.setId(q.getId());
+        question.setQuestionText(q.getQuestionText());
+        question.setAuthor(author);
+        question.setSurvey(surveyForQuestion);
+
+        // Set options
+        question.setOptions(q.getOptions().stream().map(o -> {
+            OptionEntity option;
+            if (optionEntityMap.containsKey(o.getId())) {
+                option = optionEntityMap.get(o.getId());
+            } else {
+                option = OptionMapper.toSimpleOptionEntity(o);
+                optionEntityMap.put(o.getId(), option);
+            }
+            return option;
+        }).toList());
+
+        return question;
     }
 }

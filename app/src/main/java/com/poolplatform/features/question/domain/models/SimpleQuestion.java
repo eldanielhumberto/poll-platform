@@ -1,13 +1,13 @@
 package com.poolplatform.features.question.domain.models;
 
-public class SimpleOption {
+public class SimpleQuestion {
     private String id;
     private String questionText;
 
-    public SimpleOption() {
+    public SimpleQuestion() {
     }
 
-    public SimpleOption(String id, String questionText) {
+    public SimpleQuestion(String id, String questionText) {
         this.id = id;
         this.questionText = questionText;
     }

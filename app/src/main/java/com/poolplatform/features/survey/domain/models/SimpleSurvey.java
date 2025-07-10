@@ -1,14 +1,20 @@
-package com.poolplatform.features.visit.domain.models;
-
-import com.poolplatform.features.survey.domain.models.Survey;
+package com.poolplatform.features.survey.domain.models;
 
 public class SimpleSurvey {
     private String id;
     private String title;
 
+    public SimpleSurvey() {
+    }
+
     public SimpleSurvey(Survey survey) {
         this.id = survey.getId();
         this.title = survey.getTitle();
+    }
+
+    public SimpleSurvey(String id, String title) {
+        this.id = id;
+        this.title = title;
     }
 
     public String getId() {

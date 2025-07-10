@@ -1,18 +1,21 @@
 package com.poolplatform.features.answer.domain.models;
 
-import com.poolplatform.features.user.domain.models.UserSummary;
+import com.poolplatform.features.option.domain.models.SimpleOption;
+import com.poolplatform.features.question.domain.models.SimpleQuestion;
+import com.poolplatform.features.survey.domain.models.SimpleSurvey;
+import com.poolplatform.features.user.domain.models.SimpleUser;
 
-public class SimpleAnswer {
+public class AnswerResponse {
     private String id;
-    private UserSummary user;
+    private SimpleUser user;
     private SimpleSurvey survey;
     private SimpleQuestion question;
     private SimpleOption option;
 
-    public SimpleAnswer() {
+    public AnswerResponse() {
     }
 
-    public SimpleAnswer(String id, UserSummary user, SimpleSurvey survey, SimpleQuestion question,
+    public AnswerResponse(String id, SimpleUser user, SimpleSurvey survey, SimpleQuestion question,
             SimpleOption option) {
         this.id = id;
         this.user = user;
@@ -53,11 +56,11 @@ public class SimpleAnswer {
         this.option = option;
     }
 
-    public UserSummary getUser() {
+    public SimpleUser getUser() {
         return user;
     }
 
-    public void setUser(UserSummary user) {
+    public void setUser(SimpleUser user) {
         this.user = user;
     }
 

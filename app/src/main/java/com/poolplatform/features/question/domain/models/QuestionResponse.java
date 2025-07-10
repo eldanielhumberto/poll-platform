@@ -3,16 +3,19 @@ package com.poolplatform.features.question.domain.models;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class QuestionSummary {
+import com.poolplatform.features.option.domain.models.SimpleOption;
+import com.poolplatform.features.survey.domain.models.SimpleSurvey;
+
+public class QuestionResponse {
     private String id;
     private String questionText;
     private SimpleSurvey survey;
     private List<SimpleOption> options;
 
-    public QuestionSummary() {
+    public QuestionResponse() {
     }
 
-    public QuestionSummary(Question question) {
+    public QuestionResponse(Question question) {
         this.id = question.getId();
         this.questionText = question.getQuestionText();
 

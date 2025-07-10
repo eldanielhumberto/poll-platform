@@ -12,7 +12,7 @@ import com.poolplatform.features.user.domain.models.User;
 import com.poolplatform.features.visit.adapters.dto.CreateVisitDto;
 import com.poolplatform.features.visit.adapters.mappers.VisitMapper;
 import com.poolplatform.features.visit.domain.VisitService;
-import com.poolplatform.features.visit.domain.models.SimpleVisit;
+import com.poolplatform.features.visit.domain.models.VisitResponse;
 import com.poolplatform.features.visit.domain.models.Visit;
 
 import java.time.Instant;
@@ -54,9 +54,9 @@ public class VisitController {
             if (userOptional.isPresent()) {
                 List<Visit> visits = visitService.get(userOptional.get(), surveyOptional.get());
 
-                ResponseDTO<List<SimpleVisit>> responseDTO = new ResponseDTO<>();
+                ResponseDTO<List<VisitResponse>> responseDTO = new ResponseDTO<>();
                 responseDTO.setMessage("Get survey visits");
-                responseDTO.setData(visits.stream().map(VisitMapper::toSimpleVisit).collect(Collectors.toList()));
+                responseDTO.setData(visits.stream().map(VisitMapper::toVisitResponse).collect(Collectors.toList()));
 
                 return ResponseEntity.ok(responseDTO);
             }
@@ -66,9 +66,9 @@ public class VisitController {
         Survey survey = surveyOptional.get();
         List<Visit> visits = visitService.getSurveyVisits(survey);
 
-        ResponseDTO<List<SimpleVisit>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<VisitResponse>> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("Get survey visits");
-        responseDTO.setData(visits.stream().map(VisitMapper::toSimpleVisit).collect(Collectors.toList()));
+        responseDTO.setData(visits.stream().map(VisitMapper::toVisitResponse).collect(Collectors.toList()));
 
         return ResponseEntity.ok(responseDTO);
     }

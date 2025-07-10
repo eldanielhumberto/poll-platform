@@ -85,7 +85,7 @@ public class AuthController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> profile(Authentication authentication) {
-        return ResponseEntity.ok(UserMapper.toUserSummary((User) authentication.getCredentials()));
+        return ResponseEntity.ok(UserMapper.toUserResponse((User) authentication.getCredentials()));
     }
 
 }

@@ -2,15 +2,16 @@ package com.poolplatform.features.survey.domain.models;
 
 import java.time.Instant;
 
-import com.poolplatform.features.user.domain.models.UserSummary;
+import com.poolplatform.features.user.domain.models.SimpleUser;
 
-public class SurveySummary {
+public class SurveyResponse {
     private String id;
     private String title;
     private String description;
-    private UserSummary author;
+    private SimpleUser author;
     private int visits;
     private int answers;
+    private int questions;
     private Instant createdAt;
 
     public String getId() {
@@ -37,11 +38,11 @@ public class SurveySummary {
         this.description = description;
     }
 
-    public UserSummary getAuthor() {
+    public SimpleUser getAuthor() {
         return author;
     }
 
-    public void setAuthor(UserSummary author) {
+    public void setAuthor(SimpleUser author) {
         this.author = author;
     }
 
@@ -59,6 +60,14 @@ public class SurveySummary {
 
     public void setAnswers(int answers) {
         this.answers = answers;
+    }
+
+    public int getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(int questions) {
+        this.questions = questions;
     }
 
     public Instant getCreatedAt() {

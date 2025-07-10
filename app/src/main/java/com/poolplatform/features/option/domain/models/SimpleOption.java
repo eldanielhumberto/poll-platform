@@ -1,4 +1,4 @@
-package com.poolplatform.features.answer.domain.models;
+package com.poolplatform.features.option.domain.models;
 
 public class SimpleOption {
     private String id;

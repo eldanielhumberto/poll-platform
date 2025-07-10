@@ -11,7 +11,7 @@ import com.poolplatform.features.survey.adapters.dto.SurveyRequestDTO;
 import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
 import com.poolplatform.features.survey.domain.SurveyService;
 import com.poolplatform.features.survey.domain.models.Survey;
-import com.poolplatform.features.survey.domain.models.SurveySummary;
+import com.poolplatform.features.survey.domain.models.SurveyResponse;
 import com.poolplatform.features.user.domain.models.User;
 import com.poolplatform.features.visit.domain.VisitService;
 
@@ -61,7 +61,7 @@ public class SurveyController {
             visitService.registerVisitIfAllowed(authentication, survey);
 
             responseDTO.setMessage("Get a survey");
-            responseDTO.setData(SurveyMapper.toSurveySummary(survey));
+            responseDTO.setData(SurveyMapper.toSurveyResponse(survey));
 
             return ResponseEntity.ok(responseDTO);
         }
@@ -70,7 +70,7 @@ public class SurveyController {
         List<Survey> surveys = surveyService.get();
 
         responseDTO.setMessage("Get all surveys");
-        responseDTO.setData(surveys.stream().map(SurveyMapper::toSurveySummary).toList());
+        responseDTO.setData(surveys.stream().map(SurveyMapper::toSurveyResponse).toList());
 
         return ResponseEntity.ok(responseDTO);
     }
@@ -79,9 +79,9 @@ public class SurveyController {
     public ResponseEntity<?> getUserSurveys(Authentication authentication) {
         List<Survey> surveys = surveyService.get((User) authentication.getCredentials());
 
-        ResponseDTO<List<SurveySummary>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<SurveyResponse>> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("Your surveys");
-        responseDTO.setData(surveys.stream().map(SurveyMapper::toSurveySummary).toList());
+        responseDTO.setData(surveys.stream().map(SurveyMapper::toSurveyResponse).toList());
 
         return ResponseEntity.ok(responseDTO);
     }

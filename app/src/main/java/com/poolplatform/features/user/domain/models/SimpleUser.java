@@ -1,9 +1,10 @@
-package com.poolplatform.features.visit.domain.models;
-
-import com.poolplatform.features.user.domain.models.User;
+package com.poolplatform.features.user.domain.models;
 
 public class SimpleUser {
     private String email;
+
+    public SimpleUser() {
+    }
 
     public SimpleUser(User user) {
         this.email = user.getEmail();

@@ -2,13 +2,13 @@ package com.poolplatform.features.answer.adapters.mappers;
 
 import com.poolplatform.features.answer.adapters.entities.AnswerEntity;
 import com.poolplatform.features.answer.domain.models.Answer;
-import com.poolplatform.features.answer.domain.models.SimpleAnswer;
-import com.poolplatform.features.answer.domain.models.SimpleOption;
-import com.poolplatform.features.answer.domain.models.SimpleQuestion;
-import com.poolplatform.features.answer.domain.models.SimpleSurvey;
+import com.poolplatform.features.answer.domain.models.AnswerResponse;
 import com.poolplatform.features.option.adapters.mappers.OptionMapper;
+import com.poolplatform.features.option.domain.models.SimpleOption;
 import com.poolplatform.features.question.adapters.mappers.QuestionMapper;
+import com.poolplatform.features.question.domain.models.SimpleQuestion;
 import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
+import com.poolplatform.features.survey.domain.models.SimpleSurvey;
 import com.poolplatform.features.user.adapters.mappers.UserMapper;
 
 public class AnswerMapper {
@@ -40,7 +40,7 @@ public class AnswerMapper {
         return answerEntity;
     }
 
-    public static SimpleAnswer toSimpleAnswer(Answer answer) {
+    public static AnswerResponse toResponseAnswer(Answer answer) {
         SimpleSurvey simpleSurvey = new SimpleSurvey();
         simpleSurvey.setId(answer.getSurvey().getId());
         simpleSurvey.setTitle(answer.getSurvey().getTitle());
@@ -53,16 +53,30 @@ public class AnswerMapper {
         simpleOption.setId(answer.getOption().getId());
         simpleOption.setOptionText(answer.getOption().getOptionText());
 
-        SimpleAnswer simpleAnswer = new SimpleAnswer();
+        AnswerResponse simpleAnswer = new AnswerResponse();
         simpleAnswer.setId(answer.getId());
         simpleAnswer.setOption(simpleOption);
         simpleAnswer.setQuestion(simpleQuestion);
         simpleAnswer.setSurvey(simpleSurvey);
 
         if (answer.getUser() != null) {
-            simpleAnswer.setUser(UserMapper.toUserSummary(answer.getUser()));
+            simpleAnswer.setUser(UserMapper.toSimpleUser(answer.getUser()));
         }
 
         return simpleAnswer;
+    }
+
+    public static Answer toSimpleAnswer(AnswerEntity answer) {
+        Answer simpleAnswer = new Answer();
+        simpleAnswer.setId(answer.getId());
+
+        return simpleAnswer;
+    }
+
+    public static AnswerEntity toSimpleAnswerEntity(Answer answer) {
+        AnswerEntity simpleAnswerEntity = new AnswerEntity();
+        simpleAnswerEntity.setId(answer.getId());
+
+        return simpleAnswerEntity;
     }
 }

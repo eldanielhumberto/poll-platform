@@ -2,7 +2,10 @@ package com.poolplatform.features.visit.domain.models;
 
 import java.time.Instant;
 
-public class SimpleVisit {
+import com.poolplatform.features.survey.domain.models.SimpleSurvey;
+import com.poolplatform.features.user.domain.models.SimpleUser;
+
+public class VisitResponse {
     private SimpleUser visitor;
     private SimpleUser visited;
     private SimpleSurvey survey;

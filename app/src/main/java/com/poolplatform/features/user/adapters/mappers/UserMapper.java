@@ -7,8 +7,9 @@ import com.poolplatform.features.answer.domain.models.Answer;
 import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
 import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.user.adapters.entities.UserEntity;
+import com.poolplatform.features.user.domain.models.SimpleUser;
 import com.poolplatform.features.user.domain.models.User;
-import com.poolplatform.features.user.domain.models.UserSummary;
+import com.poolplatform.features.user.domain.models.UserResponse;
 import com.poolplatform.features.visit.adapters.entities.VisitEntity;
 import com.poolplatform.features.visit.domain.models.Visit;
 
@@ -87,8 +88,8 @@ public class UserMapper {
         return userEntity;
     }
 
-    public static UserSummary toUserSummary(User user) {
-        UserSummary userSummary = new UserSummary();
+    public static UserResponse toUserResponse(User user) {
+        UserResponse userSummary = new UserResponse();
         userSummary.setId(user.getId());
         userSummary.setUsername(user.getUsername());
         userSummary.setEmail(user.getEmail());
@@ -97,5 +98,12 @@ public class UserMapper {
         userSummary.setSurveys(user.getSurveys().size());
 
         return userSummary;
+    }
+
+    public static SimpleUser toSimpleUser(User user) {
+        SimpleUser simpleUser = new SimpleUser();
+        simpleUser.setEmail(user.getEmail());
+
+        return simpleUser;
     }
 }

@@ -1,5 +1,7 @@
 package com.poolplatform.features.option.adapters.mappers;
 
+import java.util.Map;
+
 import com.poolplatform.features.option.adapters.entities.OptionEntity;
 import com.poolplatform.features.option.domain.models.Option;
 import com.poolplatform.features.question.adapters.entities.QuestionEntity;
@@ -60,5 +62,28 @@ public class OptionMapper {
         newOption.setSurvey(survey);
 
         return newOption;
+    }
+
+    public static Option mapOptionFromEntity(OptionEntity optionEntity, Map<String, Option> optionEntityMap) {
+        Option option;
+        if (optionEntityMap.containsKey(optionEntity.getId())) {
+            option = optionEntityMap.get(optionEntity.getId());
+        } else {
+            option = OptionMapper.toSimpleOption(optionEntity);
+            optionEntityMap.put(optionEntity.getId(), option);
+        }
+
+        return option;
+    }
+
+    public static OptionEntity mapOption(Option o, Map<String, OptionEntity> optionEntityMap) {
+        OptionEntity option;
+        if (optionEntityMap.containsKey(o.getId())) {
+            option = optionEntityMap.get(o.getId());
+        } else {
+            option = OptionMapper.toSimpleOptionEntity(o);
+            optionEntityMap.put(o.getId(), option);
+        }
+        return option;
     }
 }

@@ -1,11 +1,11 @@
 package com.poolplatform.features.visit.adapters.mappers;
 
 import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
+import com.poolplatform.features.survey.domain.models.SimpleSurvey;
 import com.poolplatform.features.user.adapters.mappers.UserMapper;
+import com.poolplatform.features.user.domain.models.SimpleUser;
 import com.poolplatform.features.visit.adapters.entities.VisitEntity;
-import com.poolplatform.features.visit.domain.models.SimpleSurvey;
-import com.poolplatform.features.visit.domain.models.SimpleUser;
-import com.poolplatform.features.visit.domain.models.SimpleVisit;
+import com.poolplatform.features.visit.domain.models.VisitResponse;
 import com.poolplatform.features.visit.domain.models.Visit;
 
 public class VisitMapper {
@@ -36,16 +36,30 @@ public class VisitMapper {
         return visitEntity;
     }
 
-    public static SimpleVisit toSimpleVisit(Visit visit) {
-        SimpleVisit simpleVisit = new SimpleVisit();
-        simpleVisit.setSurvey(new SimpleSurvey(visit.getSurvey()));
-        simpleVisit.setVisited(new SimpleUser(visit.getVisited()));
-        simpleVisit.setVisitedAt(visit.getVisitedAt());
+    public static VisitResponse toVisitResponse(Visit visit) {
+        VisitResponse visitResponse = new VisitResponse();
+        visitResponse.setSurvey(new SimpleSurvey(visit.getSurvey()));
+        visitResponse.setVisited(new SimpleUser(visit.getVisited()));
+        visitResponse.setVisitedAt(visit.getVisitedAt());
 
         if (visit.getVisitor() != null) {
-            simpleVisit.setVisitor(new SimpleUser(visit.getVisitor()));
+            visitResponse.setVisitor(new SimpleUser(visit.getVisitor()));
         }
 
+        return visitResponse;
+    }
+
+    public static Visit toSimpleVisitFromEntity(VisitEntity visit) {
+        Visit simpleVisit = new Visit();
+        simpleVisit.setId(visit.getId());
+
         return simpleVisit;
+    }
+
+    public static VisitEntity toSimpleVisitEntity(Visit visit) {
+        VisitEntity simpleVisitEntity = new VisitEntity();
+        simpleVisitEntity.setId(visit.getId());
+
+        return simpleVisitEntity;
     }
 }

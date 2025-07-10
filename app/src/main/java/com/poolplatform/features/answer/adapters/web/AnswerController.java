@@ -9,7 +9,7 @@ import com.poolplatform.features.answer.adapters.dto.CreateAnswerDto;
 import com.poolplatform.features.answer.adapters.mappers.AnswerMapper;
 import com.poolplatform.features.answer.domain.AnswerService;
 import com.poolplatform.features.answer.domain.models.Answer;
-import com.poolplatform.features.answer.domain.models.SimpleAnswer;
+import com.poolplatform.features.answer.domain.models.AnswerResponse;
 import com.poolplatform.features.option.domain.OptionService;
 import com.poolplatform.features.option.domain.models.Option;
 import com.poolplatform.features.question.domain.QuestionService;
@@ -54,9 +54,9 @@ public class AnswerController {
     public ResponseEntity<?> getAll(@RequestParam(required = false) String param) {
         List<Answer> answers = answerService.get();
 
-        ResponseDTO<List<SimpleAnswer>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<AnswerResponse>> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("All answers in the app");
-        responseDTO.setData(answers.stream().map(AnswerMapper::toSimpleAnswer).collect(Collectors.toList()));
+        responseDTO.setData(answers.stream().map(AnswerMapper::toResponseAnswer).collect(Collectors.toList()));
 
         return ResponseEntity.ok(responseDTO);
     }
@@ -84,9 +84,9 @@ public class AnswerController {
 
         Answer answerSaved = answerService.upsert(answer);
 
-        ResponseDTO<SimpleAnswer> responseDTO = new ResponseDTO<>();
+        ResponseDTO<AnswerResponse> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("Answer saved!");
-        responseDTO.setData(AnswerMapper.toSimpleAnswer(answerSaved));
+        responseDTO.setData(AnswerMapper.toResponseAnswer(answerSaved));
 
         return ResponseEntity.ok(responseDTO);
     }

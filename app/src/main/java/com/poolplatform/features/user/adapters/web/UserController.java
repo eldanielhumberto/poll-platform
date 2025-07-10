@@ -7,7 +7,7 @@ import com.poolplatform.adapters.dto.ResponseDTO;
 import com.poolplatform.features.user.adapters.mappers.UserMapper;
 import com.poolplatform.features.user.domain.UserService;
 import com.poolplatform.features.user.domain.models.User;
-import com.poolplatform.features.user.domain.models.UserSummary;
+import com.poolplatform.features.user.domain.models.UserResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,9 +26,9 @@ public class UserController {
     public ResponseEntity<?> getAll() {
         List<User> users = userService.getAll();
 
-        ResponseDTO<List<UserSummary>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<UserResponse>> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("All users list");
-        responseDTO.setData(users.stream().map(UserMapper::toUserSummary).collect(Collectors.toList()));
+        responseDTO.setData(users.stream().map(UserMapper::toUserResponse).collect(Collectors.toList()));
 
         return ResponseEntity.ok(responseDTO);
     }
