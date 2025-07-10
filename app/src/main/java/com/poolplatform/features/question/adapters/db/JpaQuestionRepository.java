@@ -42,6 +42,11 @@ public interface JpaQuestionRepository extends JpaRepository<QuestionEntity, Str
     }
 
     @Override
+    default void saveAll(List<Question> questions) {
+        saveAll(QuestionMapper.toQuestionEntities(questions));
+    }
+
+    @Override
     default void remove(Question t) {
         delete(QuestionMapper.toQuestionEntity(t));
     }

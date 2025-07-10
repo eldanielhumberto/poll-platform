@@ -46,4 +46,9 @@ public class QuestionApplication implements QuestionService {
         return questionRepository.upsert(t);
     }
 
+    @Override
+    public void saveAll(List<Question> questions) {
+        questionRepository.saveAll(questions);
+    }
+
 }

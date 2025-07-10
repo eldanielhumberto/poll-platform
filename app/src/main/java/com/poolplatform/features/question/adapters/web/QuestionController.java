@@ -1,5 +1,6 @@
 package com.poolplatform.features.question.adapters.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,8 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.poolplatform.adapters.dto.ResponseDTO;
 import com.poolplatform.domain.exceptions.RequestException;
+import com.poolplatform.features.option.domain.models.Option;
 import com.poolplatform.features.question.adapters.dto.QuestionCreateDTO;
+import com.poolplatform.features.question.adapters.dto.QuestionForSaveAllDTO;
 import com.poolplatform.features.question.adapters.dto.QuestionUpdateDTO;
+import com.poolplatform.features.question.adapters.dto.SaveAllQuestionsDTO;
 import com.poolplatform.features.question.domain.QuestionService;
 import com.poolplatform.features.question.domain.models.Question;
 import com.poolplatform.features.question.domain.models.QuestionSummary;
@@ -95,6 +99,53 @@ public class QuestionController {
 
         ResponseDTO<Question> responseDTO = new ResponseDTO<>();
         responseDTO.setMessage("Question saved");
+
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @PostMapping("/saveAll")
+    public ResponseEntity<?> saveAll(@RequestBody SaveAllQuestionsDTO saveAllQuestionsDTO,
+            Authentication authentication) {
+        Optional<Survey> survey = surveyService.get(saveAllQuestionsDTO.getSurveyId());
+        if (survey.isEmpty())
+            throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
+
+        // Check if the survey author is the same as the user making the request
+        if (!survey.get().getAuthor().getId().equals(authentication.getPrincipal())) {
+            throw new RequestException("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        // Set questions and options
+        List<Question> questions = new ArrayList<>();
+        for (QuestionForSaveAllDTO questionForSave : saveAllQuestionsDTO.getQuestions()) {
+            Optional<Question> question = questionService.getByText(questionForSave.getQuestionText(),
+                    saveAllQuestionsDTO.getSurveyId());
+
+            if (question.isPresent())
+                continue; // Skip if the question already exists
+
+            Question newQuestion = new Question();
+            newQuestion.setQuestionText(questionForSave.getQuestionText());
+            newQuestion.setAuthor(survey.get().getAuthor());
+            newQuestion.setSurvey(survey.get());
+
+            List<Option> options = new ArrayList<>();
+            for (String optionText : questionForSave.getOptions()) {
+                Option newOption = new Option();
+                newOption.setOptionText(optionText);
+                newOption.setQuestion(newQuestion);
+                newOption.setSurvey(survey.get());
+                options.add(newOption);
+            }
+
+            newQuestion.setOptions(options);
+            questions.add(newQuestion);
+        }
+
+        questionService.saveAll(questions);
+
+        ResponseDTO<?> responseDTO = new ResponseDTO<>();
+        responseDTO.setMessage("Questions saved");
 
         return ResponseEntity.ok(responseDTO);
     }

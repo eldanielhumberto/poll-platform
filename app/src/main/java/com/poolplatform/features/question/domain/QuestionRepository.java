@@ -10,5 +10,7 @@ import com.poolplatform.features.survey.domain.models.Survey;
 public interface QuestionRepository extends Crud<Question> {
     List<Question> get(Survey survey);
 
+    void saveAll(List<Question> questions);
+
     Optional<Question> getByText(String questionText, String surveyId);
 }

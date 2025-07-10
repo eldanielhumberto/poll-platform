@@ -6,6 +6,7 @@ import com.poolplatform.features.option.adapters.entities.OptionEntity;
 import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
 import com.poolplatform.features.user.adapters.entities.UserEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class QuestionEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity author;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OptionEntity> options;
 
     public QuestionEntity() {
