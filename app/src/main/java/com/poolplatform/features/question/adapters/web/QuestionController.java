@@ -26,7 +26,6 @@ import com.poolplatform.features.question.adapters.dto.SaveAllQuestionsDTO;
 import com.poolplatform.features.question.adapters.mappers.QuestionMapper;
 import com.poolplatform.features.question.domain.QuestionService;
 import com.poolplatform.features.question.domain.models.Question;
-import com.poolplatform.features.question.domain.models.QuestionResponse;
 import com.poolplatform.features.survey.domain.SurveyService;
 import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.user.domain.models.User;

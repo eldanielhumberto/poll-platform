@@ -1,5 +1,4 @@
 import { Search } from 'lucide-react';
-import { Suspense } from 'react';
 
 import { getSurveys } from '@/lib/api/surveys';
 
@@ -9,8 +8,8 @@ import SurveysList from './_components/surveys/SurveysList';
 import Navbar from '@/components/Navbar';
 import FeaturedSurveys from './_components/FeaturedSurveys';
 
-export default function ExplorePage() {
-  const surveys = getSurveys();
+export default async function ExplorePage() {
+  const { data: surveys } = await getSurveys();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -28,9 +27,7 @@ export default function ExplorePage() {
         </div>
 
         {/* Featured surveys */}
-        <Suspense fallback={<h1>Loading featured surveys...</h1>}>
-          <FeaturedSurveys surveys={surveys} />
-        </Suspense>
+        <FeaturedSurveys surveys={surveys} />
 
         {/* Search and Filters */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -41,9 +38,7 @@ export default function ExplorePage() {
         </div>
 
         {/* Survey Grid */}
-        <Suspense fallback={<h1>Loading...</h1>}>
-          <SurveysList surveys={surveys} />
-        </Suspense>
+        <SurveysList surveys={surveys} />
       </main>
     </div>
   );

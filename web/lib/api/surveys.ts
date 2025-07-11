@@ -26,7 +26,7 @@ export async function getUserSurveys(): Promise<ServerResponse<Survey[]>> {
     };
   }
 
-  return { message: data.message, data: data.data, error: data.error };
+  return data;
 }
 
 export async function getSurveys(): Promise<ServerResponse<Survey[]>> {
@@ -45,14 +45,14 @@ export async function getSurveys(): Promise<ServerResponse<Survey[]>> {
     };
   }
 
-  return { message: data.message, data: data.data, error: data.error };
+  return data;
 }
 
 export async function deleteSurvey(
   surveyId: string
 ): Promise<ServerResponse<null>> {
   const session = await getSession();
-  if (!session) throw new Error('No session found');
+  if (!session) return { message: '', data: null, error: 'No session found' };
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/surveys/${surveyId}`,
@@ -75,5 +75,5 @@ export async function deleteSurvey(
     };
   }
 
-  return { message: data.message, data: data.data, error: data.error };
+  return data;
 }

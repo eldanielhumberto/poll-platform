@@ -1,10 +1,10 @@
 import { Plus } from 'lucide-react';
-import { Suspense } from 'react';
 
 import { getUserSurveys } from '@/lib/api/surveys';
 
 import SurveysList from './_components/surveys/SurveysList';
 
+import StatsList from '@/components/stats/StatsList';
 import Navbar from '@/components/Navbar';
 
 import { Button } from '@/components/ui/button';
@@ -15,10 +15,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import StatsList from '@/components/stats/StatsList';
 
-export default function DashboardPage() {
-  const surveysData = getUserSurveys();
+export default async function DashboardPage() {
+  const { data: surveys } = await getUserSurveys();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -55,9 +54,7 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <Suspense fallback={<h1>Loading...</h1>}>
-              <SurveysList surveysData={surveysData} />
-            </Suspense>
+            <SurveysList surveys={surveys} />
           </CardContent>
         </Card>
       </main>

@@ -1,8 +1,11 @@
 import { TrendingUp, Users } from 'lucide-react';
 import Link from 'next/link';
 
+import { Survey } from '@/interfaces/Survey';
+
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import {
   Card,
   CardContent,
@@ -10,18 +13,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Survey } from '@/interfaces/Survey';
-import { use } from 'react';
-import { ServerResponse } from '@/interfaces/ServerResponse';
-import { Badge } from '@/components/ui/badge';
 
 interface Props {
-  surveys: Promise<ServerResponse<Survey[]>>;
+  surveys: Survey[];
 }
 
 export default function FeaturedSurveys({ surveys }: Props) {
-  const { data } = use(surveys);
-
   return (
     <div className="mb-8">
       <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
@@ -29,7 +26,7 @@ export default function FeaturedSurveys({ surveys }: Props) {
         Encuestas Destacadas
       </h2>
       <div className="grid md:grid-cols-2 gap-6">
-        {data.slice(0, 2).map((survey) => (
+        {surveys.slice(0, 2).map((survey) => (
           <Card
             key={survey.id}
             className="border-0 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-br from-blue-50 to-purple-50"
