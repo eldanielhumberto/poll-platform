@@ -6,10 +6,10 @@ import java.util.stream.Collectors;
 import com.poolplatform.features.option.domain.models.SimpleOption;
 import com.poolplatform.features.survey.domain.models.SimpleSurvey;
 
+// Represents a question response for the client, containing question text and options
 public class QuestionResponse {
     private String id;
     private String questionText;
-    private SimpleSurvey survey;
     private List<SimpleOption> options;
 
     public QuestionResponse() {
@@ -22,8 +22,6 @@ public class QuestionResponse {
         SimpleSurvey survey = new SimpleSurvey();
         survey.setId(question.getSurvey().getId());
         survey.setTitle(question.getSurvey().getTitle());
-
-        this.survey = survey;
 
         this.options = question.getOptions().stream().map(o -> new SimpleOption(o.getId(), o.getOptionText()))
                 .collect(Collectors.toList());
@@ -43,14 +41,6 @@ public class QuestionResponse {
 
     public void setQuestionText(String questionText) {
         this.questionText = questionText;
-    }
-
-    public SimpleSurvey getSurvey() {
-        return survey;
-    }
-
-    public void setSurvey(SimpleSurvey survey) {
-        this.survey = survey;
     }
 
     public List<SimpleOption> getOptions() {

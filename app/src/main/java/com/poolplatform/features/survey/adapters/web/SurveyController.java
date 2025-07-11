@@ -61,7 +61,7 @@ public class SurveyController {
             visitService.registerVisitIfAllowed(authentication, survey);
 
             responseDTO.setMessage("Get a survey");
-            responseDTO.setData(SurveyMapper.toSurveyResponse(survey));
+            responseDTO.setData(SurveyMapper.tOneSurveyResponse(survey));
 
             return ResponseEntity.ok(responseDTO);
         }

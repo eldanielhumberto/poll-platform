@@ -23,6 +23,7 @@ import com.poolplatform.domain.exceptions.RequestException;
 import com.poolplatform.features.question.adapters.dto.QuestionCreateDTO;
 import com.poolplatform.features.question.adapters.dto.QuestionUpdateDTO;
 import com.poolplatform.features.question.adapters.dto.SaveAllQuestionsDTO;
+import com.poolplatform.features.question.adapters.mappers.QuestionMapper;
 import com.poolplatform.features.question.domain.QuestionService;
 import com.poolplatform.features.question.domain.models.Question;
 import com.poolplatform.features.question.domain.models.QuestionResponse;
@@ -52,7 +53,7 @@ public class QuestionController {
                 throw new RequestException("The question does not exist", HttpStatus.NOT_FOUND);
 
             responseDTO.setMessage("Get a question");
-            responseDTO.setData(new QuestionResponse(questionOptional.get()));
+            responseDTO.setData(QuestionMapper.toQuestionResponseWithSurvey(questionOptional.get()));
             return ResponseEntity.ok(responseDTO);
         }
 
@@ -64,14 +65,16 @@ public class QuestionController {
             List<Question> questions = questionService.get(survey.get());
 
             responseDTO.setMessage("Get questions by survey");
-            responseDTO.setData(questions.stream().map(QuestionResponse::new).collect(Collectors.toList()));
+            responseDTO.setData(
+                    questions.stream().map(QuestionMapper::toQuestionResponseWithSurvey).collect(Collectors.toList()));
             return ResponseEntity.ok(responseDTO);
         }
 
         List<Question> questions = questionService.get();
 
         responseDTO.setMessage("Get all questions");
-        responseDTO.setData(questions.stream().map(QuestionResponse::new).collect(Collectors.toList()));
+        responseDTO.setData(
+                questions.stream().map(QuestionMapper::toQuestionResponseWithSurvey).collect(Collectors.toList()));
         return ResponseEntity.ok(responseDTO);
     }
 

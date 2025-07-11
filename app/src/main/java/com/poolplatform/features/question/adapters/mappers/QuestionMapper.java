@@ -8,8 +8,11 @@ import java.util.stream.Collectors;
 import com.poolplatform.features.option.adapters.entities.OptionEntity;
 import com.poolplatform.features.option.adapters.mappers.OptionMapper;
 import com.poolplatform.features.option.domain.models.Option;
+import com.poolplatform.features.option.domain.models.SimpleOption;
 import com.poolplatform.features.question.adapters.entities.QuestionEntity;
 import com.poolplatform.features.question.domain.models.Question;
+import com.poolplatform.features.question.domain.models.QuestionResponse;
+import com.poolplatform.features.question.domain.models.QuestionResponseWithSurvey;
 import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
 import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
 import com.poolplatform.features.survey.domain.models.Survey;
@@ -75,6 +78,67 @@ public class QuestionMapper {
         return questionEntity;
     }
 
+    /**
+     * Converts a Question object to a QuestionResponse object.
+     *
+     * @param question The Question object to convert.
+     * @return A QuestionResponse object containing the question text and options.
+     */
+    public static QuestionResponse toQuestionResponse(Question question) {
+        QuestionResponse questionResponse = new QuestionResponse();
+        questionResponse.setId(question.getId());
+        questionResponse.setQuestionText(question.getQuestionText());
+
+        if (question.getOptions() != null) {
+            questionResponse.setOptions(question.getOptions().stream()
+                    .map(o -> {
+                        SimpleOption option = new SimpleOption();
+                        option.setId(o.getId());
+                        option.setOptionText(o.getOptionText());
+
+                        return option;
+                    }).collect(Collectors.toList()));
+        }
+
+        return questionResponse;
+    }
+
+    /**
+     * Converts a Question object to a QuestionResponseWithSurvey object.
+     *
+     * @param question The Question object to convert.
+     * @return A QuestionResponseWithSurvey object containing the question and its
+     *         survey.
+     */
+    public static QuestionResponseWithSurvey toQuestionResponseWithSurvey(Question question) {
+        QuestionResponseWithSurvey questionResponse = new QuestionResponseWithSurvey();
+        questionResponse.setId(question.getId());
+        questionResponse.setQuestionText(question.getQuestionText());
+
+        if (question.getOptions() != null) {
+            questionResponse.setOptions(question.getOptions().stream()
+                    .map(o -> {
+                        SimpleOption option = new SimpleOption();
+                        option.setId(o.getId());
+                        option.setOptionText(o.getOptionText());
+
+                        return option;
+                    }).collect(Collectors.toList()));
+        }
+
+        if (question.getSurvey() != null) {
+            questionResponse.setSurvey(SurveyMapper.toSimpleSurvey(question.getSurvey()));
+        }
+
+        return questionResponse;
+    }
+
+    /**
+     * Converts a list of Question objects to a list of QuestionEntity objects.
+     *
+     * @param questions The list of Question objects to convert.
+     * @return A list of QuestionEntity objects.
+     */
     public static List<QuestionEntity> toQuestionEntities(List<Question> questions) {
         List<QuestionEntity> questionEntities = new ArrayList<>();
         for (Question question : questions) {
@@ -98,6 +162,14 @@ public class QuestionMapper {
         return questionEntities;
     }
 
+    /**
+     * Maps a QuestionEntity object to a Question object, using a map to avoid
+     * duplicate Option objects.
+     *
+     * @param q               The QuestionEntity object to map.
+     * @param optionEntityMap A map of Option objects to avoid duplicates.
+     * @return The mapped Question object.
+     */
     public static Question mapQuestionsFromEntity(QuestionEntity q, Map<String, Option> optionEntityMap) {
         User author = UserMapper.toUser(q.getAuthor());
 
@@ -126,6 +198,14 @@ public class QuestionMapper {
         return question;
     }
 
+    /**
+     * Maps a Question object to a QuestionEntity object, using a map to avoid
+     * duplicate OptionEntity objects.
+     *
+     * @param q               The Question object to map.
+     * @param optionEntityMap A map of OptionEntity objects to avoid duplicates.
+     * @return The mapped QuestionEntity object.
+     */
     public static QuestionEntity mapQuestion(Question q, Map<String, OptionEntity> optionEntityMap) {
         UserEntity author = UserMapper.toUserEntity(q.getAuthor());
 

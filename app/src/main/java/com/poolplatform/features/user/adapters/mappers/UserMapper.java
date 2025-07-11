@@ -103,6 +103,7 @@ public class UserMapper {
     public static SimpleUser toSimpleUser(User user) {
         SimpleUser simpleUser = new SimpleUser();
         simpleUser.setEmail(user.getEmail());
+        simpleUser.setUsername(user.getUsername());
 
         return simpleUser;
     }

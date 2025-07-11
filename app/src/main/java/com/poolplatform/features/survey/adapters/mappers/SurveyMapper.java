@@ -10,6 +10,8 @@ import com.poolplatform.features.option.adapters.mappers.OptionMapper;
 import com.poolplatform.features.option.domain.models.Option;
 import com.poolplatform.features.question.adapters.mappers.QuestionMapper;
 import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
+import com.poolplatform.features.survey.domain.models.OneSurveyResponse;
+import com.poolplatform.features.survey.domain.models.SimpleSurvey;
 import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.survey.domain.models.SurveyResponse;
 import com.poolplatform.features.user.adapters.mappers.UserMapper;
@@ -91,6 +93,16 @@ public class SurveyMapper {
         return surveyEntity;
     }
 
+    // Converts a Survey object to a SimpleSurvey object
+    public static SimpleSurvey toSimpleSurvey(Survey survey) {
+        SimpleSurvey simpleSurvey = new SimpleSurvey();
+        simpleSurvey.setId(survey.getId());
+        simpleSurvey.setTitle(survey.getTitle());
+
+        return simpleSurvey;
+    }
+
+    // Converts a Survey object to a SurveyResponse object
     public static SurveyResponse toSurveyResponse(Survey survey) {
         SurveyResponse surveyResponse = new SurveyResponse();
         surveyResponse.setId(survey.getId());
@@ -103,6 +115,22 @@ public class SurveyMapper {
         surveyResponse.setCreatedAt(survey.getCreatedAt());
 
         return surveyResponse;
+    }
+
+    // Converts a Survey object to a OneSurveyResponse object
+    public static OneSurveyResponse tOneSurveyResponse(Survey survey) {
+        OneSurveyResponse oneSurveyResponse = new OneSurveyResponse();
+        oneSurveyResponse.setId(survey.getId());
+        oneSurveyResponse.setTitle(survey.getTitle());
+        oneSurveyResponse.setDescription(survey.getDescription());
+        oneSurveyResponse.setAuthor(UserMapper.toSimpleUser(survey.getAuthor()));
+        oneSurveyResponse.setAnswers(survey.getAnswers().size());
+        oneSurveyResponse.setQuestions(survey.getQuestions().stream()
+                .map(QuestionMapper::toQuestionResponse).collect(Collectors.toList()));
+
+        oneSurveyResponse.setCreatedAt(survey.getCreatedAt());
+
+        return oneSurveyResponse;
     }
 
 }
