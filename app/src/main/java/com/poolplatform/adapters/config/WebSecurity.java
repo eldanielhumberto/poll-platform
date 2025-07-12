@@ -37,6 +37,7 @@ public class WebSecurity {
 								"/api/questions/get",
 								"/api/answers/get",
 								"/api/visits",
+								"/api/categories",
 								"/swagger-ui/**",
 								"/api-docs/**")
 						.permitAll()

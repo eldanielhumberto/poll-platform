@@ -16,6 +16,7 @@ import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.survey.domain.models.SurveyResponse;
 import com.poolplatform.features.user.adapters.mappers.UserMapper;
 import com.poolplatform.features.visit.adapters.mappers.VisitMapper;
+import com.poolplatform.features.category.adapters.mappers.CategoryMapper;
 
 public class SurveyMapper {
     public static Survey toSurvey(SurveyEntity surveyEntity) {
@@ -26,6 +27,7 @@ public class SurveyMapper {
         survey.setTitle(surveyEntity.getTitle());
         survey.setDescription(surveyEntity.getDescription());
         survey.setAuthor(UserMapper.toUser(surveyEntity.getAuthor()));
+        survey.setCategory(CategoryMapper.toBasicCategory(surveyEntity.getCategory()));
         survey.setCreatedAt(surveyEntity.getCreatedAt());
 
         // Set visits
@@ -64,6 +66,7 @@ public class SurveyMapper {
         surveyEntity.setTitle(survey.getTitle());
         surveyEntity.setDescription(survey.getDescription());
         surveyEntity.setAuthor(UserMapper.toUserEntity(survey.getAuthor()));
+        surveyEntity.setCategory(CategoryMapper.toBasicCategory(survey.getCategory()));
         surveyEntity.setCreatedAt(survey.getCreatedAt());
 
         // Set visits
@@ -102,6 +105,23 @@ public class SurveyMapper {
         return simpleSurvey;
     }
 
+    // Converts a SurveyEntity object to a SimpleSurvey object
+    public static Survey toBasicSurvey(SurveyEntity surveyEntity) {
+        Survey simpleSurvey = new Survey();
+        simpleSurvey.setId(surveyEntity.getId());
+        simpleSurvey.setTitle(surveyEntity.getTitle());
+
+        return simpleSurvey;
+    }
+
+    public static SurveyEntity toBasicSurveyEntity(Survey survey) {
+        SurveyEntity simpleSurveyEntity = new SurveyEntity();
+        simpleSurveyEntity.setId(survey.getId());
+        simpleSurveyEntity.setTitle(survey.getTitle());
+
+        return simpleSurveyEntity;
+    }
+
     // Converts a Survey object to a SurveyResponse object
     public static SurveyResponse toSurveyResponse(Survey survey) {
         SurveyResponse surveyResponse = new SurveyResponse();
@@ -109,6 +129,7 @@ public class SurveyMapper {
         surveyResponse.setTitle(survey.getTitle());
         surveyResponse.setDescription(survey.getDescription());
         surveyResponse.setAuthor(UserMapper.toSimpleUser(survey.getAuthor()));
+        surveyResponse.setCategory(CategoryMapper.toCategoryResponse(survey.getCategory()));
         surveyResponse.setVisits(survey.getVisits().size());
         surveyResponse.setAnswers(survey.getAnswers().size());
         surveyResponse.setQuestions(survey.getQuestions().size());
@@ -124,6 +145,7 @@ public class SurveyMapper {
         oneSurveyResponse.setTitle(survey.getTitle());
         oneSurveyResponse.setDescription(survey.getDescription());
         oneSurveyResponse.setAuthor(UserMapper.toSimpleUser(survey.getAuthor()));
+        oneSurveyResponse.setCategory(CategoryMapper.toCategoryResponse(survey.getCategory()));
         oneSurveyResponse.setAnswers(survey.getAnswers().size());
         oneSurveyResponse.setQuestions(survey.getQuestions().stream()
                 .map(QuestionMapper::toQuestionResponse).collect(Collectors.toList()));

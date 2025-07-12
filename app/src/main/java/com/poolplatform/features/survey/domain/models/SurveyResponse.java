@@ -2,6 +2,7 @@ package com.poolplatform.features.survey.domain.models;
 
 import java.time.Instant;
 
+import com.poolplatform.features.category.domain.models.CategoryResponse;
 import com.poolplatform.features.user.domain.models.SimpleUser;
 
 public class SurveyResponse {
@@ -9,6 +10,7 @@ public class SurveyResponse {
     private String title;
     private String description;
     private SimpleUser author;
+    private CategoryResponse category;
     private int visits;
     private int answers;
     private int questions;
@@ -76,6 +78,14 @@ public class SurveyResponse {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public CategoryResponse getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryResponse category) {
+        this.category = category;
     }
 
 }

@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.poolplatform.adapters.dto.ResponseDTO;
 import com.poolplatform.domain.exceptions.RequestException;
+import com.poolplatform.features.category.domain.CategoryService;
+import com.poolplatform.features.category.domain.models.Category;
 import com.poolplatform.features.question.domain.QuestionService;
 import com.poolplatform.features.survey.adapters.dto.SurveyRequestDTO;
 import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
@@ -44,6 +46,9 @@ public class SurveyController {
 
     @Autowired
     private VisitService visitService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping("/get")
     public ResponseEntity<?> getSurveys(@RequestParam(required = false) String id, Authentication authentication) {
@@ -89,10 +94,15 @@ public class SurveyController {
     @PostMapping()
     public ResponseEntity<?> saveSurvey(@Valid @RequestBody SurveyRequestDTO rSurveyRequestDTO,
             Authentication authentication) {
+
+        Category category = categoryService.getCategoryById(rSurveyRequestDTO.getCategoryId())
+                .orElseThrow(() -> new RequestException("The category does not exist", HttpStatus.BAD_REQUEST));
+
         Survey newSurvey = new Survey();
         newSurvey.setTitle(rSurveyRequestDTO.getTitle());
         newSurvey.setDescription(rSurveyRequestDTO.getDescription());
         newSurvey.setAuthor((User) authentication.getCredentials());
+        newSurvey.setCategory(category);
         newSurvey.setQuestions(new ArrayList<>());
         newSurvey.setCreatedAt(Instant.now());
 

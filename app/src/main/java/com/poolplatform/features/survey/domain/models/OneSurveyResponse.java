@@ -3,6 +3,7 @@ package com.poolplatform.features.survey.domain.models;
 import java.time.Instant;
 import java.util.List;
 
+import com.poolplatform.features.category.domain.models.CategoryResponse;
 import com.poolplatform.features.question.domain.models.QuestionResponse;
 import com.poolplatform.features.user.domain.models.SimpleUser;
 
@@ -12,6 +13,7 @@ public class OneSurveyResponse {
     private String title;
     private String description;
     private SimpleUser author;
+    private CategoryResponse category;
     private List<QuestionResponse> questions;
     private int answers;
     private Instant createdAt;
@@ -20,7 +22,7 @@ public class OneSurveyResponse {
     }
 
     public OneSurveyResponse(String id, String title, String description, SimpleUser author, int answers,
-            List<QuestionResponse> questions, Instant createdAt) {
+            List<QuestionResponse> questions, Instant createdAt, CategoryResponse category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -28,6 +30,7 @@ public class OneSurveyResponse {
         this.answers = answers;
         this.questions = questions;
         this.createdAt = createdAt;
+        this.category = category;
     }
 
     public String getId() {
@@ -84,6 +87,14 @@ public class OneSurveyResponse {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public CategoryResponse getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryResponse category) {
+        this.category = category;
     }
 
 }

@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import com.poolplatform.features.answer.domain.models.Answer;
+import com.poolplatform.features.category.domain.models.Category;
 import com.poolplatform.features.option.domain.models.Option;
 import com.poolplatform.features.question.domain.models.Question;
 import com.poolplatform.features.user.domain.models.User;
@@ -14,6 +15,7 @@ public class Survey {
     private String title;
     private String description;
     private User author;
+    private Category category;
     private List<Question> questions;
     private List<Visit> visits;
     private List<Option> options;
@@ -25,7 +27,7 @@ public class Survey {
 
     public Survey(String id, String title, String description, User author, List<Question> questions,
             List<Visit> visits,
-            Instant createdAt, List<Option> options, List<Answer> answers) {
+            Instant createdAt, List<Option> options, List<Answer> answers, Category category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -35,6 +37,7 @@ public class Survey {
         this.options = options;
         this.answers = answers;
         this.createdAt = createdAt;
+        this.category = category;
     }
 
     public String getId() {
@@ -107,6 +110,14 @@ public class Survey {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
 }

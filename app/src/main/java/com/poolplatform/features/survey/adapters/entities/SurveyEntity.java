@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.poolplatform.features.answer.adapters.entities.AnswerEntity;
+import com.poolplatform.features.category.adapters.entities.CategoryEntity;
 import com.poolplatform.features.option.adapters.entities.OptionEntity;
 import com.poolplatform.features.question.adapters.entities.QuestionEntity;
 import com.poolplatform.features.user.adapters.entities.UserEntity;
@@ -39,6 +40,10 @@ public class SurveyEntity {
     @JoinColumn(name = "user_id")
     private UserEntity author;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
+
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionEntity> questions;
 
@@ -59,7 +64,7 @@ public class SurveyEntity {
 
     public SurveyEntity(String id, String title, String description, UserEntity author, List<QuestionEntity> questions,
             List<VisitEntity> visits,
-            Instant createdAt, List<OptionEntity> options, List<AnswerEntity> answers) {
+            Instant createdAt, List<OptionEntity> options, List<AnswerEntity> answers, CategoryEntity category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -69,6 +74,7 @@ public class SurveyEntity {
         this.options = options;
         this.answers = answers;
         this.createdAt = createdAt;
+        this.category = category;
     }
 
     public String getId() {
@@ -141,6 +147,14 @@ public class SurveyEntity {
 
     public void setAnswers(List<AnswerEntity> answers) {
         this.answers = answers;
+    }
+
+    public CategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEntity category) {
+        this.category = category;
     }
 
 }

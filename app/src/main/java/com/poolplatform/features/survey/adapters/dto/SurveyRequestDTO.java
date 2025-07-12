@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.poolplatform.features.question.adapters.dto.QuestionForSaveAllDTO;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -18,6 +19,10 @@ public class SurveyRequestDTO {
 
     @NotNull
     private List<QuestionForSaveAllDTO> questions;
+
+    @NonNull
+    @NotBlank
+    private String categoryId;
 
     public String getTitle() {
         return title;
@@ -41,5 +46,13 @@ public class SurveyRequestDTO {
 
     public void setQuestions(List<QuestionForSaveAllDTO> questions) {
         this.questions = questions;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 }

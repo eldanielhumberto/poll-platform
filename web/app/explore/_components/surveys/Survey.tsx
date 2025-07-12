@@ -22,12 +22,13 @@ export default function Survey({
   author,
   createdAt,
   answers,
+  category,
 }: ISurvey) {
   return (
     <Card className="border-0 shadow-sm hover:shadow-md transition-shadow">
       <CardHeader>
         <div className="flex items-start justify-between mb-2">
-          <Badge className="bg-blue-100 text-blue-800">Tecnologia</Badge>
+          <Badge className={category.color}>{category.name}</Badge>
           {/* <div className="flex items-center space-x-1">
             <Star className="h-4 w-4 text-yellow-500 fill-current" />
             <span className="text-sm">{survey.rating}</span>

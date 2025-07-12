@@ -17,6 +17,7 @@ export default function SurveysList({ surveys }: Props) {
           title={survey.title}
           visits={survey.visits}
           answers={survey.answers}
+          category={survey.category}
           key={survey.id}
         />
       ))}

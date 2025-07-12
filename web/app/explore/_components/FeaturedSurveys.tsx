@@ -33,7 +33,9 @@ export default function FeaturedSurveys({ surveys }: Props) {
           >
             <CardHeader>
               <div className="flex items-start justify-between">
-                <Badge className="bg-blue-100 text-blue-800">Tecnologia</Badge>
+                <Badge className={`${survey.category.color} `}>
+                  {survey.category.name}
+                </Badge>
               </div>
               <CardTitle className="text-lg">{survey.title}</CardTitle>
               <CardDescription>{survey.description}</CardDescription>
