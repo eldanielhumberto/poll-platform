@@ -48,6 +48,27 @@ export async function getSurveys(): Promise<ServerResponse<Survey[]>> {
   return data;
 }
 
+export async function getSurvey(
+  surveyId: string
+): Promise<ServerResponse<Survey>> {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/surveys/get?id=${surveyId}`
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    console.log(data);
+    return {
+      message: 'Get survey',
+      error: 'Failed to fetch survey',
+      data: {} as Survey,
+    };
+  }
+
+  return data;
+}
+
 export async function deleteSurvey(
   surveyId: string
 ): Promise<ServerResponse<null>> {

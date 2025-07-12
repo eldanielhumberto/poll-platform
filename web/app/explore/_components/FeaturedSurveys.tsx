@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import dayjs from 'dayjs';
 
 interface Props {
   surveys: Survey[];
@@ -55,7 +56,9 @@ export default function FeaturedSurveys({ surveys }: Props) {
                     <p className="text-sm font-medium">
                       {survey.author.username}
                     </p>
-                    <p className="text-xs text-gray-500">{survey.createdAt}</p>
+                    <p className="text-xs text-gray-500">
+                      Creada el {dayjs(survey.createdAt).format('DD MMMM YYYY')}
+                    </p>
                   </div>
                 </div>
                 <div className="text-right">

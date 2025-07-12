@@ -1,3 +1,4 @@
+import { Question } from './Question';
 import { User } from './User';
 
 export interface Survey {
@@ -10,6 +11,7 @@ export interface Survey {
   };
   visits: number;
   answers: number;
+  questions?: Question[];
   author: User;
   createdAt: string;
 }

@@ -13,7 +13,7 @@ const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
     rules: {
-      indent: ['warn', 2],
+      indent: 'off',
       'no-tabs': ['error', { allowIndentationTabs: true }],
     },
   },
