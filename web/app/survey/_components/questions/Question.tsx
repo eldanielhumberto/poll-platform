@@ -38,15 +38,16 @@ export default function Question({
           {question.options?.map((option) => (
             <div
               key={option.id}
-              className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50"
+              className="flex items-center space-x-2 rounded-lg hover:bg-gray-50 pl-3"
             >
               <RadioGroupItem
                 value={option.optionText}
                 id={`${question.id}-${option.optionText}`}
+                className=""
               />
               <Label
                 htmlFor={`${question.id}-${option.optionText}`}
-                className="flex-1 cursor-pointer"
+                className="flex-1 cursor-pointer hover:bg-gray-50 pr-3 pb-3 pt-3"
               >
                 {option.optionText}
               </Label>

@@ -6,6 +6,7 @@ import { getUser } from '@/lib/api/auth';
 
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
+import Navbar from '@/components/Navbar';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -28,8 +29,11 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={inter.className}>
-      <body>
-        <AuthProvider user={user}>{children}</AuthProvider>
+      <body className="flex flex-col min-h-screen">
+        <AuthProvider user={user}>
+          <Navbar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { Button } from '../components/ui/button';
 import {
   ArrowRight,
   BarChart3,
@@ -9,6 +8,8 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
+
+import { Button } from '../components/ui/button';
 import {
   Card,
   CardDescription,
@@ -18,9 +19,9 @@ import {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <main className="bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
-      <header className=" bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <header className=" bg-white/80 backdrop-blur-sm fixed w-full top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <BarChart3 className="h-8 w-8 text-blue-600" />
@@ -52,8 +53,9 @@ export default function Home() {
           </div>
         </div>
       </header>
+
       {/* Hero Section */}
-      <section className="py-20 px-4">
+      <section className="min-h-screen flex items-center justify-center">
         <div className="container mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
             Crea encuestas
@@ -250,6 +252,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }
