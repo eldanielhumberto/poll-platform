@@ -1,13 +1,18 @@
+'use client';
+
 import Link from 'next/link';
 import {
   ArrowRight,
   BarChart3,
   Globe,
+  Plus,
   Shield,
   TrendingUp,
   Users,
   Zap,
 } from 'lucide-react';
+
+import { useAuth } from '@/hooks/useAuth';
 
 import { Button } from '../components/ui/button';
 import {
@@ -18,6 +23,8 @@ import {
 } from '../components/ui/card';
 
 export default function Home() {
+  const { user } = useAuth();
+
   return (
     <main className="bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
@@ -29,27 +36,54 @@ export default function Home() {
               Poll Platform
             </span>
           </div>
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link
-              href="#features"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Características
-            </Link>
-            <Link
-              href="#how-it-works"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Cómo funciona
-            </Link>
-          </nav>
+          {!user && (
+            <nav className="hidden md:flex items-center space-x-8">
+              <Link
+                href="#features"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Características
+              </Link>
+              <Link
+                href="#how-it-works"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Cómo funciona
+              </Link>
+            </nav>
+          )}
           <div className="flex items-center space-x-4">
-            <Link href="/auth/login">
-              <Button variant="ghost">Iniciar Sesión</Button>
-            </Link>
-            <Link href="/auth/register">
-              <Button>Registrarse</Button>
-            </Link>
+            {user ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 `}
+                >
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="hidden sm:flex w-40"
+                  >
+                    Ir al dashboard
+                  </Button>
+                </Link>
+                <Link href="/create">
+                  <Button size="sm" className="hidden sm:flex w-40">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Nueva Encuesta
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/auth/login">
+                  <Button variant="ghost">Iniciar Sesión</Button>
+                </Link>
+                <Link href="/auth/register">
+                  <Button>Registrarse</Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -69,12 +103,15 @@ export default function Home() {
             insights valiosos de tu audiencia con gráficos en tiempo real.
           </p>
           <div className="flex items-center flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/auth/register">
-              <Button size="lg" className="text-lg px-8 py-3">
-                Comenzar Gratis
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+            {!user && (
+              <Link href="/auth/register">
+                <Button size="lg" className="text-lg px-8 py-3">
+                  Comenzar Gratis
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            )}
+
             <Link href="/explore">
               <Button
                 size="lg"
@@ -221,22 +258,29 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-blue-600 to-purple-600">
-        <div className="container mx-auto text-center flex flex-col items-center">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            ¿Listo para comenzar?
-          </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Únete a miles de usuarios que ya están creando encuestas increíbles
-          </p>
-          <Link href="/auth/register">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-3">
-              Crear Cuenta Gratis
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
-        </div>
-      </section>
+      {!user && (
+        <section className="py-20 px-4 bg-gradient-to-r from-blue-600 to-purple-600">
+          <div className="container mx-auto text-center flex flex-col items-center">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              ¿Listo para comenzar?
+            </h2>
+            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+              Únete a miles de usuarios que ya están creando encuestas
+              increíbles
+            </p>
+            <Link href="/auth/register">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="text-lg px-8 py-3"
+              >
+                Crear Cuenta Gratis
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12 px-4">
