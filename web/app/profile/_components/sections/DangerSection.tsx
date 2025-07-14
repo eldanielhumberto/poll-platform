@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Trash2, UserX } from 'lucide-react';
 
-export default function DangerZone() {
+export default function DangerSection() {
   return (
     <div>
       <h3 className="text-lg font-semibold text-red-600 mb-4 flex items-center">
