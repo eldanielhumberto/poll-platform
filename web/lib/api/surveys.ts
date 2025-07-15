@@ -1,4 +1,4 @@
-import { Survey } from '@/interfaces/Survey';
+import { Survey, SurveyDataToSend } from '@/interfaces/Survey';
 import { getSession } from '../session';
 import { ServerResponse } from '@/interfaces/ServerResponse';
 
@@ -67,6 +67,30 @@ export async function getSurvey(
   }
 
   return data;
+}
+
+export async function createSurvey(dataToSend: SurveyDataToSend) {
+  console.log(dataToSend);
+
+  const session = await getSession();
+  if (!session) return { message: '', data: null, error: 'No session found' };
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/surveys`, {
+    method: 'POST',
+    headers: {
+      Authorization: session,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(dataToSend),
+  });
+
+  if (!response.ok) {
+    return {
+      message: 'Create survey',
+      error: 'Failed to create survey',
+      data: null,
+    };
+  }
 }
 
 export async function deleteSurvey(

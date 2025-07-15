@@ -20,6 +20,8 @@ export default function SurveysList({ surveys }: Props) {
           createdAt={survey.createdAt}
           author={survey.author}
           answers={survey.answers}
+          category={survey.category}
+          questions={survey.questions}
           id={survey.id}
         />
       ))}

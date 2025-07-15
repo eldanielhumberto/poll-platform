@@ -1,12 +1,12 @@
-import { Flag, Share2, Users } from 'lucide-react';
+import { Share2, Users } from 'lucide-react';
 import dayjs from 'dayjs';
 
 import { Survey } from '@/interfaces/Survey';
 
-import { Card, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Avatar, AvatarFallback } from './ui/avatar';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
+import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Avatar, AvatarFallback } from '../ui/avatar';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
 
 interface Props {
   survey: Survey;
@@ -24,9 +24,6 @@ export default function SurveyDetails({ survey }: Props) {
             <Button variant="ghost" size="sm">
               <Share2 className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm">
-              <Flag className="h-4 w-4" />
-            </Button>
           </div>
         </div>
 
@@ -39,14 +36,14 @@ export default function SurveyDetails({ survey }: Props) {
           <div className="flex items-center space-x-3">
             <Avatar className="h-10 w-10">
               <AvatarFallback>
-                {survey.author.username
+                {survey.author?.username
                   .split(' ')
                   .map((n) => n[0])
-                  .join('')}
+                  .join('') || 'U'}
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-medium">{survey.author.username}</p>
+              <p className="font-medium">{survey.author?.username || 'User'}</p>
               <p className="text-sm text-gray-500">
                 Creada el {dayjs(survey.createdAt).format('DD MMMM YYYY')}
               </p>
