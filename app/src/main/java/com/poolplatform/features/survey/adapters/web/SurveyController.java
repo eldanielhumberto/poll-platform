@@ -58,7 +58,7 @@ public class SurveyController {
         if (id != null) {
             Optional<Survey> surveyOptional = surveyService.get(id);
             if (surveyOptional.isEmpty())
-                throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
+                throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
 
             Survey survey = surveyOptional.get();
 
@@ -96,7 +96,7 @@ public class SurveyController {
             Authentication authentication) {
 
         Category category = categoryService.getCategoryById(rSurveyRequestDTO.getCategoryId())
-                .orElseThrow(() -> new RequestException("The category does not exist", HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new RequestException("The category does not exist", HttpStatus.NOT_FOUND));
 
         Survey newSurvey = new Survey();
         newSurvey.setTitle(rSurveyRequestDTO.getTitle());
@@ -123,7 +123,7 @@ public class SurveyController {
             Authentication authentication) {
         Optional<Survey> surveyOptional = surveyService.get(id);
         if (surveyOptional.isEmpty())
-            throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
+            throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
 
         Survey survey = surveyOptional.get();
         String authorId = survey.getAuthor().getId();
@@ -162,7 +162,7 @@ public class SurveyController {
     public ResponseEntity<?> deleteSurvey(@PathVariable String id, Authentication authentication) {
         Optional<Survey> surveyOptional = surveyService.get(id);
         if (surveyOptional.isEmpty())
-            throw new RequestException("The survey does not exist", HttpStatus.BAD_REQUEST);
+            throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
 
         Survey survey = surveyOptional.get();
         String authorId = survey.getAuthor().getId();

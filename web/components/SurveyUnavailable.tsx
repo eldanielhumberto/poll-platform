@@ -1,10 +1,11 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+
+import { Card, CardContent } from './ui/card';
+import { Button } from './ui/button';
 
 export default function SurveyUnavailable() {
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="flex flex-1 items-center justify-center">
       <div className="max-w-2xl mx-auto text-center">
         <Card className="border-0 shadow-lg">
           <CardContent className="pt-8 pb-8">

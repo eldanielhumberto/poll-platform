@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 import submitAnswersAction from '@/actions/surveys/submitAnswers';
 
-import SurveyUnavailable from '../_components/SurveyUnavailable';
+import SurveyUnavailable from '../../../components/SurveyUnavailable';
 import SubmittedMessage from '../_components/SubmittedMessage';
 
 import { SurveyView } from '@/components/SurveyView';
