@@ -70,8 +70,6 @@ export async function getSurvey(
 }
 
 export async function createSurvey(dataToSend: SurveyDataToSend) {
-  console.log(dataToSend);
-
   const session = await getSession();
   if (!session) return { message: '', data: null, error: 'No session found' };
 
@@ -88,6 +86,31 @@ export async function createSurvey(dataToSend: SurveyDataToSend) {
     return {
       message: 'Create survey',
       error: 'Failed to create survey',
+      data: null,
+    };
+  }
+}
+
+export async function submitAnswers(options: string[]) {
+  const session = await getSession();
+  if (!session) return { message: '', data: null, error: 'No session found' };
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/answers/submit-survey`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: session,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ options }),
+    }
+  );
+
+  if (!response.ok) {
+    return {
+      message: 'Submit survey',
+      error: 'Failed to submit survey',
       data: null,
     };
   }

@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import useSWR, { Fetcher } from 'swr';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import Link from 'next/link';
 
 import SurveyUnavailable from '../_components/SurveyUnavailable';
@@ -14,12 +14,14 @@ import Loading from '@/components/Loading';
 
 import { ServerResponse } from '@/interfaces/ServerResponse';
 import { Survey } from '@/interfaces/Survey';
+import submitAnswersAction from '@/actions/surveys/submitAnswers';
 
 const fetcher: Fetcher<ServerResponse<Survey>> = (url: string) =>
   fetch(url).then((r) => r.json());
 
 export default function SurveyPage() {
   const params = useParams();
+  const [isPending, startTransition] = useTransition();
   const { data, isLoading } = useSWR(
     `${process.env.NEXT_PUBLIC_API_URL}/surveys/get?id=${params.id}`,
     fetcher
@@ -28,12 +30,18 @@ export default function SurveyPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (answers: Record<string, string>) => {
-    console.log('Submitting answers:', answers);
+    const options = Object.entries(answers).map(([, optionId]) => optionId);
+
+    startTransition(async () => {
+      await submitAnswersAction(options);
+    });
+
     setSubmitted(true);
   };
 
   // If loading, show a loading state
-  if (isLoading) return <Loading message="Cargando encuesta..." />;
+  if (isLoading || isPending)
+    return <Loading message="Cargando y evaluando datos..." />;
 
   // If no data or no questions, show a message
   if (!data || !data.data || !data.data.questions) return <SurveyUnavailable />;

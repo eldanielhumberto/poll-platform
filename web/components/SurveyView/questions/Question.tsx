@@ -32,8 +32,10 @@ export default function Question({
       </CardHeader>
       <CardContent>
         <RadioGroup
-          value={answers[question.id] || ''}
-          onValueChange={(value) => handleSingleChoice(question.id, value)}
+          value={answers[question.questionText] || ''}
+          onValueChange={(value) =>
+            handleSingleChoice(question.questionText, value)
+          }
         >
           {question.options?.map((option) => (
             <div
@@ -41,7 +43,7 @@ export default function Question({
               className="flex items-center space-x-2 rounded-lg hover:bg-gray-50 pl-3"
             >
               <RadioGroupItem
-                value={option.optionText}
+                value={option.id}
                 id={`${question.id}-${option.optionText}`}
                 className=""
               />

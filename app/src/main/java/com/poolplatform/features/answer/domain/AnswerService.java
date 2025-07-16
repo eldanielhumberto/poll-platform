@@ -19,5 +19,7 @@ public interface AnswerService {
 
     Answer upsert(Answer answer);
 
+    void upsertAll(List<Answer> answers);
+
     void remove(Answer answer);
 }

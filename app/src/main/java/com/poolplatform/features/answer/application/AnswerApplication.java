@@ -44,6 +44,11 @@ public class AnswerApplication implements AnswerService {
     }
 
     @Override
+    public void upsertAll(List<Answer> answers) {
+        answerRepository.upsertAll(answers);
+    }
+
+    @Override
     public void remove(Answer answer) {
         answerRepository.remove(answer);
     }

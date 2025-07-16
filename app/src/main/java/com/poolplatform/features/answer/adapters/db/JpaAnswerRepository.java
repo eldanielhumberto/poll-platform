@@ -37,13 +37,17 @@ public interface JpaAnswerRepository extends JpaRepository<AnswerEntity, String>
 
     @Override
     default List<Answer> get(Question question) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'get'");
     }
 
     @Override
     default Answer upsert(Answer answer) {
         return AnswerMapper.toAnswer(save(AnswerMapper.toAnswerEntity(answer)));
+    }
+
+    @Override
+    default void upsertAll(List<Answer> answers) {
+        saveAll(AnswerMapper.toAnswersEntitiesList(answers));
     }
 
     @Override

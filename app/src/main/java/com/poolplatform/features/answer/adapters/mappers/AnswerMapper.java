@@ -1,5 +1,8 @@
 package com.poolplatform.features.answer.adapters.mappers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.poolplatform.features.answer.adapters.entities.AnswerEntity;
 import com.poolplatform.features.answer.domain.models.Answer;
 import com.poolplatform.features.answer.domain.models.AnswerResponse;
@@ -78,5 +81,9 @@ public class AnswerMapper {
         simpleAnswerEntity.setId(answer.getId());
 
         return simpleAnswerEntity;
+    }
+
+    public static List<AnswerEntity> toAnswersEntitiesList(List<Answer> answers) {
+        return answers.stream().map(a -> toAnswerEntity(a)).toList();
     }
 }

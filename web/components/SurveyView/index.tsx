@@ -24,7 +24,7 @@ export function SurveyView({
   const [answers, setAnswers] = useState({} as Record<string, string>);
 
   const isQuestionAnswered = (question: Question) => {
-    const answer = answers[question.id];
+    const answer = answers[question.questionText];
     return answer && answer.trim() !== '';
   };
 
