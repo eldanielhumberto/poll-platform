@@ -19,7 +19,6 @@ export async function getCategories(): Promise<Category[]> {
     name: 'Todas',
     surveysCount: 0,
   } as Category);
-  console.log(data);
 
   return data;
 }

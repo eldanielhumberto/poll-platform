@@ -7,6 +7,7 @@ import { getUser } from '@/lib/api/auth';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
 import Navbar from '@/components/Navbar';
+import { getSession } from '@/lib/session';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,11 +27,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const user = await getUser();
+  const session = await getSession();
 
   return (
     <html lang="en" className={inter.className}>
       <body className="flex flex-col min-h-screen">
-        <AuthProvider user={user}>
+        <AuthProvider user={user} token={session}>
           <Navbar />
           {children}
         </AuthProvider>

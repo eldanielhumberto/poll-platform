@@ -1,6 +1,5 @@
 package com.poolplatform.features.answer.adapters.mappers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.poolplatform.features.answer.adapters.entities.AnswerEntity;

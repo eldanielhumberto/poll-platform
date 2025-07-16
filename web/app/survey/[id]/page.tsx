@@ -1,10 +1,11 @@
 'use client';
 
+import { useState, useTransition } from 'react';
 import { useParams } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
-import useSWR, { Fetcher } from 'swr';
-import { useState, useTransition } from 'react';
 import Link from 'next/link';
+
+import submitAnswersAction from '@/actions/surveys/submitAnswers';
 
 import SurveyUnavailable from '../_components/SurveyUnavailable';
 import SubmittedMessage from '../_components/SubmittedMessage';
@@ -12,22 +13,20 @@ import SubmittedMessage from '../_components/SubmittedMessage';
 import { SurveyView } from '@/components/SurveyView';
 import Loading from '@/components/Loading';
 
-import { ServerResponse } from '@/interfaces/ServerResponse';
+import { useFetch } from '@/hooks/useFetch';
+import { useAuth } from '@/hooks/useAuth';
 import { Survey } from '@/interfaces/Survey';
-import submitAnswersAction from '@/actions/surveys/submitAnswers';
-
-const fetcher: Fetcher<ServerResponse<Survey>> = (url: string) =>
-  fetch(url).then((r) => r.json());
 
 export default function SurveyPage() {
-  const params = useParams();
   const [isPending, startTransition] = useTransition();
-  const { data, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/surveys/get?id=${params.id}`,
-    fetcher
-  );
-
   const [submitted, setSubmitted] = useState(false);
+  const { id: surveyId } = useParams();
+  const { token } = useAuth();
+
+  const { data, isLoading } = useFetch<Survey>(
+    `/surveys/get?id=${surveyId}`,
+    token
+  );
 
   const handleSubmit = (answers: Record<string, string>) => {
     const options = Object.entries(answers).map(([, optionId]) => optionId);
@@ -44,7 +43,7 @@ export default function SurveyPage() {
     return <Loading message="Cargando y evaluando datos..." />;
 
   // If no data or no questions, show a message
-  if (!data || !data.data || !data.data.questions) return <SurveyUnavailable />;
+  if (!data || !data || !data.questions) return <SurveyUnavailable />;
 
   // Show submitted message if the survey is submitted
   if (submitted) return <SubmittedMessage />;
@@ -60,7 +59,7 @@ export default function SurveyPage() {
         Volver a explorar
       </Link>
 
-      <SurveyView survey={data.data} handleSubmit={handleSubmit} />
+      <SurveyView survey={data} handleSubmit={handleSubmit} />
     </main>
   );
 }
