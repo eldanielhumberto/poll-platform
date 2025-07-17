@@ -23,7 +23,7 @@ export default function SurveyPage() {
   const { id: surveyId } = useParams();
   const { token } = useAuth();
 
-  const { data, isLoading } = useFetch<Survey>(
+  const { data: survey, isLoading } = useFetch<Survey>(
     `/surveys/get?id=${surveyId}`,
     token
   );
@@ -43,7 +43,7 @@ export default function SurveyPage() {
     return <Loading message="Cargando y evaluando datos..." />;
 
   // If no data or no questions, show a message
-  if (!data || !data || !data.questions) return <SurveyUnavailable />;
+  if (!survey || !survey || !survey.questions) return <SurveyUnavailable />;
 
   // Show submitted message if the survey is submitted
   if (submitted) return <SubmittedMessage />;
@@ -59,7 +59,7 @@ export default function SurveyPage() {
         Volver a explorar
       </Link>
 
-      <SurveyView survey={data} handleSubmit={handleSubmit} />
+      <SurveyView survey={survey} handleSubmit={handleSubmit} />
     </main>
   );
 }

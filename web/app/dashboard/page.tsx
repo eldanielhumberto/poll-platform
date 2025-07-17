@@ -1,4 +1,5 @@
 import { Plus } from 'lucide-react';
+import Link from 'next/link';
 
 import { getUserSurveys } from '@/lib/api/surveys';
 
@@ -28,10 +29,12 @@ export default async function DashboardPage() {
             Gestiona tus encuestas y analiza los resultados
           </p>
         </div>
-        <Button className="mt-4 sm:mt-0">
-          <Plus className="h-4 w-4 mr-2" />
-          Nueva Encuesta
-        </Button>
+        <Link href="/create">
+          <Button className="mt-4 sm:mt-0">
+            <Plus className="h-4 w-4 mr-2" />
+            Nueva Encuesta
+          </Button>
+        </Link>
       </div>
 
       {/* Stats Cards */}
