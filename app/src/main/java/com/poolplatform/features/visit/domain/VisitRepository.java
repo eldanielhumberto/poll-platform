@@ -12,4 +12,6 @@ public interface VisitRepository {
     List<Visit> getSurveyVisits(Survey survey);
 
     Visit createVisit(Visit visit);
+
+    void deleteVisitsBySurveyId(Survey survey);
 }

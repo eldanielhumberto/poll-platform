@@ -5,7 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.NativeQuery;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.poolplatform.features.option.adapters.entities.OptionEntity;
@@ -13,6 +14,9 @@ import com.poolplatform.features.option.adapters.mappers.OptionMapper;
 import com.poolplatform.features.option.domain.OptionRepository;
 import com.poolplatform.features.option.domain.models.Option;
 import com.poolplatform.features.question.domain.models.Question;
+import com.poolplatform.features.survey.domain.models.Survey;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface JpaOptionRepository extends JpaRepository<OptionEntity, String>, OptionRepository {
@@ -43,7 +47,16 @@ public interface JpaOptionRepository extends JpaRepository<OptionEntity, String>
         return OptionMapper.toOption(save(OptionMapper.toOptionEntity(t)));
     }
 
-    @NativeQuery(value = "SELECT * FROM options WHERE option_text = ?1 AND question_id = ?2")
+    @Override
+    default void deleteOptionsBySurveyId(Survey survey) {
+        deleteOptionsBySurveyId(survey.getId());
+    }
+
+    @Query(value = "SELECT * FROM options WHERE option_text = ?1 AND question_id = ?2", nativeQuery = true)
     Optional<OptionEntity> findByOptionTextAndSurveyId(String optionText, String questionId);
 
+    @Transactional
+    @Modifying
+    @Query(value = "delete from options where survey_id = ?1", nativeQuery = true)
+    void deleteOptionsBySurveyId(String surveyId);
 }

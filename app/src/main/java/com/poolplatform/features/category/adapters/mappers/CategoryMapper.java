@@ -31,7 +31,7 @@ public class CategoryMapper {
 
         if (entity.getSurveys() != null) {
             entity.setSurveys(category.getSurveys().stream()
-                    .map(SurveyMapper::toBasicSurveyEntity)
+                    .map(SurveyMapper::toBasicSurvey)
                     .collect(Collectors.toList()));
         }
 

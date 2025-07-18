@@ -22,4 +22,6 @@ public interface AnswerRepository {
     void upsertAll(List<Answer> answers);
 
     void remove(Answer answer);
+
+    void deleteAnswersBySurveyId(Survey survey);
 }

@@ -79,6 +79,32 @@ public class QuestionMapper {
     }
 
     /**
+     * Converts a QuestionEntity object to a basic Question
+     * 
+     * @param question
+     * @return
+     */
+    public static Question toBasicQuestion(QuestionEntity questionEntity) {
+        Question question = new Question();
+        question.setId(questionEntity.getId());
+
+        return question;
+    }
+
+    /**
+     * Converts a Question object to a basic QuestionEntity
+     * 
+     * @param question
+     * @return
+     */
+    public static QuestionEntity toBasicQuestion(Question question) {
+        QuestionEntity questionEntity = new QuestionEntity();
+        questionEntity.setId(question.getId());
+
+        return questionEntity;
+    }
+
+    /**
      * Converts a Question object to a QuestionResponse object.
      *
      * @param question The Question object to convert.
@@ -224,7 +250,7 @@ public class QuestionMapper {
             if (optionEntityMap.containsKey(o.getId())) {
                 option = optionEntityMap.get(o.getId());
             } else {
-                option = OptionMapper.toSimpleOptionEntity(o);
+                option = OptionMapper.toSimpleOption(o);
                 optionEntityMap.put(o.getId(), option);
             }
             return option;

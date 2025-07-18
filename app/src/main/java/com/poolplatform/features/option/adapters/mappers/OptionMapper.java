@@ -48,7 +48,7 @@ public class OptionMapper {
         return newOption;
     }
 
-    public static OptionEntity toSimpleOptionEntity(Option option) {
+    public static OptionEntity toSimpleOption(Option option) {
         QuestionEntity question = new QuestionEntity();
         question.setId(option.getQuestion().getId());
 
@@ -81,7 +81,7 @@ public class OptionMapper {
         if (optionEntityMap.containsKey(o.getId())) {
             option = optionEntityMap.get(o.getId());
         } else {
-            option = OptionMapper.toSimpleOptionEntity(o);
+            option = OptionMapper.toSimpleOption(o);
             optionEntityMap.put(o.getId(), option);
         }
         return option;

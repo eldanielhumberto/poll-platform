@@ -5,7 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.NativeQuery;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.poolplatform.features.answer.adapters.entities.AnswerEntity;
@@ -15,6 +16,8 @@ import com.poolplatform.features.answer.domain.models.Answer;
 import com.poolplatform.features.question.domain.models.Question;
 import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.user.domain.models.User;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface JpaAnswerRepository extends JpaRepository<AnswerEntity, String>, AnswerRepository {
@@ -55,6 +58,16 @@ public interface JpaAnswerRepository extends JpaRepository<AnswerEntity, String>
         delete(AnswerMapper.toAnswerEntity(answer));
     }
 
-    @NativeQuery("select * from answers where survey_id = ?1 AND user_id = ?2")
+    @Override
+    default void deleteAnswersBySurveyId(Survey survey) {
+        deleteAnswersBySurveyId(survey.getId());
+    }
+
+    @Query(value = "select * from answers where survey_id = ?1 AND user_id = ?2", nativeQuery = true)
     List<AnswerEntity> findBySurveyAndUser(String surveyId, String userId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from answers where survey_id = ?1", nativeQuery = true)
+    void deleteAnswersBySurveyId(String surveyId);
 }

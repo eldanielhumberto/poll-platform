@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +26,7 @@ public class CategoryEntity {
     @Column(nullable = false)
     private String color;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SurveyEntity> surveys;
 
     public CategoryEntity() {

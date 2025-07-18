@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.poolplatform.features.survey.domain.models.Survey;
@@ -15,6 +17,9 @@ import com.poolplatform.features.visit.adapters.entities.VisitEntity;
 import com.poolplatform.features.visit.adapters.mappers.VisitMapper;
 import com.poolplatform.features.visit.domain.VisitRepository;
 import com.poolplatform.features.visit.domain.models.Visit;
+
+import jakarta.transaction.Transactional;
+
 import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
 import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
 
@@ -38,7 +43,17 @@ public interface JpaVisitRepository extends JpaRepository<VisitEntity, String>, 
         return VisitMapper.toVisit(save(VisitMapper.toVisitEntity(visit)));
     }
 
+    @Override
+    default void deleteVisitsBySurveyId(Survey survey) {
+        deleteVisitsBySurveyId(survey.getId());
+    }
+
     List<VisitEntity> findBySurvey(SurveyEntity survey);
 
     List<VisitEntity> findFirst2BySurveyAndVisitor(SurveyEntity survey, UserEntity visitor, Sort sort);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from visits where survey_id = ?1", nativeQuery = true)
+    void deleteVisitsBySurveyId(String surveyId);
 }

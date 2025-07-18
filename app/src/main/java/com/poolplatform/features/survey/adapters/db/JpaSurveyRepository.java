@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.NativeQuery;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
@@ -14,6 +16,8 @@ import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
 import com.poolplatform.features.survey.domain.SurveyRepository;
 import com.poolplatform.features.survey.domain.models.Survey;
 import com.poolplatform.features.user.domain.models.User;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface JpaSurveyRepository extends JpaRepository<SurveyEntity, String>, SurveyRepository {
@@ -40,9 +44,14 @@ public interface JpaSurveyRepository extends JpaRepository<SurveyEntity, String>
 
     @Override
     default void remove(Survey survey) {
-        delete(SurveyMapper.toSurveyEntity(survey));
+        deleteSurveyById(survey.getId());
     }
 
     @NativeQuery(value = "SELECT * FROM surveys WHERE user_id = ?1")
     List<SurveyEntity> findByUserId(String user_id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from surveys where id = ?1", nativeQuery = true)
+    void deleteSurveyById(String surveyId);
 }

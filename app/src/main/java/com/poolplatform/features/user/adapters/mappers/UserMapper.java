@@ -88,6 +88,20 @@ public class UserMapper {
         return userEntity;
     }
 
+    public static UserEntity toBasicUser(User user) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(user.getId());
+
+        return userEntity;
+    }
+
+    public static User toBasicUser(UserEntity userEntity) {
+        User user = new User();
+        user.setId(userEntity.getId());
+
+        return user;
+    }
+
     public static UserResponse toUserResponse(User user) {
         UserResponse userSummary = new UserResponse();
         userSummary.setId(user.getId());

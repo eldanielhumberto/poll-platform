@@ -71,13 +71,21 @@ public class AnswerMapper {
     public static Answer toSimpleAnswer(AnswerEntity answer) {
         Answer simpleAnswer = new Answer();
         simpleAnswer.setId(answer.getId());
+        simpleAnswer.setSurvey(SurveyMapper.toBasicSurvey(answer.getSurvey()));
+        simpleAnswer.setOption(OptionMapper.toSimpleOption(answer.getOption()));
+        simpleAnswer.setQuestion(QuestionMapper.toBasicQuestion(answer.getQuestion()));
+        simpleAnswer.setUser(UserMapper.toBasicUser(answer.getUser()));
 
         return simpleAnswer;
     }
 
-    public static AnswerEntity toSimpleAnswerEntity(Answer answer) {
+    public static AnswerEntity toSimpleAnswer(Answer answer) {
         AnswerEntity simpleAnswerEntity = new AnswerEntity();
         simpleAnswerEntity.setId(answer.getId());
+        simpleAnswerEntity.setSurvey(SurveyMapper.toBasicSurvey(answer.getSurvey()));
+        simpleAnswerEntity.setOption(OptionMapper.toSimpleOption(answer.getOption()));
+        simpleAnswerEntity.setQuestion(QuestionMapper.toBasicQuestion(answer.getQuestion()));
+        simpleAnswerEntity.setUser(UserMapper.toBasicUser(answer.getUser()));
 
         return simpleAnswerEntity;
     }

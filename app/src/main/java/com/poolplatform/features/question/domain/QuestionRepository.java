@@ -13,4 +13,6 @@ public interface QuestionRepository extends Crud<Question> {
     void saveAll(List<Question> questions);
 
     Optional<Question> getByText(String questionText, String surveyId);
+
+    void deleteQuestionsBySurveyId(Survey survey);
 }

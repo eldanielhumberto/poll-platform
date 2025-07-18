@@ -78,7 +78,7 @@ public class SurveyMapper {
         // Set answers
         if (survey.getAnswers() != null) {
             surveyEntity.setAnswers(
-                    survey.getAnswers().stream().map(AnswerMapper::toSimpleAnswerEntity).collect(Collectors.toList()));
+                    survey.getAnswers().stream().map(AnswerMapper::toSimpleAnswer).collect(Collectors.toList()));
         }
 
         // Set questions
@@ -114,7 +114,7 @@ public class SurveyMapper {
         return simpleSurvey;
     }
 
-    public static SurveyEntity toBasicSurveyEntity(Survey survey) {
+    public static SurveyEntity toBasicSurvey(Survey survey) {
         SurveyEntity simpleSurveyEntity = new SurveyEntity();
         simpleSurveyEntity.setId(survey.getId());
         simpleSurveyEntity.setTitle(survey.getTitle());
