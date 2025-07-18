@@ -39,7 +39,7 @@ export function QuestionEditor({
     const newOptions = [
       ...question.options,
       {
-        id: question.options.length.toString(),
+        id: Date.now().toString(36),
         optionText: `Opción ${question.options.length + 1}`,
       },
     ];

@@ -37,21 +37,24 @@ export default function Question({
             handleSingleChoice(question.questionText, value)
           }
         >
-          {question.options?.map((option) => (
+          {question.options?.map((option, index) => (
             <div
-              key={option.id}
+              key={index}
               className="flex items-center space-x-2 rounded-lg hover:bg-gray-50 pl-3"
             >
               <RadioGroupItem
                 value={option.id}
-                id={`${question.id}-${option.optionText}`}
+                id={`${index}-${option.id}`}
                 className=""
               />
               <Label
-                htmlFor={`${question.id}-${option.optionText}`}
+                htmlFor={`${index}-${option.id}`}
                 className="flex-1 cursor-pointer hover:bg-gray-50 pr-3 pb-3 pt-3"
               >
-                {option.optionText}
+                {option.optionText}{' '}
+                <b>
+                  {index}-{option.id}
+                </b>
               </Label>
             </div>
           ))}
