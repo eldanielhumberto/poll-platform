@@ -51,10 +51,7 @@ export default function Question({
                 htmlFor={`${index}-${option.id}`}
                 className="flex-1 cursor-pointer hover:bg-gray-50 pr-3 pb-3 pt-3"
               >
-                {option.optionText}{' '}
-                <b>
-                  {index}-{option.id}
-                </b>
+                {option.optionText}
               </Label>
             </div>
           ))}
