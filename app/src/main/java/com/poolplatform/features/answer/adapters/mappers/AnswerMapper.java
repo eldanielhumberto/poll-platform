@@ -20,10 +20,8 @@ public class AnswerMapper {
         answer.setOption(OptionMapper.toOption(answerEntity.getOption()));
         answer.setQuestion(QuestionMapper.toQuestion(answerEntity.getQuestion()));
         answer.setSurvey(SurveyMapper.toSurvey(answerEntity.getSurvey()));
-
-        if (answerEntity.getUser() != null) {
-            answer.setUser(UserMapper.toUser(answerEntity.getUser()));
-        }
+        answer.setUser(UserMapper.toUser(answerEntity.getUser()));
+        answer.setRespondent(UserMapper.toUser(answerEntity.getRespondent()));
 
         return answer;
     }
@@ -34,10 +32,8 @@ public class AnswerMapper {
         answerEntity.setOption(OptionMapper.toOptionEntity(answer.getOption()));
         answerEntity.setQuestion(QuestionMapper.toQuestionEntity(answer.getQuestion()));
         answerEntity.setSurvey(SurveyMapper.toSurveyEntity(answer.getSurvey()));
-
-        if (answer.getUser() != null) {
-            answerEntity.setUser(UserMapper.toUserEntity(answer.getUser()));
-        }
+        answerEntity.setUser(UserMapper.toUserEntity(answer.getUser()));
+        answerEntity.setRespondent(UserMapper.toUserEntity(answer.getRespondent()));
 
         return answerEntity;
     }
@@ -60,10 +56,8 @@ public class AnswerMapper {
         simpleAnswer.setOption(simpleOption);
         simpleAnswer.setQuestion(simpleQuestion);
         simpleAnswer.setSurvey(simpleSurvey);
-
-        if (answer.getUser() != null) {
-            simpleAnswer.setUser(UserMapper.toSimpleUser(answer.getUser()));
-        }
+        simpleAnswer.setUser(UserMapper.toSimpleUser(answer.getUser()));
+        simpleAnswer.setRespondent(UserMapper.toSimpleUser(answer.getRespondent()));
 
         return simpleAnswer;
     }

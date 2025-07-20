@@ -116,6 +116,7 @@ public class UserMapper {
 
     public static SimpleUser toSimpleUser(User user) {
         SimpleUser simpleUser = new SimpleUser();
+        simpleUser.setId(user.getId());
         simpleUser.setEmail(user.getEmail());
         simpleUser.setUsername(user.getUsername());
 

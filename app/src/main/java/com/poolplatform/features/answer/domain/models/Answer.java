@@ -8,6 +8,7 @@ import com.poolplatform.features.user.domain.models.User;
 public class Answer {
     private String id;
     private User user;
+    private User respondent;
     private Option option;
     private Question question;
     private Survey survey;
@@ -15,9 +16,10 @@ public class Answer {
     public Answer() {
     }
 
-    public Answer(String id, User user, Option option, Question question, Survey survey) {
+    public Answer(String id, User user, User respondent, Option option, Question question, Survey survey) {
         this.id = id;
         this.user = user;
+        this.respondent = respondent;
         this.option = option;
         this.question = question;
         this.survey = survey;
@@ -29,6 +31,22 @@ public class Answer {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getRespondent() {
+        return respondent;
+    }
+
+    public void setRespondent(User respondent) {
+        this.respondent = respondent;
     }
 
     public Option getOption() {
@@ -53,14 +71,6 @@ public class Answer {
 
     public void setSurvey(Survey survey) {
         this.survey = survey;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
 }

@@ -21,8 +21,12 @@ public class AnswerEntity {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
+
+    @ManyToOne
+    @JoinColumn(name = "respondent_id", nullable = false)
+    private UserEntity respondent;
 
     @ManyToOne
     @JoinColumn(name = "survey_id", nullable = false)
@@ -39,8 +43,11 @@ public class AnswerEntity {
     public AnswerEntity() {
     }
 
-    public AnswerEntity(String id, SurveyEntity survey, QuestionEntity question, OptionEntity option) {
+    public AnswerEntity(String id, UserEntity user, UserEntity respondent, SurveyEntity survey, QuestionEntity question,
+            OptionEntity option) {
         this.id = id;
+        this.user = user;
+        this.respondent = respondent;
         this.survey = survey;
         this.question = question;
         this.option = option;
@@ -52,6 +59,22 @@ public class AnswerEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public UserEntity getRespondent() {
+        return respondent;
+    }
+
+    public void setRespondent(UserEntity respondent) {
+        this.respondent = respondent;
     }
 
     public SurveyEntity getSurvey() {
@@ -76,14 +99,6 @@ public class AnswerEntity {
 
     public void setOption(OptionEntity option) {
         this.option = option;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
     }
 
 }

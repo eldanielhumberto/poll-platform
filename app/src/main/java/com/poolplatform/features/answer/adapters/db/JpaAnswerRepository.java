@@ -1,8 +1,6 @@
 package com.poolplatform.features.answer.adapters.db;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,39 +11,29 @@ import com.poolplatform.features.answer.adapters.entities.AnswerEntity;
 import com.poolplatform.features.answer.adapters.mappers.AnswerMapper;
 import com.poolplatform.features.answer.domain.AnswerRepository;
 import com.poolplatform.features.answer.domain.models.Answer;
-import com.poolplatform.features.question.domain.models.Question;
 import com.poolplatform.features.survey.domain.models.Survey;
+import com.poolplatform.features.user.adapters.entities.UserEntity;
+import com.poolplatform.features.user.adapters.mappers.UserMapper;
 import com.poolplatform.features.user.domain.models.User;
 
 import jakarta.transaction.Transactional;
+import com.poolplatform.features.survey.adapters.entities.SurveyEntity;
+import com.poolplatform.features.survey.adapters.mappers.SurveyMapper;
 
 @Repository
 public interface JpaAnswerRepository extends JpaRepository<AnswerEntity, String>, AnswerRepository {
 
     @Override
-    default List<Answer> get() {
-        return findAll().stream().map(AnswerMapper::toAnswer).collect(Collectors.toList());
+    default List<Answer> get(Survey survey, User respondent) {
+        return findBySurveyAndRespondent(SurveyMapper.toSurveyEntity(survey), UserMapper.toUserEntity(respondent))
+                .stream()
+                .map(AnswerMapper::toAnswer)
+                .toList();
     }
 
     @Override
-    default Optional<Answer> get(String id) {
-        return findById(id).map(AnswerMapper::toAnswer);
-    }
-
-    @Override
-    default List<Answer> get(Survey survey, User user) {
-        return findBySurveyAndUser(survey.getId(), user.getId()).stream().map(AnswerMapper::toAnswer)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    default List<Answer> get(Question question) {
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
-    }
-
-    @Override
-    default Answer upsert(Answer answer) {
-        return AnswerMapper.toAnswer(save(AnswerMapper.toAnswerEntity(answer)));
+    default List<Answer> get(Survey survey) {
+        return findBySurvey(SurveyMapper.toSurveyEntity(survey)).stream().map(AnswerMapper::toAnswer).toList();
     }
 
     @Override
@@ -63,8 +51,9 @@ public interface JpaAnswerRepository extends JpaRepository<AnswerEntity, String>
         deleteAnswersBySurveyId(survey.getId());
     }
 
-    @Query(value = "select * from answers where survey_id = ?1 AND user_id = ?2", nativeQuery = true)
-    List<AnswerEntity> findBySurveyAndUser(String surveyId, String userId);
+    List<AnswerEntity> findBySurveyAndRespondent(SurveyEntity survey, UserEntity respondent);
+
+    List<AnswerEntity> findBySurvey(SurveyEntity survey);
 
     @Modifying
     @Transactional

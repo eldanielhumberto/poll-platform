@@ -8,6 +8,7 @@ import com.poolplatform.features.user.domain.models.SimpleUser;
 public class AnswerResponse {
     private String id;
     private SimpleUser user;
+    private SimpleUser respondent;
     private SimpleSurvey survey;
     private SimpleQuestion question;
     private SimpleOption option;
@@ -15,10 +16,12 @@ public class AnswerResponse {
     public AnswerResponse() {
     }
 
-    public AnswerResponse(String id, SimpleUser user, SimpleSurvey survey, SimpleQuestion question,
+    public AnswerResponse(String id, SimpleUser user, SimpleUser respondent, SimpleSurvey survey,
+            SimpleQuestion question,
             SimpleOption option) {
         this.id = id;
         this.user = user;
+        this.respondent = respondent;
         this.survey = survey;
         this.question = question;
         this.option = option;
@@ -30,6 +33,22 @@ public class AnswerResponse {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public SimpleUser getUser() {
+        return user;
+    }
+
+    public void setUser(SimpleUser user) {
+        this.user = user;
+    }
+
+    public SimpleUser getRespondent() {
+        return respondent;
+    }
+
+    public void setRespondent(SimpleUser respondent) {
+        this.respondent = respondent;
     }
 
     public SimpleSurvey getSurvey() {
@@ -54,14 +73,6 @@ public class AnswerResponse {
 
     public void setOption(SimpleOption option) {
         this.option = option;
-    }
-
-    public SimpleUser getUser() {
-        return user;
-    }
-
-    public void setUser(SimpleUser user) {
-        this.user = user;
     }
 
 }
