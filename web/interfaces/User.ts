@@ -6,3 +6,9 @@ export interface User {
   answers: number;
   surveys: number;
 }
+
+export interface UserSummary {
+  id: string;
+  username: string;
+  email: string;
+}

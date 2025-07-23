@@ -1,14 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+
 import { Card, CardContent } from '@/components/ui/card';
-import { Survey } from '@/interfaces/Survey';
+
+import SurveyPendingQuestions from './SurveyPendingQuestions';
+import SurveyResponses from './SurveyResponses';
 import SurveyDetails from './SurveyDetails';
-import ProgressBar from '@/components/SurveyView/ProgressBar';
-import QuestionsList from '@/components/SurveyView/questions/QuestionsList';
-import { Question } from '@/interfaces/Question';
+
+import { useFetch } from '@/hooks/useFetch';
 import { useAuth } from '@/hooks/useAuth';
+
+import { Response } from '@/interfaces/Response';
+import { Survey } from '@/interfaces/Survey';
+
+import Loading from '@/app/loading';
 
 interface SurveyPreviewProps {
   survey: Survey;
@@ -16,22 +22,24 @@ interface SurveyPreviewProps {
   isEditor?: boolean;
 }
 
+// REFACTOR THIS COMPONENT
 export function SurveyView({
   survey,
   handleSubmit,
   isEditor,
 }: SurveyPreviewProps) {
-  const { user } = useAuth();
   const [answers, setAnswers] = useState({} as Record<string, string>);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const { user } = useAuth();
 
-  const isQuestionAnswered = (question: Question) => {
-    const answer = answers[question.questionText];
-    return answer && answer.trim() !== '';
-  };
+  const { data: surveyResponses, isLoading } = useFetch<Response[]>(
+    !isEditor && user
+      ? `/answers/get?surveyId=${survey.id}&userId=${user?.id}`
+      : null
+  );
 
-  const handleSingleChoice = (questionId: string, value: string) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: value }));
+  const handleSingleChoice = (questionText: string, value: string) => {
+    setAnswers((prev) => ({ ...prev, [questionText]: value }));
   };
 
   if (
@@ -53,89 +61,28 @@ export function SurveyView({
     );
   }
 
-  const canSubmit = survey.questions.every((q) => isQuestionAnswered(q));
-
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Survey details */}
       <SurveyDetails survey={survey} />
 
-      {/* Progress Bar */}
-      <ProgressBar
-        currentQuestion={currentQuestion}
-        questions={survey.questions}
-      />
-
-      {/* Questions */}
-      <QuestionsList
-        questions={survey.questions}
-        answers={answers}
-        currentQuestion={currentQuestion}
-        handleSingleChoice={handleSingleChoice}
-      />
-
-      {/* Navigation */}
-      <div
-        className={`flex justify-${
-          user ? 'between' : 'center gap-3 flex-col'
-        } items-center mt-8`}
-      >
-        {user ? (
-          <>
-            <Button
-              variant="outline"
-              onClick={() =>
-                setCurrentQuestion(Math.max(0, currentQuestion - 1))
-              }
-              disabled={currentQuestion === 0}
-            >
-              Anterior
-            </Button>
-
-            <div className="flex space-x-2">
-              {survey.questions.map((_, index) => (
-                <div
-                  key={index}
-                  className={`w-2 h-2 rounded-full ${
-                    index === currentQuestion
-                      ? 'bg-blue-600'
-                      : index < currentQuestion
-                      ? 'bg-green-600'
-                      : 'bg-gray-300'
-                  }`}
-                />
-              ))}
-            </div>
-
-            {currentQuestion < survey.questions.length - 1 ? (
-              <Button
-                onClick={() => setCurrentQuestion(currentQuestion + 1)}
-                disabled={
-                  !isQuestionAnswered(survey.questions[currentQuestion])
-                }
-              >
-                Siguiente
-              </Button>
-            ) : (
-              <Button
-                onClick={() => handleSubmit && handleSubmit(answers)}
-                disabled={!canSubmit}
-                className="bg-green-600 hover:bg-green-700"
-              >
-                Enviar Respuestas
-              </Button>
-            )}
-          </>
+      {!isLoading ? (
+        surveyResponses && surveyResponses?.length > 0 ? (
+          <SurveyResponses />
         ) : (
-          <>
-            <p>Para responder, inicia sesión o crea una cuenta.</p>
-            <div className="space-x-4">
-              <Button variant="outline">Iniciar sesion</Button>
-              <Button>Crear cuenta</Button>
-            </div>
-          </>
-        )}
-      </div>
+          <SurveyPendingQuestions
+            setCurrentQuestion={setCurrentQuestion}
+            currentQuestion={currentQuestion}
+            handleSingleChoice={handleSingleChoice}
+            handleSubmit={handleSubmit}
+            answers={answers}
+            survey={survey}
+            user={user}
+          />
+        )
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }

@@ -5,3 +5,8 @@ export interface Question {
   questionText: string;
   options: Option[];
 }
+
+export interface QuestionSummary {
+  id: string;
+  questionText: string;
+}

@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Send } from 'lucide-react';
 import { useState } from 'react';
 
@@ -26,8 +27,8 @@ export default function SurveyEditor({ initialSurvey, publishSurvey }: Props) {
       id: `q_${Date.now()}`,
       questionText: '',
       options: [
-        { id: '1', optionText: 'Opcion 1' },
-        { id: '2', optionText: 'Opcion 2' },
+        { id: uuidv4(), optionText: 'Opcion 1' },
+        { id: uuidv4(), optionText: 'Opcion 2' },
       ],
     };
     setSurvey((prev) => ({

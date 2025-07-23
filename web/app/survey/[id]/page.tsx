@@ -25,7 +25,7 @@ export default function SurveyPage() {
 
   const { data: survey, isLoading } = useFetch<Survey>(
     `/surveys/get?id=${surveyId}`,
-    token
+    token as string
   );
 
   const handleSubmit = (answers: Record<string, string>) => {

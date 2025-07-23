@@ -26,3 +26,8 @@ export interface SurveyDataToSend {
     options: string[];
   }[];
 }
+
+export interface SurveySummary {
+  id: string;
+  title: string;
+}
