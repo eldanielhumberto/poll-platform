@@ -34,7 +34,7 @@ export default function Survey({
         <div className="flex items-center space-x-6 text-sm text-gray-500">
           <div className="flex items-center space-x-1">
             <Users className="h-4 w-4" />
-            <span>{answers} respuestas</span>
+            <span>{answers as number} respuestas</span>
           </div>
           <div className="flex items-center space-x-1">
             <Eye className="h-4 w-4" />

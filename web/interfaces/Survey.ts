@@ -1,4 +1,5 @@
 import { Question } from './Question';
+import { Response } from './Response';
 import { User } from './User';
 
 export interface Survey {
@@ -11,7 +12,7 @@ export interface Survey {
     color: string;
   };
   visits?: number;
-  answers?: number;
+  answers?: Response[] | number;
   questions: Question[];
   author?: User;
   createdAt: string;

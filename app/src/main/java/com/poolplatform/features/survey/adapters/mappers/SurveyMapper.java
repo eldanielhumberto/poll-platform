@@ -1,10 +1,12 @@
 package com.poolplatform.features.survey.adapters.mappers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.poolplatform.features.answer.adapters.mappers.AnswerMapper;
+import com.poolplatform.features.answer.domain.models.AnswerResponse;
 import com.poolplatform.features.option.adapters.entities.OptionEntity;
 import com.poolplatform.features.option.adapters.mappers.OptionMapper;
 import com.poolplatform.features.option.domain.models.Option;
@@ -139,16 +141,16 @@ public class SurveyMapper {
     }
 
     // Converts a Survey object to a OneSurveyResponse object
-    public static OneSurveyResponse tOneSurveyResponse(Survey survey) {
+    public static OneSurveyResponse tOneSurveyResponse(Survey survey, List<AnswerResponse> answers) {
         OneSurveyResponse oneSurveyResponse = new OneSurveyResponse();
         oneSurveyResponse.setId(survey.getId());
         oneSurveyResponse.setTitle(survey.getTitle());
         oneSurveyResponse.setDescription(survey.getDescription());
         oneSurveyResponse.setAuthor(UserMapper.toSimpleUser(survey.getAuthor()));
         oneSurveyResponse.setCategory(CategoryMapper.toCategoryResponse(survey.getCategory()));
-        oneSurveyResponse.setAnswers(survey.getAnswers().size());
+        oneSurveyResponse.setAnswers(answers);
         oneSurveyResponse.setQuestions(survey.getQuestions().stream()
-                .map(QuestionMapper::toQuestionResponse).collect(Collectors.toList()));
+                .map(QuestionMapper::toQuestionResponse).toList());
 
         oneSurveyResponse.setCreatedAt(survey.getCreatedAt());
 

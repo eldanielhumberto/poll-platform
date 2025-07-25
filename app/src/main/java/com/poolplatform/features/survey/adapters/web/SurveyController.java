@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.poolplatform.adapters.dto.ResponseDTO;
 import com.poolplatform.domain.exceptions.RequestException;
+import com.poolplatform.features.answer.adapters.mappers.AnswerMapper;
+import com.poolplatform.features.answer.domain.AnswerService;
+import com.poolplatform.features.answer.domain.models.AnswerResponse;
 import com.poolplatform.features.category.domain.CategoryService;
 import com.poolplatform.features.category.domain.models.Category;
 import com.poolplatform.features.question.domain.QuestionService;
@@ -48,6 +51,9 @@ public class SurveyController {
     private VisitService visitService;
 
     @Autowired
+    private AnswerService answerService;
+
+    @Autowired
     private CategoryService categoryService;
 
     @GetMapping("/get")
@@ -61,12 +67,15 @@ public class SurveyController {
                 throw new RequestException("The survey does not exist", HttpStatus.NOT_FOUND);
 
             Survey survey = surveyOptional.get();
+            List<AnswerResponse> answers = answerService.get(survey).stream()
+                    .map(AnswerMapper::toResponseAnswer)
+                    .toList();
 
             // Create a visit
             visitService.registerVisitIfAllowed(authentication, survey);
 
             responseDTO.setMessage("Get a survey");
-            responseDTO.setData(SurveyMapper.tOneSurveyResponse(survey));
+            responseDTO.setData(SurveyMapper.tOneSurveyResponse(survey, answers));
 
             return ResponseEntity.ok(responseDTO);
         }

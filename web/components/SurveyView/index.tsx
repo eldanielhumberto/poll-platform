@@ -8,13 +8,9 @@ import SurveyPendingQuestions from './SurveyPendingQuestions';
 import SurveyResponses from './SurveyResponses';
 import SurveyDetails from './SurveyDetails';
 
-import { useFetch } from '@/hooks/useFetch';
 import { useAuth } from '@/hooks/useAuth';
 
-import { Response } from '@/interfaces/Response';
 import { Survey } from '@/interfaces/Survey';
-
-import Loading from '@/app/loading';
 
 interface SurveyPreviewProps {
   survey: Survey;
@@ -32,15 +28,13 @@ export function SurveyView({
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const { user } = useAuth();
 
-  const { data: surveyResponses, isLoading } = useFetch<Response[]>(
-    !isEditor && user
-      ? `/answers/get?surveyId=${survey.id}&userId=${user?.id}`
-      : null
-  );
-
   const handleSingleChoice = (questionText: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [questionText]: value }));
   };
+
+  const userResponses = Array.isArray(survey.answers)
+    ? survey.answers.filter((v) => v.respondent.id === user?.id)
+    : [];
 
   if (
     isEditor &&
@@ -61,27 +55,25 @@ export function SurveyView({
     );
   }
 
+  const isAnswered = userResponses && userResponses?.length > 0;
+
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Survey details */}
-      <SurveyDetails survey={survey} />
+      <SurveyDetails survey={survey} isAnswered={isAnswered} />
 
-      {!isLoading ? (
-        surveyResponses && surveyResponses?.length > 0 ? (
-          <SurveyResponses />
-        ) : (
-          <SurveyPendingQuestions
-            setCurrentQuestion={setCurrentQuestion}
-            currentQuestion={currentQuestion}
-            handleSingleChoice={handleSingleChoice}
-            handleSubmit={handleSubmit}
-            answers={answers}
-            survey={survey}
-            user={user}
-          />
-        )
+      {isAnswered && user ? (
+        <SurveyResponses survey={survey} respondent={user} />
       ) : (
-        <Loading />
+        <SurveyPendingQuestions
+          setCurrentQuestion={setCurrentQuestion}
+          currentQuestion={currentQuestion}
+          handleSingleChoice={handleSingleChoice}
+          handleSubmit={handleSubmit}
+          answers={answers}
+          survey={survey}
+          user={user}
+        />
       )}
     </div>
   );

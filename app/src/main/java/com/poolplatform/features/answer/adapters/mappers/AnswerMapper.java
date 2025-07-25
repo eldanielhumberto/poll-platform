@@ -56,8 +56,11 @@ public class AnswerMapper {
         simpleAnswer.setOption(simpleOption);
         simpleAnswer.setQuestion(simpleQuestion);
         simpleAnswer.setSurvey(simpleSurvey);
-        simpleAnswer.setUser(UserMapper.toSimpleUser(answer.getUser()));
-        simpleAnswer.setRespondent(UserMapper.toSimpleUser(answer.getRespondent()));
+
+        if (answer.getUser() != null && answer.getRespondent() != null) {
+            simpleAnswer.setUser(UserMapper.toSimpleUser(answer.getUser()));
+            simpleAnswer.setRespondent(UserMapper.toSimpleUser(answer.getRespondent()));
+        }
 
         return simpleAnswer;
     }

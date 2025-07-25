@@ -1,4 +1,4 @@
-import { Share2, Users } from 'lucide-react';
+import { CheckCircle, Share2, Users } from 'lucide-react';
 import dayjs from 'dayjs';
 
 import { Survey } from '@/interfaces/Survey';
@@ -10,16 +10,25 @@ import { Badge } from '../ui/badge';
 
 interface Props {
   survey: Survey;
+  isAnswered?: boolean;
 }
 
-export default function SurveyDetails({ survey }: Props) {
+export default function SurveyDetails({ survey, isAnswered }: Props) {
   return (
     <Card className="border-0 shadow-lg mb-8">
       <CardHeader>
-        <div className="flex items-start justify-between mb-4">
-          <Badge className={survey.category.color}>
-            {survey.category.name}
-          </Badge>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <Badge className={survey.category.color}>
+              {survey.category.name}
+            </Badge>
+            {isAnswered && (
+              <Badge className="bg-green-100 text-green-800 border-green-300">
+                <CheckCircle className="h-4 w-4" />
+                Ya contestada
+              </Badge>
+            )}
+          </div>
           <div className="flex items-center space-x-4">
             <Button variant="ghost" size="sm">
               <Share2 className="h-4 w-4" />
@@ -52,7 +61,7 @@ export default function SurveyDetails({ survey }: Props) {
           <div className="flex items-center space-x-4 text-sm text-gray-600">
             <div className="flex items-center space-x-1">
               <Users className="h-4 w-4" />
-              <span>{survey.answers} respuestas</span>
+              <span>{survey.answers?.length} respuestas</span>
             </div>
           </div>
         </div>

@@ -20,15 +20,15 @@ public class AnswerEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "respondent_id", nullable = false)
     private UserEntity respondent;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "survey_id", nullable = false)
     private SurveyEntity survey;
 
